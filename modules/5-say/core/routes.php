@@ -110,7 +110,7 @@ Route::group(array('prefix'=>'5-say'), function()
         ), 'originalModule', $module);
         rename($destination.'originalModuleController.php', $destination.$module.'Controller.php');
         // 添加进原始路由文件
-        $content = PHP_EOL.'// '.PHP_EOL."module('{$module}');".PHP_EOL;
+        $content = PHP_EOL.'// '.PHP_EOL."module('{$module}');";
         File::append(app_path('routes.php'), $content);
         // 返回测试页面连接
         $url = URL::to($module);

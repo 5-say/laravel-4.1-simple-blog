@@ -1,4 +1,4 @@
-@extends('l::base')
+@extends('l.base')
 
 @section('title'){{ $demo }} @stop
 
