@@ -4,4 +4,3 @@ composer.phar
 composer.lock
 .DS_Store
 Thumbs.db
-/app/config/mail.php
