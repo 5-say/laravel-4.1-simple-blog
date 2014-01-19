@@ -13,7 +13,10 @@ return array(
 	|
 	*/
 
-	'paths' => array(__DIR__.'/../views'),
+	'paths' => array(
+		__DIR__.'/../views',
+		base_path('modules/views'), // 模块公共视图目录
+	),
 
 	/*
 	|--------------------------------------------------------------------------

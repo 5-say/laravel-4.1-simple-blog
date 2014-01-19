@@ -55,12 +55,12 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'database',
+			'database'  => 'laravel-4.1-simple-blog',
 			'username'  => 'root',
 			'password'  => '',
 			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
+			'collation' => 'utf8_general_ci',
+			'prefix'    => 'l4_',
 		),
 
 		'pgsql' => array(

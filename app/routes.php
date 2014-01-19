@@ -15,3 +15,18 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+/**
+ * 模块化
+ */
+include base_path('modules/functions.php');
+// 开发辅助
+module('5-say');
+// 权限
+module('Authority');
+// 管理员后台
+module('Admin');
+// 用户后台
+module('Account');
+// 博客
+module('Blog');
