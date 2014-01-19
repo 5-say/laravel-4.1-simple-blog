@@ -15,7 +15,33 @@
 <a name="modules"></a>
 ### 模块化开发
 
+#### 对于源程序的变动
 
+**本质上没有修改任何源码。只是在使用方法上注意以下两点。**
+
+\* `/app/config/view.php` 配置文件，增加模块公共视图目录。
+
+    'paths' => array(
+        __DIR__.'/../views',
+        base_path('modules/views'), // 模块公共视图目录
+    ),
+
+\* `/app/routes.php` 路由文件中引用自定义的模块。（此为模块调用方法）
+
+    /**
+     * 模块化
+     */
+    include base_path('modules/functions.php');
+    // 开发辅助
+    module('5-say');
+    // 权限
+    module('Authority');
+    // 管理员后台
+    module('Admin');
+    // 用户后台
+    module('Account');
+    // 博客
+    module('Blog');
 
 <a name="assume-unchanged"></a>
 ### 开发者信息保密方法
