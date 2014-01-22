@@ -22,16 +22,18 @@ Route::group(array('prefix'=>'/'), function()
 {
     $Blog = 'Blog\BlogController@';
 
-    Route::get('about-us', function()
-    {
-        return View::make('frontend/about-us');
-    });
+    # 博客首页
+    Route::get('/', array('as'=>'home', 'uses'=>$Blog.'getIndex'));
+    # 展示博客文章
+    Route::get('blog/{id}', array('as'=>'view-post', 'uses'=>$Blog.'getView'));
+    # 提交文章评论
+    Route::post('blog/{id}', $Blog.'postView');
 
-    Route::get('contact-us', array('as'=>'contact-us', 'uses'=>'ContactUsController@getIndex'));
-    Route::post('contact-us', 'ContactUsController@postIndex');
+    # 关于博客
+    Route::get('about-us', array('as'=>'contact-us', 'uses'=>$Blog.'getAboutUs'));
+    # 给我留言
+    Route::get('contact-us', array('as'=>'contact-us', 'uses'=>$Blog.'getContactUs'));
+    Route::post('contact-us', $Blog.'postContactUs');
 
-    Route::get('blog/{postSlug}', array('as'=>'view-post', 'uses'=>'BlogController@getView'));
-    Route::post('blog/{postSlug}', 'BlogController@postView');
 
-    Route::get('/', array('as'=>'home', 'uses'=>'BlogController@getIndex'));
 });

@@ -22,6 +22,9 @@ Route::group(array('prefix'=>'admin'), function()
 {
     $Admin = 'Admin\AdminController@';
 
+    // Dashboard
+    Route::get('/', array('as'=>'admin', 'uses'=>'Controllers\Admin\DashboardController@getIndex'));
+
     // Blog Management
     Route::group(array('prefix'=>'blogs'), function()
     {
@@ -57,8 +60,5 @@ Route::group(array('prefix'=>'admin'), function()
         Route::get('{groupId}/delete', array('as'=>'delete/group', 'uses'=>'Controllers\Admin\GroupsController@getDelete'));
         Route::get('{groupId}/restore', array('as'=>'restore/group', 'uses'=>'Controllers\Admin\GroupsController@getRestore'));
     });
-
-    // Dashboard
-    Route::get('/', array('as'=>'admin', 'uses'=>'Controllers\Admin\DashboardController@getIndex'));
 
 });

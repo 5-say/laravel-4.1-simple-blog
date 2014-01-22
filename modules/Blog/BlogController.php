@@ -11,7 +11,7 @@ class BlogController extends BaseController {
         return View::make('Blog::index')
             ->with(array(
                 'demo'=>'Blog',
-                'content'=> Config::get('Blog::test')
+                'content'=> '博客首页'
             ));
     }
 

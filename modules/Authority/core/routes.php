@@ -12,20 +12,29 @@ Config::set('auth', Config::get('Authority::config'));
 |--------------------------------------------------------------------------
 */
 
-// 身份验证过滤器
+// 身份验证过滤器 - 管理员
+Route::filter('admin', function()
+{
+    // 拦截非管理员用户
+    // 跳转回上一页面
+    if (! Auth::user()->is_admin) return Redirect::back();
+});
+
+// 身份验证过滤器 - 登录用户
 Route::filter('auth', function()
 {
     // 拦截未登录用户并记录当前 URL
+    // 跳转到登录页面
     if (Auth::guest()) return Redirect::guest( route('signin') );
 });
 
-// HTTP 基础身份验证过滤器
+// HTTP 基础身份验证过滤器 - 登录用户
 Route::filter('auth.basic', function()
 {
     return Auth::basic();
 });
 
-// 游客身份过滤器
+// 身份验证过滤器 - 游客（较少应用）
 Route::filter('guest', function()
 {
     // 拦截已登录用户
