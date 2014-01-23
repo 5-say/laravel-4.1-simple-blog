@@ -41,11 +41,17 @@ Route::group(array('prefix'=>'/'), function()
 Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
 {
     # 文章
-    Route::resource('post', 'Blog\PostController');
-    # 评论
-    Route::resource('comment', 'Blog\CommentController');
-    # 关于博客
-    Route::resource('about-us', 'Blog\AboutUsController');
-    # 用户留言
-    Route::resource('contact-us', 'Blog\ContactUsController');
+    // Route::resource('posts', 'Blog\PostController', array('route'=>'eee'));
+    Route::group(array('prefix'=>'posts'), function()
+    {
+        $resource   = 'posts';
+        $controller = 'Blog\PostController@';
+        Route::get(        '/' , array('as'=>$resource.'.index'   , 'uses'=>$controller.'index'  ));
+        Route::get(   'create' , array('as'=>$resource.'.create'  , 'uses'=>$controller.'create' ));
+        Route::post(       '/' , array('as'=>$resource.'.store'   , 'uses'=>$controller.'store'  ));
+        Route::get(     '{id}' , array('as'=>$resource.'.show'    , 'uses'=>$controller.'show'   ));
+        Route::get('{id}/edit' , array('as'=>$resource.'.edit'    , 'uses'=>$controller.'edit'   ));
+        Route::put(     '{id}' , array('as'=>$resource.'.update'  , 'uses'=>$controller.'update' ));
+        Route::delete(  '{id}' , array('as'=>$resource.'.destroy' , 'uses'=>$controller.'destroy'));
+    });
 });

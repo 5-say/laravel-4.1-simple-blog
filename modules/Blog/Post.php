@@ -27,6 +27,15 @@ class Post extends \Eloquent {
     }
 
     /**
+     * 访问器：友好的文章创建时间
+     * @return string
+     */
+    public function getFriendlyCreatedAtAttribute()
+    {
+        return friendly_date($this->created_at);
+    }
+
+    /**
      * 文章的作者
      * @return object Authority\User
      */

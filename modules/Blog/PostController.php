@@ -12,9 +12,8 @@ class PostController extends \BaseController {
      */
     public function index()
     {
-        $post = Post::first();
-        $comments = $post->number_of_comments;
-        dd($comments, $post->friendly_created_at);
+        $posts = Post::paginate(15);
+        return View::make('Blog::post.index')->with('posts', $posts);
     }
 
     /**
@@ -24,7 +23,7 @@ class PostController extends \BaseController {
      */
     public function create()
     {
-        //
+        return View::make('Blog::post.create');
     }
 
     /**
