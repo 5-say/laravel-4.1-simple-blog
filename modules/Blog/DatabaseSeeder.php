@@ -13,15 +13,33 @@ class DatabaseSeeder extends Seeder {
      */
     public function run()
     {
-        // Eloquent::unguard();
-        // $dateTime = new Carbon;
-        // // 用户表
-        // for ($i=0; $i < 50; $i++)
-        // { 
-        //     $userData[] = array('email'=>'test'.$i, 'created_at'=>$dateTime);
-        // }
-        // User::truncate();
-        // User::insert($userData);
+        Eloquent::unguard();
+        $dateTime = new Carbon;
+        // 博客文章
+        for ($i=0; $i < 3; $i++)
+        { 
+            $postData[] = array(
+                'user_id'=>$i,
+                'title'=>'标题'.$i,
+                'slug'=>'test-biao-ti-'.$i,
+                'content'=>'文章内容'.$i,
+                'created_at'=>$dateTime
+            );
+        }
+        Post::truncate();
+        Post::insert($postData);
+        // 文章评论
+        for ($i=0; $i < 3; $i++)
+        { 
+            $commentData[] = array(
+                'user_id'=>$i+1,
+                'post_id'=>$i+1,
+                'content'=>'评论内容'.$i,
+                'created_at'=>$dateTime
+            );
+        }
+        Comment::truncate();
+        Comment::insert($commentData);
     }
 
 }

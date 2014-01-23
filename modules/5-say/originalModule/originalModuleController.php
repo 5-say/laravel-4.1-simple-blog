@@ -1,10 +1,9 @@
 <?php namespace originalModule;
 
-use BaseController;
 use View;
 use Config;
 
-class originalModuleController extends BaseController {
+class originalModuleController extends \BaseController {
 
     public function getIndex()
     {

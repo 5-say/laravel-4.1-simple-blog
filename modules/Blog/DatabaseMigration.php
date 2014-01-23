@@ -20,16 +20,32 @@ class DatabaseMigration extends Migration {
      */
     public function up()
     {
-        // 用户表
-        // Schema::create('users', function(Blueprint $table)
-        // {
-        //     $table->engine = 'MyISAM';
-        //     $table->increments('id');
-        //     $table->string('email', 60)->unique()->comment('邮箱');
-        //     $table->string('password', 60)->comment('密码');
-        //     $table->timestamps();
-        //     $table->softDeletes();
-        // });
+        // 文章
+        Schema::create('posts', function(Blueprint $table)
+        {
+            $table->engine = 'MyISAM';
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->comment('作者ID');
+            $table->string('title', 100)->comment('标题');
+            $table->string('slug', 100)->comment('文章缩略名');
+            $table->text('content')->comment('内容');
+            $table->string('meta_title', 100)->nullable()->comment('SEO');
+            $table->string('meta_description')->nullable()->comment('SEO');
+            $table->string('meta_keywords')->nullable()->comment('SEO');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+        // 文章的评论
+        Schema::create('comments', function(Blueprint $table)
+        {
+            $table->engine = 'MyISAM';
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->comment('作者ID');
+            $table->integer('post_id')->unsigned()->comment('归属文章ID');
+            $table->text('content')->comment('内容');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -39,7 +55,8 @@ class DatabaseMigration extends Migration {
      */
     public function down()
     {
-        // Schema::dropIfExists('users');
+        Schema::dropIfExists('posts');
+        Schema::dropIfExists('comments');
     }
 
 }

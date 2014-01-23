@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return array(
 
@@ -13,8 +13,7 @@ return array(
     |
     */
 
-    'previous' => '&laquo; Previous',
+    'previous' => '&laquo; 往前',
 
-    'next'     => 'Next &raquo;',
-
+    'next'     => '往后 &raquo;',
 );

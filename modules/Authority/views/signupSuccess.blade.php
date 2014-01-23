@@ -21,12 +21,12 @@ body {
 
 @section('container')
 
-    @include('w::navbarHome')
+    @include('w.navbarHome')
 
     <div class="container" style="margin-top:2em;">
 
-            <h2 class="center">注册成功</h2>
-            <p class="center">激活邮件已发送，请登录您的邮箱激活账号。</p>
+            <h2 class="center">请激活您的账号</h2>
+            <p class="center">激活邮件已发送，请登录您的邮箱（{{ $email }}）激活账号。</p>
 
     </div> <!-- /container -->
 

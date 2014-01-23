@@ -1,10 +1,9 @@
 <?php namespace Admin;
 
-use BaseController;
 use View;
 use Config;
 
-class AdminController extends BaseController {
+class AdminController extends \BaseController {
 
     public function getIndex()
     {

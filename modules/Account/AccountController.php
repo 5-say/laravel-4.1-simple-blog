@@ -1,10 +1,9 @@
 <?php namespace Account;
 
-use BaseController;
 use View;
 use Config;
 
-class AccountController extends BaseController {
+class AccountController extends \BaseController {
 
     public function getIndex()
     {

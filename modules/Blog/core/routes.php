@@ -37,3 +37,15 @@ Route::group(array('prefix'=>'/'), function()
 
 
 });
+
+Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
+{
+    # 文章
+    Route::resource('post', 'Blog\PostController');
+    # 评论
+    Route::resource('comment', 'Blog\CommentController');
+    # 关于博客
+    Route::resource('about-us', 'Blog\AboutUsController');
+    # 用户留言
+    Route::resource('contact-us', 'Blog\ContactUsController');
+});

@@ -1,6 +1,5 @@
 <?php namespace Authority;
 
-use BaseController;
 use View;
 use Input;
 use Validator;
@@ -12,8 +11,9 @@ use Auth;
 use Carbon\Carbon;
 use Password;
 use Lang;
+use Config;
 
-class AuthorityController extends BaseController {
+class AuthorityController extends \BaseController {
     
 
     /**
@@ -102,7 +102,7 @@ class AuthorityController extends BaseController {
                         ->subject('Demo 账号激活邮件'); // 标题
                 });
                 // 跳转到注册成功页面
-                return Redirect::route('signupSuccess');
+                return Redirect::route('signupSuccess', $user->email);
             } // 添加失败
             else
             { // 跳回
@@ -118,9 +118,14 @@ class AuthorityController extends BaseController {
                 ->withErrors($validator);
         }
     }
-    public function getSignupSuccess()
+    public function getSignupSuccess($email)
     {
-        return View::make('Authority::signupSuccess');
+        // 确认是否存在此未激活邮箱
+        $activation = Activation::whereRaw("email = '{$email}'")->first();
+        // 数据库中无邮箱，抛出404
+        is_null($activation) AND App::abort(404);
+        // 提示激活
+        return View::make('Authority::signupSuccess')->with('email', $email);
     }
     
     /**
