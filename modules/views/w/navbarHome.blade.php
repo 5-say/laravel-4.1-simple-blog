@@ -26,8 +26,8 @@ $is_active = function($name='') use($active)
             </ul>
             <ul class="nav navbar-nav navbar-right">
 @if(Auth::guest()){{--游客--}}
-                <li><a href="{{ route('signin') }}">登录</a></li>
-                <li><a href="{{ route('signup') }}">注册</a></li>
+                <li{{ $is_active('signin') }}><a href="{{ route('signin') }}">登录</a></li>
+                <li{{ $is_active('signup') }}><a href="{{ route('signup') }}">注册</a></li>
 @elseif(! Auth::user()->is_admin){{--普通登录用户--}}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

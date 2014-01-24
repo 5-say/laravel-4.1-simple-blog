@@ -21,7 +21,7 @@ body {
 
 @section('container')
 
-    @include('w.navbarHome')
+    @include('w.navbarHome', array('active'=>'signup'))
 
     <div class="container" style="margin-top:2em;">
 

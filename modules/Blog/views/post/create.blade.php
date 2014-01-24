@@ -21,7 +21,7 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('navActive'=>'posts'))
+    @include('w.navbarAdmin', array('active'=>'posts'))
 
     <div class="container" style="margin-top:2em;">
 
