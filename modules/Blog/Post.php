@@ -36,12 +36,21 @@ class Post extends \Eloquent {
     }
 
     /**
+     * 访问器：友好的文章更新时间
+     * @return string
+     */
+    public function getFriendlyUpdatedAtAttribute()
+    {
+        return friendly_date($this->updated_at);
+    }
+
+    /**
      * 文章的作者
      * @return object Authority\User
      */
     public function user()
     {
-        return $this->belongsTo('Blog\User');
+        return $this->belongsTo('Authority\User');
     }
 
 }

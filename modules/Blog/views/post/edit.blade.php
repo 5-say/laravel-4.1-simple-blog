@@ -27,7 +27,7 @@ body
 
         @include('w.notification')
         <h3>
-            添加新文章
+            编辑文章
             <div class="pull-right">
                 <a href="{{ route('posts.index') }}" class="btn btn-sm btn-default">
                     &laquo; 返回文章列表
@@ -38,12 +38,14 @@ body
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-general" data-toggle="tab">主要内容</a></li>
             <li><a href="#tab-meta-data" data-toggle="tab">SEO</a></li>
+            <li><a href="#tab-info" data-toggle="tab">文章相关信息</a></li>
         </ul>
 
-        <form class="form-horizontal" method="post" action="{{ route('posts.store') }}" autocomplete="off"
+        <form class="form-horizontal" method="post" action="{{ route('posts.update') }}" autocomplete="off"
             style="background:#f8f8f8;padding:1em;border:1px solid #ddd;border-top:0;">
             <!-- CSRF Token -->
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="_method" value="PUT" />
 
             <!-- Tabs Content -->
             <div class="tab-content">
@@ -54,7 +56,7 @@ body
                     <div class="form-group">
                         <label for="title">标题</label>
                         {{ $errors->first('title', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
-                        <input class="form-control" type="text" name="title" id="title" value="{{ Input::old('title') }}" />
+                        <input class="form-control" type="text" name="title" id="title" value="{{ Input::old('title', $post->title) }}" />
                     </div>
 
                     <!-- Post Slug -->
@@ -65,7 +67,7 @@ body
                             <span class="input-group-addon" >
                                 {{ str_finish(URL::to('/'), '/') }}
                             </span>
-                            <input class="form-control" type="text" name="slug" id="slug" value="{{ Input::old('slug') }}">
+                            <input class="form-control" type="text" name="slug" id="slug" value="{{ Input::old('slug', $post->slug) }}">
                         </div>
                     </div>
 
@@ -74,7 +76,7 @@ body
                         <label for="content">内容</label>
                         {{ $errors->first('content', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
                         <textarea id="content" class="form-control"
-                            name="content" rows="10">{{ Input::old('content') }}</textarea>
+                            name="content" rows="10">{{ Input::old('content', $post->content) }}</textarea>
                     </div>
                 </div>
 
@@ -83,27 +85,48 @@ body
                     <!-- Meta Title -->
                     <div class="form-group">
                         <label for="meta_title">Meta Title</label>
-                        <input class="form-control" type="text" name="meta_title" id="meta_title" value="{{ Input::old('meta_title') }}" />
+                        <input class="form-control" type="text" name="meta_title" id="meta_title" value="{{ Input::old('meta_title', $post->meta_title) }}" />
                     </div>
 
                     <!-- Meta Description -->
                     <div class="form-group">
                         <label for="meta_description">Meta Description</label>
-                        <input class="form-control" type="text" name="meta_description" id="meta_description" value="{{ Input::old('meta_description') }}" />
+                        <input class="form-control" type="text" name="meta_description" id="meta_description" value="{{ Input::old('meta_description', $post->meta_description) }}" />
                     </div>
 
                     <!-- Meta Keywords -->
                     <div class="form-group">
                         <label for="meta_keywords">Meta Keywords</label>
-                        <input class="form-control" type="text" name="meta_keywords" id="meta_keywords" value="{{ Input::old('meta_keywords') }}" />
+                        <input class="form-control" type="text" name="meta_keywords" id="meta_keywords" value="{{ Input::old('meta_keywords', $post->meta_keywords) }}" />
                     </div>
                 </div>
+
+                <!-- Info tab -->
+                <div class="tab-pane" id="tab-info" style="margin:0 1em 2em 1em;">
+
+                    <div class="form-group">
+                        <label>作者</label>
+                        <p class="form-control-static">{{ $post->user ? $post->user->email : '作者信息丢失' }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>创建时间</label>
+                        <p class="form-control-static">{{ $post->created_at }}（{{ $post->friendly_created_at }}）</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>最后修改时间</label>
+                        <p class="form-control-static">{{ $post->updated_at }}（{{ $post->friendly_updated_at }}）</p>
+                    </div>
+
+                </div>
+
             </div>
 
             <!-- Form actions -->
             <div class="control-group">
                 <div class="controls">
-                    <button type="reset" class="btn btn-default">清 空</button>
+                    <a class="btn btn-default" href="{{ route('posts.edit', $post->id) }}">重 置</a>
                     <button type="submit" class="btn btn-success">提 交</button>
                 </div>
             </div>

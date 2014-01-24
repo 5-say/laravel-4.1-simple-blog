@@ -33,9 +33,9 @@ body
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th class="">标题</th>
-                    <th class="span2">评论数</th>
-                    <th class="span2">创建时间</th>
+                    <th>标题</th>
+                    <th>评论数</th>
+                    <th>创建时间</th>
                     <th style="width:7em;text-align:center;">操作</th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@ body
                 <tr>
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->comments()->count() }}</td>
-                    <td>{{ $post->friendly_created_at }}</td>
+                    <td>{{ $post->created_at }}（{{ $post->friendly_created_at }}）</td>
                     <td>
                         <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-xs">编辑</a>
                         <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-xs btn-danger">删除</a>

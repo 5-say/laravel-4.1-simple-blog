@@ -72,8 +72,8 @@ class AuthorityController extends \BaseController {
         );
         // 自定义验证消息
         $messages = array(
-            'email.email'  => '请输入正确的邮箱地址。',
-            'email.unique' => '此邮箱已被使用。',
+            'email.email'         => '请输入正确的邮箱地址。',
+            'email.unique'        => '此邮箱已被使用。',
             'password.alpha_dash' => '密码格式不正确。',
             'password.between'    => '密码长度请保持在:min到:max位之间。',
             'password.confirmed'  => '两次输入的密码不一致。'
@@ -103,9 +103,9 @@ class AuthorityController extends \BaseController {
                 });
                 // 跳转到注册成功页面
                 return Redirect::route('signupSuccess', $user->email);
-            } // 添加失败
+            }
             else
-            { // 跳回
+            { // 添加失败
                 return Redirect::back()
                     ->withInput()
                     ->withErrors(array('add'=>'注册失败。'));
