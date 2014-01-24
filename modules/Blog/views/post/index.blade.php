@@ -17,7 +17,7 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('navActive'=>'posts'))
+    @include('w.navbarAdmin', array('active'=>'posts'))
 
     <div class="container" style="margin-top:2em;">
 
@@ -46,8 +46,8 @@ body
                     <td>{{ $post->comments()->count() }}</td>
                     <td>{{ $post->friendly_created_at }}</td>
                     <td>
-                        <a href="{{ route('update/blog', $post->id) }}" class="btn btn-xs">编辑</a>
-                        <a href="{{ route('delete/blog', $post->id) }}" class="btn btn-xs btn-danger">删除</a>
+                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-xs">编辑</a>
+                        <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-xs btn-danger">删除</a>
                     </td>
                 </tr>
                 @endforeach

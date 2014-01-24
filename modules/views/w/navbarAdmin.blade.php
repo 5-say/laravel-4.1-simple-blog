@@ -1,3 +1,13 @@
+<?php
+$is_active = function($name='') use($active)
+{
+    if ($active===$name)
+        return ' class="active"';
+    else
+        return '';
+}
+?>
+
 <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -8,23 +18,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Demo</a>
+            <a class="navbar-brand" href="{{ route('admin') }}">Demo</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">首页</a></li>
-                <li><a href="#">文章</a></li>
-                <li><a href="#">用户</a></li>
+                <li{{ $is_active('admin') }}><a href="{{ route('admin') }}">首页</a></li>
+                <li{{ $is_active('posts') }}><a href="{{ route('posts.index') }}">文章</a></li>
+                <li{{ $is_active('users') }}><a href="#">用户</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">回到博客</a></li>
+                <li><a href="{{ route('home') }}">回到博客</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户名 <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        欢迎 - [ {{ Auth::user()->email }} ] <b class="caret"></b>
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">账号信息</a></li>
                         <li><a href="#">修改密码</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">退出</a></li>
+                        <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>
                 </li>
             </ul>

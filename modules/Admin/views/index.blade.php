@@ -1,6 +1,6 @@
-@extends('l::base')
+@extends('l.base')
 
-@section('title'){{ $demo }} @stop
+@section('title')后台 @stop
 
 @section('beforeStyle')
     {{ style('bootstrap-3.0.3') }}
@@ -22,10 +22,11 @@ body
 
 @section('container')
 
+    @include('w.navbarAdmin', array('active'=>'admin'))
+
     <div class="container">
 
-        <h1 class="demo">{{ $demo }} 模块测试页面</h1>
-        <p class="demo">{{ $content }}</p>
+        <h1 class="demo">后台首页</h1>
 
     </div> <!-- /container -->
 

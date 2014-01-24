@@ -7,11 +7,7 @@ class AdminController extends \BaseController {
 
     public function getIndex()
     {
-        return View::make('Admin::index')
-            ->with(array(
-                'demo'=>'Admin',
-                'content'=> Config::get('Admin::test')
-            ));
+        return View::make('Admin::index');
     }
 
 }
