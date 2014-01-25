@@ -19,13 +19,13 @@ Config::package('5-say/modules', __DIR__, 'module'); // 注册模块公共配置
  */
 function d()
 {
-    array_map(function($x) { Debugbar::info($x); }, func_get_args());
+    array_map(function($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
 }
 // 如果必须要在非视图响应中使用
 function d_()
 {
     echo '<span></span>';
-    array_map(function($x) { Debugbar::info($x); }, func_get_args());
+    array_map(function($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
 }
 
 /**

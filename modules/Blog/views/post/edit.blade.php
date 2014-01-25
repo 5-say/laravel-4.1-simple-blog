@@ -41,7 +41,7 @@ body
             <li><a href="#tab-info" data-toggle="tab">文章相关信息</a></li>
         </ul>
 
-        <form class="form-horizontal" method="post" action="{{ route('posts.update') }}" autocomplete="off"
+        <form class="form-horizontal" method="post" action="{{ route('posts.update', $post->id) }}" autocomplete="off"
             style="background:#f8f8f8;padding:1em;border:1px solid #ddd;border-top:0;">
             <!-- CSRF Token -->
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />

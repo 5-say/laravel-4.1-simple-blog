@@ -9,7 +9,16 @@ class Post extends \Eloquent {
     protected $softDelete = true;
 
     /**
-     * 文章的评论
+     * 模型对象关系：文章的作者
+     * @return object Authority\User
+     */
+    public function user()
+    {
+        return $this->belongsTo('Authority\User');
+    }
+
+    /**
+     * 模型对象关系：文章的评论
      * @return object Blog\Comment
      */
     public function comments()
@@ -18,16 +27,7 @@ class Post extends \Eloquent {
     }
 
     /**
-     * 访问器：文章评论的数量
-     * @return integer
-     */
-    public function getNumberOfCommentsAttribute()
-    {
-        return $this->comments()->count();
-    }
-
-    /**
-     * 访问器：友好的文章创建时间
+     * 访问器：友好的创建时间
      * @return string
      */
     public function getFriendlyCreatedAtAttribute()
@@ -36,7 +36,7 @@ class Post extends \Eloquent {
     }
 
     /**
-     * 访问器：友好的文章更新时间
+     * 访问器：友好的更新时间
      * @return string
      */
     public function getFriendlyUpdatedAtAttribute()
@@ -45,12 +45,12 @@ class Post extends \Eloquent {
     }
 
     /**
-     * 文章的作者
-     * @return object Authority\User
+     * 访问器：友好的删除时间
+     * @return string
      */
-    public function user()
+    public function getFriendlyDeletedAtAttribute()
     {
-        return $this->belongsTo('Authority\User');
+        return friendly_date($this->deleted_at);
     }
 
 }

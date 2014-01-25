@@ -23,17 +23,17 @@ Route::group(array('prefix'=>'/'), function()
     $Blog = 'Blog\BlogController@';
 
     # 博客首页
-    Route::get('/', array('as'=>'home', 'uses'=>$Blog.'getIndex'));
+    Route::get(          '/', array('as'=>'home', 'uses'=>$Blog.'getIndex'));
     # 展示博客文章
-    Route::get('blog/{id}', array('as'=>'view-post', 'uses'=>$Blog.'getView'));
+    Route::get(     '{slug}', array('as'=>'blog.show', 'uses'=>$Blog.'getBlogShow'));
     # 提交文章评论
-    Route::post('blog/{id}', $Blog.'postView');
+    Route::post(    '{slug}', $Blog.'postBlogComment');
 
     # 关于博客
-    Route::get('about-us', array('as'=>'contact-us', 'uses'=>$Blog.'getAboutUs'));
+    // Route::get(   'about-us', array('as'=>'aboutUs', 'uses'=>$Blog.'getAboutUs'));
     # 给我留言
-    Route::get('contact-us', array('as'=>'contact-us', 'uses'=>$Blog.'getContactUs'));
-    Route::post('contact-us', $Blog.'postContactUs');
+    // Route::get( 'contact-us', array('as'=>'contactUs', 'uses'=>$Blog.'getContactUs'));
+    // Route::post('contact-us', $Blog.'postContactUs');
 
 
 });
@@ -41,7 +41,7 @@ Route::group(array('prefix'=>'/'), function()
 Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
 {
     # 文章
-    // Route::resource('posts', 'Blog\PostController', array('route'=>'eee'));
+    // Route::resource('posts', 'Blog\PostController');
     Route::group(array('prefix'=>'posts'), function()
     {
         $resource   = 'posts';

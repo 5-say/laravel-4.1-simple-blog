@@ -21,6 +21,8 @@ body
 
     <div class="container" style="margin-top:2em;">
 
+        @include('w.notification')
+
         <h3>
             博客文章管理
             <div class="pull-right">
@@ -47,7 +49,8 @@ body
                     <td>{{ $post->created_at }}（{{ $post->friendly_created_at }}）</td>
                     <td>
                         <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-xs">编辑</a>
-                        <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-xs btn-danger">删除</a>
+                        <a href="javascript:void(0)" class="btn btn-xs btn-danger"
+                             onclick="modal('{{ route('posts.destroy', $post->id) }}')">删除</a>
                     </td>
                 </tr>
                 @endforeach
@@ -59,10 +62,35 @@ body
         </div>
 
     </div>
+    
+<?php
+$modalData['modal'] = array(
+    'id'=>'myModal',
+    'title'=>'系统提示',
+    'message'=>'确认删除此文章？',
+    'footer'=>
+'
+    <form id="real-delete" action="" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="_method" value="DELETE" />
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-sm btn-danger">确认删除</button>
+    </form>
+',
+        );
+?>
+    @include('w.modal', $modalData)
 
 @stop
 
 
 @section('end')
     {{ script(array('jquery-1.10.2', 'bootstrap-3.0.3')) }}
+    <script>
+        function modal(href)
+        {
+            $('#real-delete').attr('action', href);
+            $('#myModal').modal();
+        }
+    </script>
 @stop
