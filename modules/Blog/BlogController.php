@@ -8,11 +8,8 @@ class BlogController extends \BaseController {
 
     public function getIndex()
     {
-        return View::make('Blog::index')
-            ->with(array(
-                'demo'=>'Blog',
-                'content'=> '博客首页'
-            ));
+        $posts = Post::paginate(5);
+        return View::make('Blog::index')->with(compact('posts'));
     }
 
     public function getBlogShow($slug)

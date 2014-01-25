@@ -23,7 +23,7 @@ body
 
     @include('w.navbarAdmin', array('active'=>'posts'))
 
-    <div class="container" style="margin-top:2em;">
+    <div class="container panel" style="margin-top:2em;padding:1em;">
 
         @include('w.notification')
         <h3>

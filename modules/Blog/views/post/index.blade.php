@@ -19,7 +19,7 @@ body
 
     @include('w.navbarAdmin', array('active'=>'posts'))
 
-    <div class="container" style="margin-top:2em;">
+    <div class="container panel" style="margin-top:2em;padding:1em;">
 
         @include('w.notification')
 
@@ -32,32 +32,34 @@ body
             </div>
         </h3>
 
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>标题</th>
-                    <th>评论数</th>
-                    <th>创建时间</th>
-                    <th style="width:7em;text-align:center;">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($posts as $post)
-                <tr>
-                    <td>{{ $post->title }}</td>
-                    <td>{{ $post->comments()->count() }}</td>
-                    <td>{{ $post->created_at }}（{{ $post->friendly_created_at }}）</td>
-                    <td>
-                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-xs">编辑</a>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger"
-                             onclick="modal('{{ route('posts.destroy', $post->id) }}')">删除</a>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>评论数</th>
+                        <th>创建时间</th>
+                        <th style="width:7em;text-align:center;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($posts as $post)
+                    <tr>
+                        <td>{{ $post->title }}</td>
+                        <td>{{ $post->comments()->count() }}</td>
+                        <td>{{ $post->created_at }}（{{ $post->friendly_created_at }}）</td>
+                        <td>
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-xs">编辑</a>
+                            <a href="javascript:void(0)" class="btn btn-xs btn-danger"
+                                 onclick="modal('{{ route('posts.destroy', $post->id) }}')">删除</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
-        <div class="pull-right" style="margin-top:-2em;">
+        <div class="pull-right" style="">
             {{ pagination($posts, 'p.slider-3') }}
         </div>
 
