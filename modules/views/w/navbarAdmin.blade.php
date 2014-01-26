@@ -23,9 +23,9 @@ $is_active = function($name='') use($active)
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li{{ $is_active('admin') }}><a href="{{ route('admin') }}">首页</a></li>
-                <li{{ $is_active('posts') }}><a href="{{ route('posts.index') }}">文章</a></li>
-                <li{{ $is_active('users') }}><a href="#">用户</a></li>
+                <li{{ $is_active('admin') }}><a href="{{ route('admin') }}">后台首页</a></li>
+                <li{{ $is_active('posts') }}><a href="{{ route('posts.index') }}">文章管理</a></li>
+                <li{{ $is_active('users') }}><a href="{{ route('users.index') }}">用户管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ route('home') }}">回到博客</a></li>

@@ -18,7 +18,7 @@ View::addNamespace('Admin', __DIR__.'/../views');
 | Routes
 |--------------------------------------------------------------------------
 */
-Route::group(array('prefix'=>'admin'), function()
+Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
 {
     $Admin = 'Admin\AdminController@';
 

@@ -26,8 +26,8 @@ class DatabaseMigration extends Migration {
             $table->engine = 'MyISAM';
             $table->increments('id');
             $table->integer('user_id')->unsigned()->comment('作者ID');
-            $table->string('title', 100)->comment('标题');
-            $table->string('slug', 100)->comment('文章缩略名');
+            $table->string('title', 100)->unique()->comment('标题');
+            $table->string('slug', 100)->unique()->comment('文章缩略名');
             $table->text('content')->comment('内容');
             $table->string('meta_title', 100)->nullable()->comment('SEO');
             $table->string('meta_description')->nullable()->comment('SEO');

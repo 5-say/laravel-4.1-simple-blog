@@ -43,7 +43,7 @@ class DatabaseMigration extends Migration {
             $table->string('email', 60)->unique()->comment('邮箱');
             $table->string('password', 60)->comment('密码');
             $table->boolean('is_admin')->comment('是否管理员，1-管理员，0-普通用户');
-            $table->timestamp('last_login')->comment('最后登录时间');
+            $table->timestamp('signin_at')->nullable()->comment('最后登录时间');
             $table->timestamp('activated_at')->nullable()->comment('邮箱激活时间');
             $table->timestamps();
             $table->softDeletes();

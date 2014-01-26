@@ -18,6 +18,13 @@ class DatabaseSeeder extends Seeder {
         $dateTime = new Carbon;
         // 用户表
         $password = Hash::make('111111');
+        $userData[] = array(
+            'email'      => 'bcw.5@foxmail.com',
+            'password'   => $password,
+            'created_at' => $dateTime,
+            'updated_at' => $dateTime,
+            'is_admin'   => 1,
+        );
         for ($i=0; $i < 20; $i++)
         { 
             $userData[] = array(
@@ -25,6 +32,7 @@ class DatabaseSeeder extends Seeder {
                 'password'   => $password,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
+                'is_admin'   => 0,
             );
         }
         User::truncate();

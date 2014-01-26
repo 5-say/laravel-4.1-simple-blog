@@ -80,6 +80,24 @@ Route::group(array('prefix'=>'/'), function()
 
 });
 
+Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
+{
+    # 用户
+    Route::group(array('prefix'=>'users'), function()
+    {
+        $resource   = 'users';
+        $controller = 'Authority\UserController@';
+        Route::get(        '/' , array('as'=>$resource.'.index'   , 'uses'=>$controller.'index'  ));
+        Route::get(   'create' , array('as'=>$resource.'.create'  , 'uses'=>$controller.'create' ));
+        Route::post(       '/' , array('as'=>$resource.'.store'   , 'uses'=>$controller.'store'  ));
+        // Route::get(     '{id}' , array('as'=>$resource.'.show'    , 'uses'=>$controller.'show'   ));
+        Route::get('{id}/edit' , array('as'=>$resource.'.edit'    , 'uses'=>$controller.'edit'   ));
+        Route::put(     '{id}' , array('as'=>$resource.'.update'  , 'uses'=>$controller.'update' ));
+        Route::delete(  '{id}' , array('as'=>$resource.'.destroy' , 'uses'=>$controller.'destroy'));
+    });
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | Events
@@ -87,16 +105,16 @@ Route::group(array('prefix'=>'/'), function()
 */
 
 # 用户登录事件
-Event::listen('user.login', function($user)
+Event::listen('auth.login', function($user, $remember)
 {
     // 记录最后登录时间
-    $user->last_login = new Carbon\Carbon;
+    $user->signin_at = new Carbon\Carbon;
     $user->save();
     // 后期附加权限相关操作
 });
 
 # 用户退出事件
-Event::listen('user.logout', function($user)
+Event::listen('auth.logout', function($user)
 {
     // 
 });

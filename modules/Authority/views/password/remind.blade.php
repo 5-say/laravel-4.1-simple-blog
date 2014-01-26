@@ -30,7 +30,7 @@ body {
 
 @section('container')
 
-    @include('w::navbarHome')
+    @include('w.navbarHome', array('active'=>'home'))
 
     
 
