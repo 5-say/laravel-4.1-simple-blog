@@ -55,6 +55,9 @@ Route::filter('not.self', function($route, $request)
 |--------------------------------------------------------------------------
 */
 
+/**
+ * 基础功能
+ */
 Route::group(array('prefix'=>'/'), function()
 {
     $Authority = 'Authority\AuthorityController@';
@@ -67,30 +70,27 @@ Route::group(array('prefix'=>'/'), function()
         # 登录
         Route::get(                   'signin', array('as'=>'signin', 'uses'=>$Authority.'getSignin'));
         Route::post(                  'signin', $Authority.'postSignin');
-
         # 注册
         Route::get(                   'signup', array('as'=>'signup', 'uses'=>$Authority.'getSignup'));
         Route::post(                  'signup', $Authority.'postSignup');
         # 注册成功提示用户激活
         Route::get(          'success/{email}', array('as'=>'signupSuccess', 'uses'=>$Authority.'getSignupSuccess'));
-        
         # 激活账号
         Route::get('activate/{activationCode}', array('as'=>'activate', 'uses'=>$Authority.'getActivate'));
-
         # 忘记密码
         Route::get(          'forgot-password', array('as'=>'forgotPassword', 'uses'=>$Authority.'getForgotPassword'));
         Route::post(         'forgot-password', $Authority.'postForgotPassword');
         # 密码重置
         Route::get(  'forgot-password/{token}', array('as'=>'reset', 'uses'=>$Authority.'getReset'));
         Route::post( 'forgot-password/{token}', $Authority.'postReset');
-
     });
-
 });
-
+/**
+ * 管理员后台
+ */
 Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
 {
-    # 用户
+    # 用户管理
     Route::group(array('prefix'=>'users'), function()
     {
         $resource   = 'users';
@@ -104,7 +104,16 @@ Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
         Route::delete(  '{id}' , array('as'=>$resource.'.destroy' , 'uses'=>$controller.'destroy'))->before('not.self');
     });
 });
-
+/**
+ * 用户后台
+ */
+Route::group(array('prefix'=>'account'), function()
+{
+    $Account = 'Authority\AccountController@';
+    # 修改密码
+    Route::get( 'change-password', array('as'=>'changePassword', 'uses'=>$Account.'getChangePassword'));
+    Route::post('change-password', $Account.'postChangePassword');
+});
 
 /*
 |--------------------------------------------------------------------------

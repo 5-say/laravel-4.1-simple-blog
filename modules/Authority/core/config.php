@@ -3,7 +3,7 @@
 return array(
 
     'driver' => 'eloquent',     // 身份验证驱动，系统默认支持："database", "eloquent"
-        'model'  => 'User',     // 'eloquent'驱动下用于身份验证的模型名称
+        'model'  => 'Authority\User',     // 'eloquent'驱动下用于身份验证的模型名称
         'table'  => 'users',    // 'database'驱动下用于身份验证的数据库表名称
 
     // 密码提醒设置，用户忘记密码时通常通过邮箱重置
