@@ -17,7 +17,7 @@ View::addNamespace('Account', __DIR__.'/../views');
 |--------------------------------------------------------------------------
 | Routes
 |--------------------------------------------------------------------------
-*/
+
 Route::group(array('prefix'=>'account'), function()
 {
 
@@ -36,4 +36,4 @@ Route::group(array('prefix'=>'account'), function()
     Route::get('change-email', array('as'=>'change-email', 'uses'=>'Controllers\Account\ChangeEmailController@getIndex'));
     Route::post('change-email', 'Controllers\Account\ChangeEmailController@postIndex');
 
-});
+});*/

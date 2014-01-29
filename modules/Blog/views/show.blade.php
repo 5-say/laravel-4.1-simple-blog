@@ -79,7 +79,8 @@ body
                     </div><!--/span-->
 
                     <div class="col-6 col-sm-6 col-lg-12 panel">
-                        <h3>评论（{{ $post->comments->count() }}）</h3>
+                        <a name="comments"></a>
+                        <h4>评论 - {{ $post->comments->count() }}</h4>
                         <ul class="media-list">
                             @foreach($post->comments as $comment)
                             <li class="media">
@@ -87,14 +88,23 @@ body
                                     <img class="media-object img-thumbnail" width="64" height="64" src="..." alt="...">
                                 </a>
                                 <div class="media-body well well-sm">
-                                    <h4 class="media-heading">{{ $comment->user->email }}
+                                    <h5 class="media-heading">{{ $comment->user->email }}
                                         <small class="pull-right">发表于：{{ $comment->friendly_created_at }}</small>
-                                    </h4>
+                                    </h5>
                                     {{ $comment->content }}
                                 </div>
                             </li>
                             @endforeach
                         </ul>
+                        @include('w.notification')
+                        <form class="form-horizontal" method="post" autocomplete="off">
+                            <!-- CSRF Token -->
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+
+                            <textarea name="content" class="form-control" rows="3">{{ Input::old('content') }}</textarea>
+                            {{ $errors->first('content', '<span style="color:#c7254e;margin-top:1em;">:message</span>') }}
+                            <button type="submit" class="btn btn-success pull-right" style="margin:1em 0;">发表评论</button>
+                        </form>
                     </div><!--/span-->
 
                 </div><!--/row-->

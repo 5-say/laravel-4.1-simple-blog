@@ -110,9 +110,9 @@ Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
 Route::group(array('prefix'=>'account'), function()
 {
     $Account = 'Authority\AccountController@';
-    # 修改密码
-    Route::get( 'change-password', array('as'=>'changePassword', 'uses'=>$Account.'getChangePassword'));
-    Route::post('change-password', $Account.'postChangePassword');
+    # 修改当前账号密码
+    Route::get('change-password', array('as'=>'changePassword', 'uses'=>$Account.'getChangePassword'));
+    Route::put('change-password', $Account.'putChangePassword');
 });
 
 /*
