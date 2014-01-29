@@ -41,6 +41,14 @@ Route::filter('guest', function()
     if (Auth::check()) return Redirect::to('/');
 });
 
+// 不可对自己的账号进行危险操作
+Route::filter('not.self', function($route, $request)
+{
+    // 拦截自身用户 ID
+    if (Auth::user()->id == $route->parameter('id'))
+        return Redirect::back();
+});
+
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -91,9 +99,9 @@ Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
         Route::get(   'create' , array('as'=>$resource.'.create'  , 'uses'=>$controller.'create' ));
         Route::post(       '/' , array('as'=>$resource.'.store'   , 'uses'=>$controller.'store'  ));
         // Route::get(     '{id}' , array('as'=>$resource.'.show'    , 'uses'=>$controller.'show'   ));
-        Route::get('{id}/edit' , array('as'=>$resource.'.edit'    , 'uses'=>$controller.'edit'   ));
-        Route::put(     '{id}' , array('as'=>$resource.'.update'  , 'uses'=>$controller.'update' ));
-        Route::delete(  '{id}' , array('as'=>$resource.'.destroy' , 'uses'=>$controller.'destroy'));
+        Route::get('{id}/edit' , array('as'=>$resource.'.edit'    , 'uses'=>$controller.'edit'   ))->before('not.self');
+        Route::put(     '{id}' , array('as'=>$resource.'.update'  , 'uses'=>$controller.'update' ))->before('not.self');
+        Route::delete(  '{id}' , array('as'=>$resource.'.destroy' , 'uses'=>$controller.'destroy'))->before('not.self');
     });
 });
 

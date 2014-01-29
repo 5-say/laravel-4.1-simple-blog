@@ -43,15 +43,18 @@ body
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $currentId = Auth::user()->id; ?>
                     @foreach ($users as $user)
                     <tr>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->created_at }}（{{ $user->friendly_created_at }}）</td>
                         <td>{{ $user->signin_at }}（{{ $user->friendly_signin_at }}）</td>
                         <td>
+                            @if($user->id!=$currentId)
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-xs">编辑</a>
                             <a href="javascript:void(0)" class="btn btn-xs btn-danger"
-                                 onclick="modal('{{ route('users.destroy', $user->id) }}')">删除</a>
+                                onclick="modal('{{ route('users.destroy', $user->id) }}')">删除</a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

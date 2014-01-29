@@ -60,13 +60,12 @@ body
                     <div class="form-group">
                         <label for="password">密码</label>
                         {{ $errors->first('password', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
-                        <input class="form-control" type="password" name="password" id="password" value="{{ Input::old('password') }}" />
+                        <input class="form-control" type="password" name="password" id="password" value="" />
                     </div>
                     
                     <div class="form-group">
                         <label for="password_confirmation">确认密码</label>
-                        {{ $errors->first('password_confirmation', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
-                        <input class="form-control" type="password" name="password_confirmation" id="password_confirmation" value="{{ Input::old('password_confirmation') }}" />
+                        <input class="form-control" type="password" name="password_confirmation" id="password_confirmation" value="" />
                     </div>
 
                 </div>
@@ -76,8 +75,10 @@ body
                     
                     <div class="form-group">
                         <label for="meta_title">用户身份</label>
+                        {{ $errors->first('is_admin', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
                         <div>
-                            <input type="checkbox" name="is_admin" value="1" 
+                            <input type="checkbox" name="is_admin" value="1"
+                                {{ Input::old('is_admin') ? 'checked': ''; }}
                                 data-on="danger" data-off="default" data-text-label="　　　　"
                                 data-on-label="管理员" data-off-label="普通用户">
                         </div>

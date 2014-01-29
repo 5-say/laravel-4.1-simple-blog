@@ -6,6 +6,8 @@ use Input;
 use Validator;
 use Redirect;
 use Auth;
+use Carbon\Carbon;
+use Hash;
 
 class UserController extends \BaseController {
 
@@ -41,32 +43,32 @@ class UserController extends \BaseController {
         $data = Input::all();
         // 创建验证规则
         $rules = array(
-            'title'   => 'required|unique:users',
-            'slug'    => 'required|unique:users',
-            'content' => 'required',
+            'email'    => 'required|email|unique:users',
+            'password' => 'required|alpha_dash|between:6,16|confirmed',
+            'is_admin' => 'in:1',
         );
         // 自定义验证消息
         $messages = array(
-            'title.required'   => '请填写用户标题。',
-            'title.unique'     => '已有同名用户。',
-            'slug.required'    => '请填写用户 sulg。',
-            'slug.unique'      => '已有同名 sulg。',
-            'content.required' => '请填写用户内容。',
+            'email.required'      => '请输入邮箱地址。',
+            'email.email'         => '请输入正确的邮箱地址。',
+            'email.unique'        => '此邮箱已被使用。',
+            'password.required'   => '请输入密码。',
+            'password.alpha_dash' => '密码格式不正确。',
+            'password.between'    => '密码长度请保持在:min到:max位之间。',
+            'password.confirmed'  => '两次输入的密码不一致。',
+            'is_admin.in'         => '非法输入。',
         );
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
         if ($validator->passes())
         { // 验证成功
             // 添加用户
-            $post = new Post;
-            $post->user_id          = Auth::user()->id;
-            $post->title            = e($data['title']);
-            $post->slug             = e($data['slug']);
-            $post->content          = e($data['content']);
-            $post->meta_title       = e($data['meta_title']);
-            $post->meta_description = e($data['meta_description']);
-            $post->meta_keywords    = e($data['meta_keywords']);
-            if ( $post->save() )
+            $user = new User;
+            $user->email        = Input::get('email');
+            $user->password     = Hash::make( Input::get('password') );
+            $user->is_admin     = (int)Input::get('is_admin', 0);
+            $user->activated_at = new Carbon;
+            if ( $user->save() )
             { // 添加成功
                 return Redirect::back()
                     ->with('success', '<strong>用户添加成功：</strong>您可以继续添加新用户，或返回用户列表。');
@@ -77,9 +79,9 @@ class UserController extends \BaseController {
                     ->withInput()
                     ->with('error', '<strong>用户添加失败。</strong>');
             }
-        }
+        } // 验证失败
         else
-        { // 验证失败
+        { // 跳回
             return Redirect::back()->withInput()->withErrors($validator);
         }
     }
@@ -103,8 +105,8 @@ class UserController extends \BaseController {
      */
     public function edit($id)
     {
-        $post = User::find($id);
-        return View::make('Authority::user.edit')->with('post', $post);
+        $user = User::find($id);
+        return View::make('Authority::user.edit')->with('user', $user);
     }
 
     /**
@@ -119,44 +121,43 @@ class UserController extends \BaseController {
         $data = Input::all();
         // 创建验证规则
         $rules = array(
-            'title'   => 'required|unique:users,title,'.$id,
-            'slug'    => 'required|unique:users,slug,'.$id,
-            'content' => 'required',
+            'email'    => 'required|email|unique:users,email,'.$id,
+            'password' => 'alpha_dash|between:6,16|confirmed',
+            'is_admin' => 'in:1',
         );
         // 自定义验证消息
         $messages = array(
-            'title.required'   => '请填写用户标题。',
-            'title.unique'     => '已有同名用户。',
-            'slug.required'    => '请填写用户 sulg。',
-            'slug.unique'      => '已有同名 sulg。',
-            'content.required' => '请填写用户内容。',
+            'email.required'      => '请输入邮箱地址。',
+            'email.email'         => '请输入正确的邮箱地址。',
+            'email.unique'        => '此邮箱已被使用。',
+            'password.alpha_dash' => '密码格式不正确。',
+            'password.between'    => '密码长度请保持在:min到:max位之间。',
+            'password.confirmed'  => '两次输入的密码不一致。',
+            'is_admin.in'         => '非法输入。',
         );
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
         if ($validator->passes())
         { // 验证成功
             // 更新用户
-            $post = User::find($id);
-            $post->title            = e($data['title']);
-            $post->slug             = e($data['slug']);
-            $post->content          = e($data['content']);
-            $post->meta_title       = e($data['meta_title']);
-            $post->meta_description = e($data['meta_description']);
-            $post->meta_keywords    = e($data['meta_keywords']);
-            if ( $post->save() )
+            $user = User::find($id);
+            $user->email    = Input::get('email');
+            $user->is_admin = (int)Input::get('is_admin', 0);
+            Input::has('password') AND $user->password = Hash::make( Input::get('password') );
+            if ( $user->save() )
             { // 更新成功
                 return Redirect::back()
-                    ->with('success', '<strong>用户更新成功：</strong>您可以继续编辑用户，或返回用户列表。');
+                    ->with('success', '<strong>用户信息编辑成功：</strong>您可以继续编辑用户，或返回用户列表。');
             }
             else
             { // 更新失败
                 return Redirect::back()
                     ->withInput()
-                    ->with('error', '<strong>用户更新失败。</strong>');
+                    ->with('error', '<strong>用户信息编辑失败。</strong>');
             }
-        }
+        } // 验证失败
         else
-        { // 验证失败
+        { // 跳回
             return Redirect::back()->withInput()->withErrors($validator);
         }
     }

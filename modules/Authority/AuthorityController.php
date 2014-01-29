@@ -67,16 +67,18 @@ class AuthorityController extends \BaseController {
         $data = Input::all();
         // 创建验证规则
         $rules = array(
-            'email'    => 'email|unique:users',
-            'password' => 'alpha_dash|between:6,16|confirmed'
+            'email'    => 'required|email|unique:users',
+            'password' => 'required|alpha_dash|between:6,16|confirmed',
         );
         // 自定义验证消息
         $messages = array(
+            'email.required'      => '请输入邮箱地址。',
             'email.email'         => '请输入正确的邮箱地址。',
             'email.unique'        => '此邮箱已被使用。',
+            'password.required'   => '请输入密码。',
             'password.alpha_dash' => '密码格式不正确。',
             'password.between'    => '密码长度请保持在:min到:max位之间。',
-            'password.confirmed'  => '两次输入的密码不一致。'
+            'password.confirmed'  => '两次输入的密码不一致。',
         );
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
@@ -101,7 +103,7 @@ class AuthorityController extends \BaseController {
                         ->to($user->email)
                         ->subject('Demo 账号激活邮件'); // 标题
                 });
-                // 跳转到注册成功页面
+                // 跳转到注册成功页面，提示用户激活
                 return Redirect::route('signupSuccess', $user->email);
             }
             else
