@@ -2,6 +2,8 @@
 
 class Comment extends \BaseModel {
 
+    protected $table = 'article_comments';
+
     /**
      * 模型对象关系：归属文章
      * @return object Blog\Post

@@ -20,11 +20,22 @@ class DatabaseMigration extends Migration {
      */
     public function up()
     {
-        // 文章
-        Schema::create('posts', function(Blueprint $table)
+        // 文章分类
+        Schema::create('article_categories', function(Blueprint $table)
         {
             $table->engine = 'MyISAM';
             $table->increments('id');
+            $table->string('name', 20)->unique()->comment('分类名称');
+            $table->integer('sort_order')->unsigned()->comment('排序');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+        // 文章
+        Schema::create('articles', function(Blueprint $table)
+        {
+            $table->engine = 'MyISAM';
+            $table->increments('id');
+            $table->integer('category_id')->unsigned()->comment('文章分类ID');
             $table->integer('user_id')->unsigned()->comment('作者ID');
             $table->string('title', 100)->unique()->comment('标题');
             $table->string('slug', 100)->unique()->comment('文章缩略名');
@@ -36,7 +47,7 @@ class DatabaseMigration extends Migration {
             $table->softDeletes();
         });
         // 文章的评论
-        Schema::create('comments', function(Blueprint $table)
+        Schema::create('article_comments', function(Blueprint $table)
         {
             $table->engine = 'MyISAM';
             $table->increments('id');
@@ -55,8 +66,9 @@ class DatabaseMigration extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('article_categories');
+        Schema::dropIfExists('articles');
+        Schema::dropIfExists('article_comments');
     }
 
 }
