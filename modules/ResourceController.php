@@ -2,14 +2,6 @@
 
 class ResourceController extends BaseController {
 
-	protected $init = array();
-
-	/**
-	 * 当前资源控制器所对应的 Eloquent 模型
-	 * @var \Illuminate\Database\Eloquent\Model
-	 */
-	protected $model;
-
 	/**
 	 * 初始化
 	 * @return void
@@ -17,18 +9,21 @@ class ResourceController extends BaseController {
 	public function __construct()
 	{
 		parent::__construct();
-
-        $init        = $this->init;
-        $this->model = new $init['model'];
-        $viewArray   = array(
-            $init['index']['view'],
-            $init['create']['view'],
-            $init['show']['view'],
-            $init['edit']['view'],
-        );
-        View::composer(array('profile','dashboard'), function($view)
+        // 实例化资源模型
+        $this->model = $this->namespace.'\\'.$this->model;
+        $this->model = new $this->model;
+        // 视图合成器
+        $resource     = $this->resource;
+        $resourceName = $this->resourceName;
+        View::composer(array(
+            $this->namespace.'::'.$this->resource.'.index',
+            $this->namespace.'::'.$this->resource.'.create',
+            $this->namespace.'::'.$this->resource.'.edit',
+        ), function($view) use($resource, $resourceName)
         {
-            $view->with('resource', $init['resource']);
+            $view
+                ->with('resource', $resource)
+                ->with('resourceName', $resourceName);
         });
 	}
 
@@ -39,9 +34,8 @@ class ResourceController extends BaseController {
      */
     protected function index()
     {
-        $init   = $this->init['index'];
-        $datas  = $this->model->paginate($init['pagesize']);
-        return View::make($init['view'])->with(compact('datas', 'init'));
+        $datas = $this->model->paginate(15);
+        return View::make($this->namespace.'::'.$this->resource.'.index')->with(compact('datas'));
     }
 
     /**
@@ -51,61 +45,7 @@ class ResourceController extends BaseController {
      */
     public function create()
     {
-        return View::make('Blog::post.create');
-    }
-
-    /**
-     * 资源创建动作
-     * POST        /resource
-     * @return Response
-     */
-    public function store()
-    {
-        // 获取所有表单数据.
-        $data = Input::all();
-        // 创建验证规则
-        $rules = array(
-            'title'   => 'required|unique:posts',
-            'slug'    => 'required|unique:posts',
-            'content' => 'required',
-        );
-        // 自定义验证消息
-        $messages = array(
-            'title.required'   => '请填写文章标题。',
-            'title.unique'     => '已有同名文章。',
-            'slug.required'    => '请填写文章 sulg。',
-            'slug.unique'      => '已有同名 sulg。',
-            'content.required' => '请填写文章内容。',
-        );
-        // 开始验证
-        $validator = Validator::make($data, $rules, $messages);
-        if ($validator->passes())
-        { // 验证成功
-            // 添加文章
-            $post = new Post;
-            $post->user_id          = Auth::user()->id;
-            $post->title            = e($data['title']);
-            $post->slug             = e($data['slug']);
-            $post->content          = e($data['content']);
-            $post->meta_title       = e($data['meta_title']);
-            $post->meta_description = e($data['meta_description']);
-            $post->meta_keywords    = e($data['meta_keywords']);
-            if ( $post->save() )
-            { // 添加成功
-                return Redirect::back()
-                    ->with('success', '<strong>文章添加成功：</strong>您可以继续添加新文章，或返回文章列表。');
-            }
-            else
-            { // 添加失败
-                return Redirect::back()
-                    ->withInput()
-                    ->with('error', '<strong>文章添加失败。</strong>');
-            }
-        }
-        else
-        { // 验证失败
-            return Redirect::back()->withInput()->withErrors($validator);
-        }
+        return View::make($this->namespace.'::'.$this->resource.'.create');
     }
 
     /**
@@ -127,62 +67,8 @@ class ResourceController extends BaseController {
      */
     public function edit($id)
     {
-        $post = Post::find($id);
-        return View::make('Blog::post.edit')->with('post', $post);
-    }
-
-    /**
-     * 资源编辑动作
-     * PUT/PATCH   /resource/{id}
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id)
-    {
-        // 获取所有表单数据.
-        $data = Input::all();
-        // 创建验证规则
-        $rules = array(
-            'title'   => 'required|unique:posts,title,'.$id,
-            'slug'    => 'required|unique:posts,slug,'.$id,
-            'content' => 'required',
-        );
-        // 自定义验证消息
-        $messages = array(
-            'title.required'   => '请填写文章标题。',
-            'title.unique'     => '已有同名文章。',
-            'slug.required'    => '请填写文章 sulg。',
-            'slug.unique'      => '已有同名 sulg。',
-            'content.required' => '请填写文章内容。',
-        );
-        // 开始验证
-        $validator = Validator::make($data, $rules, $messages);
-        if ($validator->passes())
-        { // 验证成功
-            // 更新文章
-            $post = Post::find($id);
-            $post->title            = e($data['title']);
-            $post->slug             = e($data['slug']);
-            $post->content          = e($data['content']);
-            $post->meta_title       = e($data['meta_title']);
-            $post->meta_description = e($data['meta_description']);
-            $post->meta_keywords    = e($data['meta_keywords']);
-            if ( $post->save() )
-            { // 更新成功
-                return Redirect::back()
-                    ->with('success', '<strong>文章更新成功：</strong>您可以继续编辑文章，或返回文章列表。');
-            }
-            else
-            { // 更新失败
-                return Redirect::back()
-                    ->withInput()
-                    ->with('error', '<strong>文章更新失败。</strong>');
-            }
-        }
-        else
-        { // 验证失败
-            return Redirect::back()->withInput()->withErrors($validator);
-        }
+        $data = $this->model->find($id);
+        return View::make($this->namespace.'::'.$this->resource.'.edit')->with('data', $data);
     }
 
     /**
@@ -193,13 +79,27 @@ class ResourceController extends BaseController {
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
-        if ( is_null($post) )
-            return Redirect::back()->with('error', '没有找到对应的文章。');
-        elseif ( $post->delete() )
-            return Redirect::back()->with('success', '文章删除成功。');
+        $data = $this->model->find($id);
+        if ( is_null($data) )
+            return Redirect::back()->with('error', '没有找到对应的'.$this->resourceName.'。');
+        elseif ( $data->delete() )
+            return Redirect::back()->with('success', $this->resourceName.'删除成功。');
         else
-            return Redirect::back()->with('warning', '文章删除失败。');
+            return Redirect::back()->with('warning', $this->resourceName.'删除失败。');
+    }
+
+    /**
+     * 构造 unique 验证规则
+     * @param  string $column 字段名称
+     * @param  int    $id     排除指定 ID
+     * @return string
+     */
+    protected function unique($column = null, $id = null)
+    {
+        if (is_null($column))
+            return 'unique:'.$this->resourceTable;
+        else
+            return 'unique:'.$this->resourceTable.','.$column.','.$id;
     }
 
 
