@@ -1,6 +1,6 @@
 @extends('l.base')
 
-@section('title')用户管理 @stop
+@section('title'){{ $resourceName }}管理 @stop
 
 @section('beforeStyle')
     {{ style(array('bootstrap-3.0.3', 'bootstrap-3-switch')) }}
@@ -21,26 +21,26 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active'=>'users'))
+    @include('w.navbarAdmin', array('active'=>$resource))
 
     <div class="container panel" style="margin-top:2em;padding:1em;">
 
         @include('w.notification')
         <h3>
-            编辑用户
+            编辑{{ $resourceName }}
             <div class="pull-right">
-                <a href="{{ route('users.index') }}" class="btn btn-sm btn-default">
-                    &laquo; 返回用户列表
+                <a href="{{ route($resource.'.index') }}" class="btn btn-sm btn-default">
+                    &laquo; 返回{{ $resourceName }}列表
                 </a>
             </div>
         </h3>
 
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab-general" data-toggle="tab">账号</a></li>
+            <li class="active"><a href="#tab-general" data-toggle="tab">主要内容</a></li>
             <li><a href="#tab-meta-data" data-toggle="tab">权限相关</a></li>
         </ul>
 
-        <form class="form-horizontal" method="post" action="{{ route('users.update', $user->id) }}" autocomplete="off"
+        <form class="form-horizontal" method="post" action="{{ route($resource.'.update', $data->id) }}" autocomplete="off"
             style="background:#f8f8f8;padding:1em;border:1px solid #ddd;border-top:0;">
             <!-- CSRF Token -->
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -55,7 +55,7 @@ body
                     <div class="form-group">
                         <label for="email">邮箱</label>
                         {{ $errors->first('email', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
-                        <input class="form-control" type="text" name="email" id="email" value="{{ Input::old('email', $user->email) }}" />
+                        <input class="form-control" type="text" name="email" id="email" value="{{ Input::old('email', $data->email) }}" />
                     </div>
                     
                     <div class="form-group">
@@ -79,19 +79,20 @@ body
                         {{ $errors->first('is_admin', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
                         <div>
                             <input type="checkbox" name="is_admin" value="1"
-                                {{ Input::old('is_admin', $user->is_admin) ? 'checked': ''; }}
+                                {{ Input::old('is_admin', $data->is_admin) ? 'checked': ''; }}
                                 data-on="danger" data-off="default" data-text-label="　　　　"
                                 data-on-label="管理员" data-off-label="普通用户">
                         </div>
                     </div>
 
                 </div>
+
             </div>
 
             <!-- Form actions -->
             <div class="control-group">
                 <div class="controls">
-                    <button type="reset" class="btn btn-default">清 空</button>
+                    <a class="btn btn-default" href="{{ route($resource.'.edit', $data->id) }}">重 置</a>
                     <button type="submit" class="btn btn-success">提 交</button>
                 </div>
             </div>

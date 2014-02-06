@@ -1,6 +1,8 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
-class Category extends \BaseModel {
+class Category extends \BaseModel
+{
 
     protected $table = 'article_categories';
 
@@ -10,7 +12,7 @@ class Category extends \BaseModel {
      */
     public function articles()
     {
-        return $this->belongsTo('Blog\Article');
+        return $this->belongsTo('Blog\Article', 'article_id');
     }
 
 

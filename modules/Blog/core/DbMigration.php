@@ -12,7 +12,7 @@ class core_DbMigration extends Migration
     {
         $this->down();
         $this->up();
-        with(new core_DatabaseSeeder)->run();
+        with(new core_DbSeeder)->run();
     }
 
     /**

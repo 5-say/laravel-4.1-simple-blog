@@ -1,11 +1,13 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
 use Input;
 use Validator;
 use View;
 use Redirect;
 
-class CategoryResource extends \BaseResource {
+class CategoryResource extends \BaseResource
+{
 
     /**
      * 模块命名空间
@@ -78,26 +80,24 @@ class CategoryResource extends \BaseResource {
         $messages = $this->validatorMessages;
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
-        if ($validator->passes())
-        { // 验证成功
+        if ($validator->passes()) {
+            // 验证成功
             // 添加资源
             $model = $this->model;
             $model->name       = e($data['name']);
             $model->sort_order = e($data['sort_order']);
-            if ( $model->save() )
-            { // 添加成功
+            if ($model->save()) {
+                // 添加成功
                 return Redirect::back()
                     ->with('success', '<strong>'.$this->resourceName.'添加成功：</strong>您可以继续添加新'.$this->resourceName.'，或返回'.$this->resourceName.'列表。');
-            }
-            else
-            { // 添加失败
+            } else {
+                // 添加失败
                 return Redirect::back()
                     ->withInput()
                     ->with('error', '<strong>'.$this->resourceName.'添加失败。</strong>');
             }
-        }
-        else
-        { // 验证失败
+        } else {
+            // 验证失败
             return Redirect::back()->withInput()->withErrors($validator);
         }
     }
@@ -118,29 +118,27 @@ class CategoryResource extends \BaseResource {
             'sort_order' => 'required|integer',
         );
         // 自定义验证消息
-        $messages = $this->validatorMessages;
+        $messages  = $this->validatorMessages;
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
-        if ($validator->passes())
-        { // 验证成功
+        if ($validator->passes()) {
+            // 验证成功
             // 更新资源
             $model = $this->model->find($id);
             $model->name       = e($data['name']);
             $model->sort_order = e($data['sort_order']);
-            if ( $model->save() )
-            { // 更新成功
+            if ($model->save()) {
+                // 更新成功
                 return Redirect::back()
                     ->with('success', '<strong>'.$this->resourceName.'更新成功：</strong>您可以继续编辑'.$this->resourceName.'，或返回'.$this->resourceName.'列表。');
-            }
-            else
-            { // 更新失败
+            } else {
+                // 更新失败
                 return Redirect::back()
                     ->withInput()
                     ->with('error', '<strong>'.$this->resourceName.'更新失败。</strong>');
             }
-        }
-        else
-        { // 验证失败
+        } else {
+            // 验证失败
             return Redirect::back()->withInput()->withErrors($validator);
         }
     }

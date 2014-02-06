@@ -69,26 +69,26 @@ body
                 </p>
                 <div class="row">
 
-                    @foreach($posts as $post)
+                    @foreach($articles as $article)
                     <div class="col-6 col-sm-6 col-lg-12 panel">
                         <h2>
-                            <a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a>
+                            <a href="{{ route('blog.show', $article->slug) }}">{{ $article->title }}</a>
                             <a target="_blank" class="pull-left" 
-                                href="{{ route('blog.show', $post->slug) }}">
+                                href="{{ route('blog.show', $article->slug) }}">
                                 <i class="glyphicon glyphicon-share" style="font-size:0.5em;margin-right:1em;"></i>
                             </a>
                         </h2>
-                        <p>{{ Str::limit($post->content, 200) }}</p>
+                        <p>{{ Str::limit($article->content, 200) }}</p>
                         <p>
-                            <i class="glyphicon glyphicon-calendar"></i><span> {{ $post->created_at }}（{{ $post->friendly_created_at }}）</span>
-                            <a target="_blank" href="{{ route('blog.show', $post->slug) }}#comments" class="btn btn-default btn-xs" style="margin-top:-2px;"
-                                role="button">评论（{{ $post->comments->count() }}）</a>
+                            <i class="glyphicon glyphicon-calendar"></i><span> {{ $article->created_at }}（{{ $article->friendly_created_at }}）</span>
+                            <a target="_blank" href="{{ route('blog.show', $article->slug) }}#comments" class="btn btn-default btn-xs" style="margin-top:-2px;"
+                                role="button">评论（{{ $article->comments->count() }}）</a>
                         </p>
                     </div><!--/span-->
                     @endforeach
 
                     <div>
-                        {{ pagination($posts, 'p.slider-3') }}
+                        {{ pagination($articles, 'p.slider-3') }}
                     </div>
 
                 </div><!--/row-->

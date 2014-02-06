@@ -1,6 +1,6 @@
 @extends('l.base')
 
-@section('title')用户 @stop
+@section('title'){{ $resourceName }}管理 @stop
 
 @section('beforeStyle')
     {{ style(array('bootstrap-3.0.3', 'bootstrap-3-switch')) }}
@@ -21,26 +21,26 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active'=>'users'))
+    @include('w.navbarAdmin', array('active'=>$resource))
 
     <div class="container panel" style="margin-top:2em;padding:1em;">
 
         @include('w.notification')
         <h3>
-            添加新用户
+            添加新{{ $resourceName }}
             <div class="pull-right">
-                <a href="{{ route('users.index') }}" class="btn btn-sm btn-default">
-                    &laquo; 返回用户列表
+                <a href="{{ route($resource.'.index') }}" class="btn btn-sm btn-default">
+                    &laquo; 返回{{ $resourceName }}列表
                 </a>
             </div>
         </h3>
 
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab-general" data-toggle="tab">账号</a></li>
+            <li class="active"><a href="#tab-general" data-toggle="tab">主要内容</a></li>
             <li><a href="#tab-meta-data" data-toggle="tab">权限相关</a></li>
         </ul>
 
-        <form class="form-horizontal" method="post" action="{{ route('users.store') }}" autocomplete="off"
+        <form class="form-horizontal" method="post" action="{{ route($resource.'.store') }}" autocomplete="off"
             style="background:#f8f8f8;padding:1em;border:1px solid #ddd;border-top:0;">
             <!-- CSRF Token -->
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -85,6 +85,7 @@ body
                     </div>
 
                 </div>
+
             </div>
 
             <!-- Form actions -->
@@ -97,6 +98,7 @@ body
         </form>
 
     </div>
+
 @stop
 
 

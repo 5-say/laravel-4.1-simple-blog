@@ -13,9 +13,9 @@ class core_Controller extends \BaseController
 
     public function getIndex()
     {
-        $posts      = Article::paginate(5);
+        $articles   = Article::paginate(5);
         $categories = Category::orderBy('sort_order')->get();
-        return View::make('Blog::index')->with(compact('posts', 'categories'));
+        return View::make('Blog::index')->with(compact('articles', 'categories'));
     }
 
     /**
@@ -25,9 +25,9 @@ class core_Controller extends \BaseController
      */
     public function getBlogShow($slug)
     {
-        $post = Article::where('slug', $slug)->first();
-        is_null($post) AND App::abort(404);
-        return View::make('Blog::show')->with(compact('post'));
+        $article = Article::where('slug', $slug)->first();
+        is_null($article) AND App::abort(404);
+        return View::make('Blog::show')->with(compact('article'));
     }
 
     /**
@@ -43,12 +43,12 @@ class core_Controller extends \BaseController
         if (mb_strlen($content)<3)
             return Redirect::back()->withInput()->withErrors($this->messages->add('content', '评论不得少于3个字符。'));
         // 查找对应文章
-        $post = Article::where('slug', $slug)->first();
+        $article = Article::where('slug', $slug)->first();
         // 创建文章评论
         $comment = new Comment;
-        $comment->content = $content;
-        $comment->post_id = $post->id;
-        $comment->user_id = Auth::user()->id;
+        $comment->content    = $content;
+        $comment->article_id = $article->id;
+        $comment->user_id    = Auth::user()->id;
         if ($comment->save()) {
             // 创建成功
             return Redirect::back()->with('success', '评论成功。');

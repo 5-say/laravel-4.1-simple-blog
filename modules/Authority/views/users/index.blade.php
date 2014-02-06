@@ -1,6 +1,6 @@
 @extends('l.base')
 
-@section('title')用户管理 @stop
+@section('title'){{ $resourceName }}管理 @stop
 
 @section('beforeStyle')
     {{ style('bootstrap-3.0.3') }}
@@ -17,17 +17,17 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active'=>'users'))
+    @include('w.navbarAdmin', array('active'=>$resource))
 
     <div class="container panel" style="margin-top:2em;padding:1em;">
 
         @include('w.notification')
 
         <h3>
-            用户管理
+            {{ $resourceName }}管理
             <div class="pull-right">
-                <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary">
-                    添加新用户
+                <a href="{{ route($resource.'.create') }}" class="btn btn-sm btn-primary">
+                    添加新{{ $resourceName }}
                 </a>
             </div>
         </h3>
@@ -36,6 +36,7 @@ body
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th>身份</th>
                         <th>邮箱</th>
                         <th>注册时间</th>
                         <th>最后登录时间</th>
@@ -44,16 +45,17 @@ body
                 </thead>
                 <tbody>
                     <?php $currentId = Auth::user()->id; ?>
-                    @foreach ($users as $user)
+                    @foreach ($datas as $data)
                     <tr>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->created_at }}（{{ $user->friendly_created_at }}）</td>
-                        <td>{{ $user->signin_at }}（{{ $user->friendly_signin_at }}）</td>
+                        <td>{{ $data->is_admin ? '管理员' : '普通用户' }}</td>
+                        <td>{{ $data->email }}</td>
+                        <td>{{ $data->created_at }}（{{ $data->friendly_created_at }}）</td>
+                        <td>{{ $data->signin_at }}（{{ $data->friendly_signin_at }}）</td>
                         <td>
-                            @if($user->id!=$currentId)
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-xs">编辑</a>
+                            @if($data->id!=$currentId)
+                            <a href="{{ route($resource.'.edit', $data->id) }}" class="btn btn-xs">编辑</a>
                             <a href="javascript:void(0)" class="btn btn-xs btn-danger"
-                                onclick="modal('{{ route('users.destroy', $user->id) }}')">删除</a>
+                                 onclick="modal('{{ route($resource.'.destroy', $data->id) }}')">删除</a>
                             @endif
                         </td>
                     </tr>
@@ -63,7 +65,7 @@ body
         </div>
 
         <div class="pull-right" style="">
-            {{ pagination($users, 'p.slider-3') }}
+            {{ pagination($datas, 'p.slider-3') }}
         </div>
 
     </div>
@@ -72,7 +74,7 @@ body
 $modalData['modal'] = array(
     'id'=>'myModal',
     'title'=>'系统提示',
-    'message'=>'确认删除此用户？',
+    'message'=>'确认删除此'.$resourceName.'？',
     'footer'=>
 '
     <form id="real-delete" action="" method="post">

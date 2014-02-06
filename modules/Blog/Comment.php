@@ -1,6 +1,8 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
-class Comment extends \BaseModel {
+class Comment extends \BaseModel
+{
 
     protected $table = 'article_comments';
 

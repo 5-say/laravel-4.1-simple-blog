@@ -1,6 +1,6 @@
 @extends('l.base')
 
-@section('title'){{ $post->title }} @stop
+@section('title'){{ $article->title }} @stop
 
 @section('beforeStyle')
     {{ style('bootstrap-3.0.3') }}
@@ -70,19 +70,19 @@ body
                 <div class="row">
 
                     <div class="col-6 col-sm-6 col-lg-12 panel">
-                        <h2>{{ $post->title }}</h2>
-                        <p>{{ $post->content }}</p>
+                        <h2>{{ $article->title }}</h2>
+                        <p>{{ $article->content }}</p>
                         <p>
-                            <i class="glyphicon glyphicon-calendar"></i><span> {{ $post->created_at }}（{{ $post->friendly_created_at }}）</span>
+                            <i class="glyphicon glyphicon-calendar"></i><span> {{ $article->created_at }}（{{ $article->friendly_created_at }}）</span>
                             <a href="#" class="btn btn-default btn-xs" style="margin-top:-2px;" role="button">默认分类</a>
                         </p>
                     </div><!--/span-->
 
                     <div class="col-6 col-sm-6 col-lg-12 panel">
                         <a name="comments"></a>
-                        <h4>评论 - {{ $post->comments->count() }}</h4>
+                        <h4>评论 - {{ $article->comments->count() }}</h4>
                         <ul class="media-list">
-                            @foreach($post->comments as $comment)
+                            @foreach($article->comments as $comment)
                             <li class="media">
                                 <a class="pull-left" href="#">
                                     <img class="media-object img-thumbnail" width="64" height="64" src="..." alt="...">

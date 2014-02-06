@@ -115,7 +115,7 @@ class ArticleResource extends \BaseResource
             'content' => 'required',
         );
         // 自定义验证消息
-        $messages = $this->validatorMessages;
+        $messages  = $this->validatorMessages;
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
         if ($validator->passes()) {
