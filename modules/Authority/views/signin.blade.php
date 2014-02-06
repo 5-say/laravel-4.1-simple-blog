@@ -51,11 +51,11 @@ body {
 
 @section('container')
 
-    @include('w.navbarHome', array('active'=>'signin'))
+    @include('w.navbarHome', array('active' => 'signin'))
 
     <div class="container" style="margin-top:2em;">
 
-        {{ Form::open(array('class'=>'form-signin', 'role'=>'form')) }}
+        {{ Form::open(array('class' => 'form-signin', 'role' => 'form')) }}
             <h2 class="form-signin-heading">用户登录</h2>
             <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" placeholder="邮箱" required autofocus>
             <input name="password" type="password" class="form-control" placeholder="密码" required>

@@ -9,7 +9,7 @@ class originalModuleController extends \BaseController {
     {
         return View::make('originalModule::index')
             ->with(array(
-                'demo'=>'originalModule',
+                'demo' => 'originalModule',
                 'content'=> Config::get('originalModule::test')
             ));
     }

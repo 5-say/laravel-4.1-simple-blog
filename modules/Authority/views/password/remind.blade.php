@@ -30,13 +30,13 @@ body {
 
 @section('container')
 
-    @include('w.navbarHome', array('active'=>'home'))
+    @include('w.navbarHome', array('active' => 'home'))
 
     
 
     <div class="container" style="margin-top:2em;">
 
-        {{ Form::open(array('class'=>'col-lg-6 form-center', 'role'=>'form')) }}
+        {{ Form::open(array('class' => 'col-lg-6 form-center', 'role' => 'form')) }}
             <h2 class="center">发送密码重置邮件</h2>
             <div class="input-group">
                 <input type="text" class="form-control input-lg" name="email" placeholder="请填写您注册时所使用的邮箱">

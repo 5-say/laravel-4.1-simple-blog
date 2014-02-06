@@ -21,7 +21,7 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active'=>$resource))
+    @include('w.navbarAdmin', array('active' => $resource))
 
     <div class="container panel" style="margin-top:2em;padding:1em;">
 

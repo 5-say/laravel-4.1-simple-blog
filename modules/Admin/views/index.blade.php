@@ -22,7 +22,7 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active'=>'admin'))
+    @include('w.navbarAdmin', array('active' => 'admin'))
 
     <div class="container">
 

@@ -54,56 +54,56 @@ Route::filter('not.self', function ($route, $request) {
 /**
  * 基础功能
  */
-Route::group(array('prefix'=>'/'), function () {
+Route::group(array('prefix' => '/'), function () {
     
     $Authority = 'Authority\AuthorityController@';
 
     # 退出
-    Route::get('logout', array('as'=>'logout', 'uses'=>$Authority.'getLogout'));
+    Route::get('logout', array('as' => 'logout', 'uses' => $Authority.'getLogout'));
 
-    Route::group(array('before'=>'guest'), function () use ($Authority) {
+    Route::group(array('before' => 'guest'), function () use ($Authority) {
         # 登录
-        Route::get(                   'signin', array('as'=>'signin', 'uses'=>$Authority.'getSignin'));
+        Route::get(                   'signin', array('as' => 'signin', 'uses' => $Authority.'getSignin'));
         Route::post(                  'signin', $Authority.'postSignin');
         # 注册
-        Route::get(                   'signup', array('as'=>'signup', 'uses'=>$Authority.'getSignup'));
+        Route::get(                   'signup', array('as' => 'signup', 'uses' => $Authority.'getSignup'));
         Route::post(                  'signup', $Authority.'postSignup');
         # 注册成功提示用户激活
-        Route::get(          'success/{email}', array('as'=>'signupSuccess', 'uses'=>$Authority.'getSignupSuccess'));
+        Route::get(          'success/{email}', array('as' => 'signupSuccess', 'uses' => $Authority.'getSignupSuccess'));
         # 激活账号
-        Route::get('activate/{activationCode}', array('as'=>'activate', 'uses'=>$Authority.'getActivate'));
+        Route::get('activate/{activationCode}', array('as' => 'activate', 'uses' => $Authority.'getActivate'));
         # 忘记密码
-        Route::get(          'forgot-password', array('as'=>'forgotPassword', 'uses'=>$Authority.'getForgotPassword'));
+        Route::get(          'forgot-password', array('as' => 'forgotPassword', 'uses' => $Authority.'getForgotPassword'));
         Route::post(         'forgot-password', $Authority.'postForgotPassword');
         # 密码重置
-        Route::get(  'forgot-password/{token}', array('as'=>'reset', 'uses'=>$Authority.'getReset'));
+        Route::get(  'forgot-password/{token}', array('as' => 'reset', 'uses' => $Authority.'getReset'));
         Route::post( 'forgot-password/{token}', $Authority.'postReset');
     });
 });
 /**
  * 管理员后台
  */
-Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function () {
+Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function () {
     # 用户管理
-    Route::group(array('prefix'=>'users'), function () {
+    Route::group(array('prefix' => 'users'), function () {
         $resource   = 'users';
         $controller = 'Authority\UserResource@';
-        Route::get(        '/' , array('as'=>$resource.'.index'   , 'uses'=>$controller.'index'  ));
-        Route::get(   'create' , array('as'=>$resource.'.create'  , 'uses'=>$controller.'create' ));
-        Route::post(       '/' , array('as'=>$resource.'.store'   , 'uses'=>$controller.'store'  ));
-        // Route::get(     '{id}' , array('as'=>$resource.'.show'    , 'uses'=>$controller.'show'   ));
-        Route::get('{id}/edit' , array('as'=>$resource.'.edit'    , 'uses'=>$controller.'edit'   ))->before('not.self');
-        Route::put(     '{id}' , array('as'=>$resource.'.update'  , 'uses'=>$controller.'update' ))->before('not.self');
-        Route::delete(  '{id}' , array('as'=>$resource.'.destroy' , 'uses'=>$controller.'destroy'))->before('not.self');
+        Route::get(        '/' , array('as' => $resource.'.index'   , 'uses' => $controller.'index'  ));
+        Route::get(   'create' , array('as' => $resource.'.create'  , 'uses' => $controller.'create' ));
+        Route::post(       '/' , array('as' => $resource.'.store'   , 'uses' => $controller.'store'  ));
+        // Route::get(     '{id}' , array('as' => $resource.'.show'    , 'uses' => $controller.'show'   ));
+        Route::get('{id}/edit' , array('as' => $resource.'.edit'    , 'uses' => $controller.'edit'   ))->before('not.self');
+        Route::put(     '{id}' , array('as' => $resource.'.update'  , 'uses' => $controller.'update' ))->before('not.self');
+        Route::delete(  '{id}' , array('as' => $resource.'.destroy' , 'uses' => $controller.'destroy'))->before('not.self');
     });
 });
 /**
  * 用户后台
  */
-Route::group(array('prefix'=>'account'), function () {
+Route::group(array('prefix' => 'account'), function () {
     $Account = 'Authority\core_Controller@';
     # 修改当前账号密码
-    Route::get('change-password', array('as'=>'changePassword', 'uses'=>$Account.'getChangePassword'));
+    Route::get('change-password', array('as' => 'changePassword', 'uses' => $Account.'getChangePassword'));
     Route::put('change-password', $Account.'putChangePassword');
 });
 

@@ -28,35 +28,40 @@ body
 
         <h2 style="text-align:center;">快速迁移 - 快速填充</h2>
 
-        {{ Form::open(array('class'=>'col-lg-6 form-center', 'role'=>'form', 'method'=>'PUT', 'route'=>'5-say-refresh')) }}
+        <form method="post" action="{{ route('5-say-refresh') }}" class="col-lg-6 form-center" role="form">
+            <input name="_method" type="hidden" value="PUT">
+            <input name="_token" type="hidden" value="{{ csrf_token() }}">
             <div class="input-group">
-                {{ Form::select('refresh', $directories, '5-say', array('class'=>'form-control input-lg')) }}
+                {{ Form::select('refresh', $directories, '5-say', array('class' => 'form-control input-lg')) }}
                 <span class="input-group-btn">
                     <button class="btn btn-lg btn-danger" type="submit" style="width:9em;">Refresh & Seed</button>
                 </span>
             </div><!-- /input-group -->
-        {{ Form::close() }}
+        </form>
 
-        {{ Form::open(array('class'=>'col-lg-6 form-center', 'role'=>'form', 'method'=>'PUT', 'route'=>'5-say-seed')) }}
+        <form method="post" action="{{ route('5-say-seed') }}" class="col-lg-6 form-center" role="form">
+            <input name="_method" type="hidden" value="PUT">
+            <input name="_token" type="hidden" value="{{ csrf_token() }}">
             <div class="input-group">
-                {{ Form::select('seed', $directories, '5-say', array('class'=>'form-control input-lg')) }}
+                {{ Form::select('seed', $directories, '5-say', array('class' => 'form-control input-lg')) }}
                 <span class="input-group-btn">
                     <button class="btn btn-lg btn-warning" type="submit" style="width:9em;">Just Seed</button>
                 </span>
             </div><!-- /input-group -->
-        {{ Form::close() }}
+        </form>
 
 
         <h2 style="text-align:center;">快速生成 - 原始模块</h2>
 
-        {{ Form::open(array('class'=>'col-lg-6 form-center', 'role'=>'form', 'route'=>'5-say-create')) }}
+        <form method="post" action="{{ route('5-say-create') }}" class="col-lg-6 form-center" role="form">
+            <input name="_token" type="hidden" value="{{ csrf_token() }}">
             <div class="input-group">
                 <input type="text" class="form-control input-lg" name="module" placeholder="请输入模块名称">
                 <span class="input-group-btn">
                     <button class="btn btn-lg btn-primary" type="submit" style="width:9em;">Create</button>
                 </span>
             </div><!-- /input-group -->
-        {{ Form::close() }}
+        </form>
 
 
         <div class="alert alert-warning alert-dismissable col-lg-6 {{ $errors->first('err')?'':'hidden'; }}">

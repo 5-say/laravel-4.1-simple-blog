@@ -58,7 +58,7 @@ body
 
 @section('container')
 
-    @include('w.navbarHome', array('active'=>'home'))
+    @include('w.navbarHome', array('active' => 'home'))
 
     <div class="container" style="margin-top:2em;">
         

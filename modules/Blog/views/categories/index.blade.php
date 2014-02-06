@@ -17,7 +17,7 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active'=>$resource))
+    @include('w.navbarAdmin', array('active' => $resource))
 
     <div class="container panel" style="margin-top:2em;padding:1em;">
 
@@ -67,9 +67,9 @@ body
     
 <?php
 $modalData['modal'] = array(
-    'id'=>'myModal',
-    'title'=>'系统提示',
-    'message'=>'确认删除此'.$resourceName.'？',
+    'id' => 'myModal',
+    'title' => '系统提示',
+    'message' => '确认删除此'.$resourceName.'？',
     'footer'=>
 '
     <form id="real-delete" action="" method="post">

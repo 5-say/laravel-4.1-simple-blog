@@ -47,11 +47,11 @@ body {
 
 @section('container')
 
-    @include('w.navbarHome', array('active'=>'home'))
+    @include('w.navbarHome', array('active' => 'home'))
 
     <div class="container" style="margin-top:2em;">
 
-        {{ Form::open(array('class'=>'form-register', 'role'=>'form')) }}
+        {{ Form::open(array('class' => 'form-register', 'role' => 'form')) }}
             <h2 class="form-register-heading">密码重置</h2>
             <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" placeholder="请输入您注册时所使用的邮箱" required autofocus>
             {{ $errors->first('email', '<strong class="error">:message</strong>') }}

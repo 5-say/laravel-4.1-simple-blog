@@ -47,11 +47,11 @@ body {
 
 @section('container')
 
-    @include('w.navbarHome', array('active'=>'signup'))
+    @include('w.navbarHome', array('active' => 'signup'))
 
     <div class="container" style="margin-top:2em;">
 
-        {{ Form::open(array('class'=>'form-register', 'role'=>'form')) }}
+        {{ Form::open(array('class' => 'form-register', 'role' => 'form')) }}
             <h2 class="form-register-heading">用户注册</h2>
             <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" placeholder="邮箱" required autofocus>
             {{ $errors->first('email', '<strong class="error">:message</strong>') }}

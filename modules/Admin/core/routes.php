@@ -18,11 +18,11 @@ View::addNamespace('Admin', __DIR__.'/../views');
 | Routes
 |--------------------------------------------------------------------------
 */
-Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
+Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function()
 {
-    $Admin = 'Admin\AdminController@';
+    $Admin = 'Admin\core_Controller@';
 
     # 后台首页
-    Route::get('/', array('as'=>'admin', 'uses'=>$Admin.'getIndex'));
+    Route::get('/', array('as' => 'admin', 'uses' => $Admin.'getIndex'));
 
 });

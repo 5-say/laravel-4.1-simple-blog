@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder {
         // // 用户表
         // for ($i=0; $i < 50; $i++)
         // { 
-        //     $userData[] = array('email'=>'test'.$i, 'created_at'=>$dateTime);
+        //     $userData[] = array('email' => 'test'.$i, 'created_at' => $dateTime);
         // }
         // User::truncate();
         // User::insert($userData);

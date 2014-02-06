@@ -19,11 +19,11 @@ Config::package('_modules/originalModule', __DIR__, 'originalModule');
 |--------------------------------------------------------------------------
 */
 
-Route::group(array('prefix'=>'originalModule'), function()
+Route::group(array('prefix' => 'originalModule'), function()
 {
     $originalModule = 'originalModule\originalModuleController@';
 
     // 测试页面
-    Route::get('/', array('as'=>'originalModuleDemo', 'uses'=>$originalModule.'getIndex'));
+    Route::get('/', array('as' => 'originalModuleDemo', 'uses' => $originalModule.'getIndex'));
 });
 

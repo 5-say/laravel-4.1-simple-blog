@@ -1,6 +1,5 @@
 <?php
-$is_active = function($name='') use($active)
-{
+$is_active = function ($name='') use ($active) {
     if ($active===$name)
         return ' active';
     else

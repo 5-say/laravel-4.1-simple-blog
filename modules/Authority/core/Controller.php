@@ -38,7 +38,7 @@ class core_Controller extends \BaseController
             // 登录失败，跳回
             return Redirect::back()
                 ->withInput()
-                ->withErrors(array('attempt'=>'“邮箱”或“密码”错误，请重新登录。'));
+                ->withErrors(array('attempt' => '“邮箱”或“密码”错误，请重新登录。'));
         }
     }
 
@@ -94,7 +94,7 @@ class core_Controller extends \BaseController
                 $activation->token = str_random(40);
                 $activation->save();
                 // 发送激活邮件
-                $with = array('activationCode'=>$activation->token);
+                $with = array('activationCode' => $activation->token);
                 Mail::send('Authority::email/activation', $with, function ($message) use ($user) {
                     $message
                         ->to($user->email)
@@ -106,7 +106,7 @@ class core_Controller extends \BaseController
                 // 添加失败
                 return Redirect::back()
                     ->withInput()
-                    ->withErrors(array('add'=>'注册失败。'));
+                    ->withErrors(array('add' => '注册失败。'));
             }
         } else {
             // 验证失败，跳回

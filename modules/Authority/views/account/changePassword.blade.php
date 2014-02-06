@@ -66,7 +66,7 @@ body
 
 @section('container')
 
-    @include('w.navbarHome', array('active'=>''))
+    @include('w.navbarHome', array('active' => ''))
 
     <div class="container" style="margin-top:2em;">
         
@@ -100,7 +100,7 @@ body
                 </div><!--/row-->
             </div><!--/span-->
 
-            @include('w.sidebarAccount', array('active'=>'changePassword'))
+            @include('w.sidebarAccount', array('active' => 'changePassword'))
             
         </div><!--/row-->
 
