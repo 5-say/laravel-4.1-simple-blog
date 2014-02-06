@@ -1,6 +1,8 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
-class Article extends \BaseModel {
+class Article extends \BaseModel
+{
 
     protected $table = 'articles';
 

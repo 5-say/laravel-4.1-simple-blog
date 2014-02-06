@@ -1,4 +1,5 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
 use View;
 use Config;
@@ -7,11 +8,12 @@ use Input;
 use Redirect;
 use Auth;
 
-class core_Controller extends \BaseController {
+class core_Controller extends \BaseController
+{
 
     public function getIndex()
     {
-        $posts = Article::paginate(5);
+        $posts      = Article::paginate(5);
         $categories = Category::orderBy('sort_order')->get();
         return View::make('Blog::index')->with(compact('posts', 'categories'));
     }
@@ -23,7 +25,7 @@ class core_Controller extends \BaseController {
      */
     public function getBlogShow($slug)
     {
-        $post = Article::where('slug', '=', $slug)->first();
+        $post = Article::where('slug', $slug)->first();
         is_null($post) AND App::abort(404);
         return View::make('Blog::show')->with(compact('post'));
     }
@@ -47,12 +49,11 @@ class core_Controller extends \BaseController {
         $comment->content = $content;
         $comment->post_id = $post->id;
         $comment->user_id = Auth::user()->id;
-        if ($comment->save())
-        { // 创建成功
+        if ($comment->save()) {
+            // 创建成功
             return Redirect::back()->with('success', '评论成功。');
-        }
-        else
-        { // 创建失败
+        } else {
+            // 创建失败
             return Redirect::back()->withInput()->with('error', '评论失败。');
         }
     }

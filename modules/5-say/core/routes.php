@@ -9,15 +9,19 @@ View::addNamespace('5-say', __DIR__.'/../views');
 |--------------------------------------------------------------------------
 */
 
+/**
+ * 用于辅助模块化开发，批量执行文件内容的替换
+ * @param  string|array $path  文件目录字符串|文件目录数组
+ * @param  string       $frome 需要查找的字符串
+ * @param  string       $to    用于替换的字符串
+ * @return void
+ */
 function moduleChangeFile($path, $frome, $to)
 {
-    if( is_array($path) )
-    {
+    if(is_array($path)) {
         foreach ($path as $value)
             moduleChangeFile($value, $frome, $to);
-    }
-    else
-    {
+    } else {
         $file = File::get($path);
         $file = str_replace($frome, $to, $file);
         File::put($path, $file);
@@ -30,15 +34,12 @@ function moduleChangeFile($path, $frome, $to)
 |--------------------------------------------------------------------------
 */
 
-Route::group(array('prefix'=>'5-say'), function()
-{
+Route::group(array('prefix'=>'5-say'), function () {
     // 操作界面
-    Route::get('/', array('as'=>'5-say', function()
-    {
+    Route::get('/', array('as'=>'5-say', function () {
         $beginPath   = __DIR__.'/../../';
         $directories = array();
-        foreach (File::directories($beginPath) as $value)
-        {
+        foreach (File::directories($beginPath) as $value) {
             $dir = basename($value);
             $directories[$dir] = $dir.' 模块';
         }
@@ -47,19 +48,15 @@ Route::group(array('prefix'=>'5-say'), function()
     }));
 
     // 迁移
-    Route::put('refresh', array('as'=>'5-say-refresh', function()
-    {
+    Route::put('refresh', array('as'=>'5-say-refresh', function () {
         $directory = Input::get('refresh');
-        $exists    = File::exists(__DIR__.'/../../'.$directory.'/DatabaseMigration.php');
-        if (! $exists)
-        {
+        $exists    = File::exists(__DIR__.'/../../'.$directory.'/core/DbMigration.php');
+        if (! $exists) {
             return Redirect::back()
                 ->withInput()
                 ->withErrors(array('err'=>$directory.' 模块，迁移文件不存在。'));
-        }
-        else
-        {
-            App::make($directory.'\DatabaseMigration')->refresh();
+        } else {
+            App::make($directory.'\core_DbMigration')->refresh();
             return Redirect::back()
                 ->withInput()
                 ->withErrors(array('succ'=>$directory.' 模块，迁移完成。'));
@@ -67,19 +64,15 @@ Route::group(array('prefix'=>'5-say'), function()
     }));
 
     // 填充
-    Route::put('seed', array('as'=>'5-say-seed', function()
-    {
+    Route::put('seed', array('as'=>'5-say-seed', function () {
         $directory = Input::get('seed');
-        $exists    = File::exists(__DIR__.'/../../'.$directory.'/DatabaseSeeder.php');
-        if (! $exists)
-        {
+        $exists    = File::exists(__DIR__.'/../../'.$directory.'/core/DbSeeder.php');
+        if (! $exists) {
             return Redirect::back()
                 ->withInput()
                 ->withErrors(array('err'=>$directory.' 模块，填充文件不存在。'));
-        }
-        else
-        {
-            App::make($directory.'\DatabaseSeeder')->run();
+        } else {
+            App::make($directory.'\core_DbSeeder')->run();
             return Redirect::back()
                 ->withInput()
                 ->withErrors(array('succ'=>$directory.' 模块，填充完成。'));
@@ -87,12 +80,11 @@ Route::group(array('prefix'=>'5-say'), function()
     }));
 
     // 创建
-    Route::post('create',array('as'=>'5-say-create', function()
-    {
-        $module = ucfirst(camel_case(Input::get('module')));
+    Route::post('create',array('as'=>'5-say-create', function () {
+        $module      = ucfirst(camel_case(Input::get('module')));
         $destination = __DIR__.'/../../'.$module.'/'; // 目标位置
         // 检测模块是否存在
-        $exists = File::exists( $destination );
+        $exists      = File::exists( $destination );
         if ($exists)
             return Redirect::back()
                 ->withInput()

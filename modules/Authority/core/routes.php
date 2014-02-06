@@ -4,6 +4,7 @@
 View::addNamespace('Authority', __DIR__.'/../views');
 // 注册配置别名（模块不使用独立配置的可以注释掉）
 Config::package('_modules/Authority', __DIR__, 'Authority');
+// 覆盖原始 auth 配置
 Config::set('auth', Config::get('Authority::config'));
 
 /*
@@ -54,6 +55,7 @@ Route::filter('not.self', function ($route, $request) {
  * 基础功能
  */
 Route::group(array('prefix'=>'/'), function () {
+    
     $Authority = 'Authority\AuthorityController@';
 
     # 退出
@@ -85,7 +87,7 @@ Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function () {
     # 用户管理
     Route::group(array('prefix'=>'users'), function () {
         $resource   = 'users';
-        $controller = 'Authority\UserController@';
+        $controller = 'Authority\UserResource@';
         Route::get(        '/' , array('as'=>$resource.'.index'   , 'uses'=>$controller.'index'  ));
         Route::get(   'create' , array('as'=>$resource.'.create'  , 'uses'=>$controller.'create' ));
         Route::post(       '/' , array('as'=>$resource.'.store'   , 'uses'=>$controller.'store'  ));

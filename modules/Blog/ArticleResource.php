@@ -1,11 +1,13 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
 use Input;
 use Validator;
 use Redirect;
 use Auth;
 
-class ArticleResource extends \BaseResource {
+class ArticleResource extends \BaseResource
+{
 
     /**
      * 模块命名空间
@@ -69,8 +71,8 @@ class ArticleResource extends \BaseResource {
         $messages = $this->validatorMessages;
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
-        if ($validator->passes())
-        { // 验证成功
+        if ($validator->passes()) {
+            // 验证成功
             // 添加资源
             $model = $this->model;
             $model->user_id          = Auth::user()->id;
@@ -80,20 +82,18 @@ class ArticleResource extends \BaseResource {
             $model->meta_title       = e($data['meta_title']);
             $model->meta_description = e($data['meta_description']);
             $model->meta_keywords    = e($data['meta_keywords']);
-            if ( $model->save() )
-            { // 添加成功
+            if ($model->save()) {
+                // 添加成功
                 return Redirect::back()
                     ->with('success', '<strong>'.$this->resourceName.'添加成功：</strong>您可以继续添加新'.$this->resourceName.'，或返回'.$this->resourceName.'列表。');
-            }
-            else
-            { // 添加失败
+            } else {
+                // 添加失败
                 return Redirect::back()
                     ->withInput()
                     ->with('error', '<strong>'.$this->resourceName.'添加失败。</strong>');
             }
-        }
-        else
-        { // 验证失败
+        } else {
+            // 验证失败
             return Redirect::back()->withInput()->withErrors($validator);
         }
     }
@@ -118,8 +118,8 @@ class ArticleResource extends \BaseResource {
         $messages = $this->validatorMessages;
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
-        if ($validator->passes())
-        { // 验证成功
+        if ($validator->passes()) {
+            // 验证成功
             // 更新资源
             $model = $this->model->find($id);
             $model->title            = e($data['title']);
@@ -128,20 +128,18 @@ class ArticleResource extends \BaseResource {
             $model->meta_title       = e($data['meta_title']);
             $model->meta_description = e($data['meta_description']);
             $model->meta_keywords    = e($data['meta_keywords']);
-            if ( $model->save() )
-            { // 更新成功
+            if ($model->save()) {
+                // 更新成功
                 return Redirect::back()
                     ->with('success', '<strong>'.$this->resourceName.'更新成功：</strong>您可以继续编辑'.$this->resourceName.'，或返回'.$this->resourceName.'列表。');
-            }
-            else
-            { // 更新失败
+            } else {
+                // 更新失败
                 return Redirect::back()
                     ->withInput()
                     ->with('error', '<strong>'.$this->resourceName.'更新失败。</strong>');
             }
-        }
-        else
-        { // 验证失败
+        } else {
+            // 验证失败
             return Redirect::back()->withInput()->withErrors($validator);
         }
     }

@@ -1,10 +1,12 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Schema;
 
-class core_DbMigration extends Migration {
+class core_DbMigration extends Migration
+{
 
     public function refresh()
     {
@@ -21,8 +23,7 @@ class core_DbMigration extends Migration {
     public function up()
     {
         // 文章分类
-        Schema::create('article_categories', function(Blueprint $table)
-        {
+        Schema::create('article_categories', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
             $table->string('name', 20)->unique()->comment('分类名称');
@@ -31,8 +32,7 @@ class core_DbMigration extends Migration {
             $table->softDeletes();
         });
         // 文章
-        Schema::create('articles', function(Blueprint $table)
-        {
+        Schema::create('articles', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
             $table->integer('category_id')->unsigned()->comment('文章分类ID');
@@ -47,8 +47,7 @@ class core_DbMigration extends Migration {
             $table->softDeletes();
         });
         // 文章的评论
-        Schema::create('article_comments', function(Blueprint $table)
-        {
+        Schema::create('article_comments', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
             $table->integer('user_id')->unsigned()->comment('作者ID');

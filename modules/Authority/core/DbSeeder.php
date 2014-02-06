@@ -18,16 +18,16 @@ class core_DbSeeder extends Seeder
         Eloquent::unguard();
 
         // 用户
-        Usere::truncate(); // 清空表
+        User::truncate(); // 清空表
         $password = Hash::make('111111');
-        Usere::create(array(
+        User::create(array(
             'email'    => 'bcw.5@foxmail.com',
             'password' => $password,
             'is_admin' => 1,
         ));
         for ($i = 1; $i < 60; $i++) {
-            Usere::create(array(
-            'email'    => 'bcw.5@foxmail.com',
+            User::create(array(
+            'email'    => 'a'.$i.'@a.com',
             'password' => $password,
             ));
         }

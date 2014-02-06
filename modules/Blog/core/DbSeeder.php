@@ -1,9 +1,11 @@
-<?php namespace Blog;
+<?php
+namespace Blog;
 
 use Seeder;
 use Eloquent;
 
-class core_DbSeeder extends Seeder {
+class core_DbSeeder extends Seeder
+{
 
     /**
      * Run the database seeds.
@@ -17,8 +19,7 @@ class core_DbSeeder extends Seeder {
 
         // 文章分类
         Category::truncate(); // 清空表
-        foreach (array('默认分类', '新分类一', '新分类二', '新分类三', '新分类四', '新分类五') as $key => $value)
-        {
+        foreach (array('默认分类', '新分类一', '新分类二', '新分类三', '新分类四', '新分类五') as $key => $value) {
             Category::create(array(
                 'name'       => $value,
                 'sort_order' => $key,
@@ -27,8 +28,7 @@ class core_DbSeeder extends Seeder {
         
         // 博客文章
         Article::truncate(); // 清空表
-        for ($i = 1; $i < 60; $i++)
-        {
+        for ($i = 1; $i < 60; $i++) {
             Article::create(array(
                 'category_id' => $i%10,
                 'user_id'     => $i,
@@ -40,8 +40,7 @@ class core_DbSeeder extends Seeder {
 
         // 文章评论
         Comment::truncate(); // 清空表
-        for ($i = 1; $i < 30; $i++)
-        {
+        for ($i = 1; $i < 30; $i++) {
             Comment::create(array(
                 'user_id'    => $i%3,
                 'article_id' => $i%5,
