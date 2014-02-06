@@ -4,13 +4,13 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Schema;
 
-class DatabaseMigration extends Migration {
+class core_DbMigration extends Migration {
 
     public function refresh()
     {
         $this->down();
         $this->up();
-        with(new DatabaseSeeder)->run();
+        with(new core_DatabaseSeeder)->run();
     }
 
     /**
@@ -52,7 +52,7 @@ class DatabaseMigration extends Migration {
             $table->engine = 'MyISAM';
             $table->increments('id');
             $table->integer('user_id')->unsigned()->comment('作者ID');
-            $table->integer('post_id')->unsigned()->comment('归属文章ID');
+            $table->integer('article_id')->unsigned()->comment('归属文章ID');
             $table->text('content')->comment('内容');
             $table->timestamps();
             $table->softDeletes();

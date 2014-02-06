@@ -19,20 +19,30 @@ Config::package('5-say/modules', __DIR__, 'module'); // 注册模块公共配置
  */
 function d()
 {
-    array_map(function($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
+    if (class_exists('Barryvdh\Debugbar\Facade')) {
+        Barryvdh\Debugbar\Facade::disable();
+        array_map(function ($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
+    } else {
+        array_map(function ($x) { var_dump($x); }, func_get_args());
+    }
 }
 // 如果必须要在非视图响应中使用
 function d_()
 {
-    echo '<span></span>';
-    array_map(function($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
+    if (class_exists('Barryvdh\Debugbar\Facade')) {
+        Barryvdh\Debugbar\Facade::disable();
+        echo '<span></span>';
+        array_map(function ($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
+    } else {
+        array_map(function ($x) { var_dump($x); }, func_get_args());
+    }
 }
 
 /**
  * 保持原格式的参数文件修改（原参数值将会在下一行以注释的形式备份）
- * @param  string  $configName  需要修改的参数
- * @param  string  $newConfig   新的参数值
- * @param  string  $comment     当存在同名参数时用以区分的注释字符串
+ * @param  string $configName 需要修改的参数
+ * @param  string $newConfig  新的参数值
+ * @param  string $comment    当存在同名参数时用以区分的注释字符串
  * @return 成功时返回写入到文件内数据的字节数，失败时返回FALSE
  */
 function change_config($configName, $newConfig, $comment='')
@@ -62,7 +72,7 @@ function change_config($configName, $newConfig, $comment='')
 
 /**
  * 载入模块（用于模块化开发）
- * @param  string  $module  模块名称
+ * @param  string $module 模块名称
  * @return void
  */
 function module($module)
@@ -78,16 +88,14 @@ function module($module)
  */
 function style($aliases, $attributes=array(), $interim='')
 {
-    if (is_array($aliases))
-    {
-        foreach ($aliases as $k => $v)
-        {
-            $interim .= (is_int($k)) ? style($v, $attributes, $interim) : style($k, $v, $interim);
+    if (is_array($aliases)) {
+        foreach ($aliases as $key => $value) {
+            $interim .= (is_int($key)) ? style($value, $attributes, $interim) : style($key, $value, $interim);
         }
         return $interim;
     }
     $cssAliases = Config::get('module::webAssets.cssAliases');
-    $url = isset($cssAliases[$aliases]) ? $cssAliases[$aliases] : $aliases;
+    $url        = isset($cssAliases[$aliases]) ? $cssAliases[$aliases] : $aliases;
     return HTML::style($url, $attributes);
 }
 
@@ -99,16 +107,14 @@ function style($aliases, $attributes=array(), $interim='')
  */
 function script($aliases, $attributes=array(), $interim='')
 {
-    if (is_array($aliases))
-    {
-        foreach ($aliases as $k => $v)
-        {
-            $interim .= (is_int($k)) ? script($v, $attributes, $interim) : script($k, $v, $interim);
+    if (is_array($aliases)) {
+        foreach ($aliases as $key => $value) {
+            $interim .= (is_int($key)) ? script($value, $attributes, $interim) : script($key, $value, $interim);
         }
         return $interim;
     }
     $jsAliases = Config::get('module::webAssets.jsAliases');
-    $url = isset($jsAliases[$aliases]) ? $jsAliases[$aliases] : $aliases;
+    $url       = isset($jsAliases[$aliases]) ? $jsAliases[$aliases] : $aliases;
     return HTML::script($url, $attributes);
 }
 
@@ -120,8 +126,8 @@ function script($aliases, $attributes=array(), $interim='')
  */
 function or_script($aliases, $attributes=array())
 {
-    $jsAliases = Config::get('module::webAssets.jsAliases');
-    $url = isset($jsAliases[$aliases]) ? $jsAliases[$aliases] : $aliases;
+    $jsAliases         = Config::get('module::webAssets.jsAliases');
+    $url               = isset($jsAliases[$aliases]) ? $jsAliases[$aliases] : $aliases;
     $attributes['src'] = URL::asset($url);
     return "'<script".HTML::attributes($attributes).">'+'<'+'/script>'";
 }
@@ -149,8 +155,8 @@ function friendly_date($theDate)
 
 /**
  * 拓展分页输出，支持临时指定分页模板
- * @param  Illuminate\Pagination\Paginator  $paginator  分页查询结果的最终实例
- * @param  string                           $viewName   分页视图名称
+ * @param  Illuminate\Pagination\Paginator $paginator 分页查询结果的最终实例
+ * @param  string                          $viewName  分页视图名称
  * @return \Illuminate\View\View
  */
 function pagination(Illuminate\Pagination\Paginator $paginator, $viewName=null)

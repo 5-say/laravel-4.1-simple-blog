@@ -5,7 +5,7 @@ use Validator;
 use View;
 use Redirect;
 
-class CategoryController extends \ResourceController {
+class CategoryResource extends \BaseResource {
 
     /**
      * 模块命名空间

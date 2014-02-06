@@ -1,4 +1,4 @@
-<?php
+<?php # 注意：此文件位于顶层命名空间！！！
 
 // 注册视图别名
 View::addNamespace('Authority', __DIR__.'/../views');
@@ -13,37 +13,32 @@ Config::set('auth', Config::get('Authority::config'));
 */
 
 // 身份验证过滤器 - 管理员
-Route::filter('admin', function()
-{
+Route::filter('admin', function () {
     // 拦截非管理员用户
     // 跳转回上一页面
     if (! Auth::user()->is_admin) return Redirect::back();
 });
 
 // 身份验证过滤器 - 登录用户
-Route::filter('auth', function()
-{
+Route::filter('auth', function () {
     // 拦截未登录用户并记录当前 URL
     // 跳转到登录页面
     if (Auth::guest()) return Redirect::guest( route('signin') );
 });
 
 // HTTP 基础身份验证过滤器 - 登录用户
-Route::filter('auth.basic', function()
-{
+Route::filter('auth.basic', function () {
     return Auth::basic();
 });
 
 // 身份验证过滤器 - 游客（较少应用）
-Route::filter('guest', function()
-{
+Route::filter('guest', function () {
     // 拦截已登录用户
     if (Auth::check()) return Redirect::to('/');
 });
 
 // 不可对自己的账号进行危险操作
-Route::filter('not.self', function($route, $request)
-{
+Route::filter('not.self', function ($route, $request) {
     // 拦截自身用户 ID
     if (Auth::user()->id == $route->parameter('id'))
         return Redirect::back();
@@ -58,15 +53,13 @@ Route::filter('not.self', function($route, $request)
 /**
  * 基础功能
  */
-Route::group(array('prefix'=>'/'), function()
-{
+Route::group(array('prefix'=>'/'), function () {
     $Authority = 'Authority\AuthorityController@';
 
     # 退出
     Route::get('logout', array('as'=>'logout', 'uses'=>$Authority.'getLogout'));
 
-    Route::group(array('before'=>'guest'), function() use($Authority)
-    {
+    Route::group(array('before'=>'guest'), function () use ($Authority) {
         # 登录
         Route::get(                   'signin', array('as'=>'signin', 'uses'=>$Authority.'getSignin'));
         Route::post(                  'signin', $Authority.'postSignin');
@@ -88,11 +81,9 @@ Route::group(array('prefix'=>'/'), function()
 /**
  * 管理员后台
  */
-Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
-{
+Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function () {
     # 用户管理
-    Route::group(array('prefix'=>'users'), function()
-    {
+    Route::group(array('prefix'=>'users'), function () {
         $resource   = 'users';
         $controller = 'Authority\UserController@';
         Route::get(        '/' , array('as'=>$resource.'.index'   , 'uses'=>$controller.'index'  ));
@@ -107,9 +98,8 @@ Route::group(array('prefix'=>'admin', 'before'=>'auth|admin'), function()
 /**
  * 用户后台
  */
-Route::group(array('prefix'=>'account'), function()
-{
-    $Account = 'Authority\AccountController@';
+Route::group(array('prefix'=>'account'), function () {
+    $Account = 'Authority\core_Controller@';
     # 修改当前账号密码
     Route::get('change-password', array('as'=>'changePassword', 'uses'=>$Account.'getChangePassword'));
     Route::put('change-password', $Account.'putChangePassword');
@@ -122,8 +112,7 @@ Route::group(array('prefix'=>'account'), function()
 */
 
 # 用户登录事件
-Event::listen('auth.login', function($user, $remember)
-{
+Event::listen('auth.login', function ($user, $remember) {
     // 记录最后登录时间
     $user->signin_at = new Carbon\Carbon;
     $user->save();
@@ -131,7 +120,6 @@ Event::listen('auth.login', function($user, $remember)
 });
 
 # 用户退出事件
-Event::listen('auth.logout', function($user)
-{
+Event::listen('auth.logout', function ($user) {
     // 
 });

@@ -1,16 +1,18 @@
-<?php namespace Authority;
+<?php
+namespace Authority;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Schema;
 
-class DatabaseMigration extends Migration {
+class core_DbMigration extends Migration
+{
 
     public function refresh()
     {
         $this->down();
         $this->up();
-        with(new DatabaseSeeder)->run();
+        with(new core_DbSeeder)->run();
     }
 
     /**
@@ -20,21 +22,18 @@ class DatabaseMigration extends Migration {
      */
     public function up()
     {
-        /*Schema::create('groups', function(Blueprint $table)
-        {
+        /*Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->softDeletes();
             $table->timestamps();
         });
-        Schema::create('groups_users', function(Blueprint $table)
-        {
+        Schema::create('groups_users', function (Blueprint $table) {
             $table->increments('id');
             $table->softDeletes();
             $table->timestamps();
         });*/
         // 用户表
-        Schema::create('users', function(Blueprint $table)
-        {
+        Schema::create('users', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
             // $table->string('name', 30)->unique()->comment('用户名');
@@ -49,8 +48,7 @@ class DatabaseMigration extends Migration {
             $table->softDeletes();
         });
         // 账号激活
-        Schema::create('activations', function(Blueprint $table)
-        {
+        Schema::create('activations', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
             $table->string('email', 60)->index()->comment('邮箱');
@@ -58,8 +56,7 @@ class DatabaseMigration extends Migration {
             $table->timestamps();
         });
         // 密码重置
-        Schema::create('password_reminders', function(Blueprint $table)
-        {
+        Schema::create('password_reminders', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->string('email', 60)->index()->comment('邮箱');
             $table->string('token', 40)->index()->comment('令牌');

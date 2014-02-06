@@ -7,12 +7,13 @@ use Input;
 use Redirect;
 use Auth;
 
-class BlogController extends \BaseController {
+class core_Controller extends \BaseController {
 
     public function getIndex()
     {
-        $posts = Post::paginate(5);
-        return View::make('Blog::index')->with(compact('posts'));
+        $posts = Article::paginate(5);
+        $categories = Category::orderBy('sort_order')->get();
+        return View::make('Blog::index')->with(compact('posts', 'categories'));
     }
 
     /**
@@ -22,7 +23,7 @@ class BlogController extends \BaseController {
      */
     public function getBlogShow($slug)
     {
-        $post = Post::where('slug', '=', $slug)->first();
+        $post = Article::where('slug', '=', $slug)->first();
         is_null($post) AND App::abort(404);
         return View::make('Blog::show')->with(compact('post'));
     }
@@ -40,7 +41,7 @@ class BlogController extends \BaseController {
         if (mb_strlen($content)<3)
             return Redirect::back()->withInput()->withErrors($this->messages->add('content', '评论不得少于3个字符。'));
         // 查找对应文章
-        $post = Post::where('slug', $slug)->first();
+        $post = Article::where('slug', $slug)->first();
         // 创建文章评论
         $comment = new Comment;
         $comment->content = $content;

@@ -1,6 +1,7 @@
 <?php
 
-class BaseModel extends Eloquent {
+class BaseModel extends Eloquent
+{
 
     /**
      * 开启软删除

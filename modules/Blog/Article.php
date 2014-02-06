@@ -1,6 +1,6 @@
 <?php namespace Blog;
 
-class Post extends \BaseModel {
+class Article extends \BaseModel {
 
     protected $table = 'articles';
 
@@ -10,7 +10,7 @@ class Post extends \BaseModel {
      */
     public function user()
     {
-        return $this->belongsTo('Authority\User');
+        return $this->belongsTo('Authority\User', 'user_id');
     }
 
     /**
@@ -19,7 +19,7 @@ class Post extends \BaseModel {
      */
     public function comments()
     {
-        return $this->hasMany('Blog\Comment');
+        return $this->hasMany('Blog\Comment', 'article_id');
     }
 
 

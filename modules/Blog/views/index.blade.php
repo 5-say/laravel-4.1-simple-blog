@@ -99,8 +99,9 @@ body
                     <li class="list-group-item">
                         <h4>文章分类</h4>
                     </li>
-                    <li class="list-group-item"><a href="">默认分类</a></li>
-                    <li class="list-group-item"><a href="">其它分类</a></li>
+                    @foreach($categories as $category)
+                    <li class="list-group-item"><a href="">{{ $category->name }}</a></li>
+                    @endforeach
                 </ul>
             </div><!--/span-->
         </div><!--/row-->

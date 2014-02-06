@@ -1,4 +1,5 @@
-<?php namespace Authority;
+<?php
+namespace Authority;
 
 use View;
 use Input;
@@ -13,9 +14,8 @@ use Password;
 use Lang;
 use Config;
 
-class AuthorityController extends \BaseController {
-    
-
+class core_Controller extends \BaseController
+{
     /**
      * 登录
      * @return Response
@@ -31,12 +31,11 @@ class AuthorityController extends \BaseController {
         // 是否记住登录状态
         $remember    = Input::get('remember-me', 0);
         // 验证登录
-        if (Auth::attempt($credentials, $remember))
-        { // 登录成功，跳回之前被拦截的页面
+        if (Auth::attempt($credentials, $remember)) {
+            // 登录成功，跳回之前被拦截的页面
             return Redirect::intended();
-        } // 登录失败
-        else
-        { // 跳回
+        } else {
+            // 登录失败，跳回
             return Redirect::back()
                 ->withInput()
                 ->withErrors(array('attempt'=>'“邮箱”或“密码”错误，请重新登录。'));
@@ -82,14 +81,13 @@ class AuthorityController extends \BaseController {
         );
         // 开始验证
         $validator = Validator::make($data, $rules, $messages);
-        if ($validator->passes())
-        { // 验证成功
-            // 添加用户
+        if ($validator->passes()) {
+            // 验证成功，添加用户
             $user = new User;
             $user->email    = Input::get('email');
             $user->password = Hash::make( Input::get('password') );
-            if ( $user->save() )
-            { // 添加成功
+            if ($user->save()) {
+                // 添加成功
                 // 生成激活码
                 $activation = new Activation;
                 $activation->email = $user->email;
@@ -97,29 +95,32 @@ class AuthorityController extends \BaseController {
                 $activation->save();
                 // 发送激活邮件
                 $with = array('activationCode'=>$activation->token);
-                Mail::send('Authority::email/activation', $with, function($message) use($user)
-                {
+                Mail::send('Authority::email/activation', $with, function ($message) use ($user) {
                     $message
                         ->to($user->email)
                         ->subject('Demo 账号激活邮件'); // 标题
                 });
                 // 跳转到注册成功页面，提示用户激活
                 return Redirect::route('signupSuccess', $user->email);
-            }
-            else
-            { // 添加失败
+            } else {
+                // 添加失败
                 return Redirect::back()
                     ->withInput()
                     ->withErrors(array('add'=>'注册失败。'));
             }
-        } // 验证失败
-        else
-        { // 跳回
+        } else {
+            // 验证失败，跳回
             return Redirect::back()
                 ->withInput()
                 ->withErrors($validator);
         }
     }
+    
+    /**
+     * 页面：注册成功，提示激活
+     * @param  string $email 用户注册的邮箱
+     * @return Response
+     */
     public function getSignupSuccess($email)
     {
         // 确认是否存在此未激活邮箱
@@ -129,7 +130,7 @@ class AuthorityController extends \BaseController {
         // 提示激活
         return View::make('Authority::signupSuccess')->with('email', $email);
     }
-    
+
     /**
      * 动作：激活账号
      * @param  string $activationCode 激活令牌
@@ -164,8 +165,7 @@ class AuthorityController extends \BaseController {
     {
         // 调用系统提供的类
         // 检测邮箱并发送密码重置邮件
-        switch ($response = Password::remind(Input::only('email')))
-        {
+        switch ($response = Password::remind(Input::only('email'))) {
             case Password::INVALID_USER:
                 return Redirect::back()->with('error', Lang::get($response));
             case Password::REMINDER_SENT:
@@ -188,24 +188,72 @@ class AuthorityController extends \BaseController {
             'email', 'password', 'password_confirmation', 'token'
         );
 
-        $response = Password::reset($credentials, function($user, $password)
-        {
+        $response = Password::reset($credentials, function ($user, $password) {
             $user->password = Hash::make($password);
-
             $user->save();
         });
 
-        switch ($response)
-        {
+        switch ($response) {
             case Password::INVALID_PASSWORD:
+                // no break
             case Password::INVALID_TOKEN:
+                // no break
             case Password::INVALID_USER:
                 return Redirect::back()->with('error', Lang::get($response));
-
             case Password::PASSWORD_RESET:
                 return Redirect::to(Config::get('Authority::resetedTo'));
         }
     }
+    
+    /**
+     * 修改当前账号密码
+     * @return Response
+     */
+    public function getChangePassword()
+    {
+        return View::make('Authority::account.changePassword');
+    }
+    public function putChangePassword()
+    {
+        // 获取所有表单数据.
+        $data = Input::all();
+        // 验证旧密码
+        if (! Hash::check($data['password_old'], Auth::user()->password) )
+            return Redirect::back()->withErrors($this->messages->add('password_old', '原始密码错误'));
+        // 创建验证规则
+        $rules = array(
+            'password' => 'alpha_dash|between:6,16|confirmed',
+        );
+        // 自定义验证消息
+        $messages = array(
+            'password.alpha_dash' => '密码格式不正确。',
+            'password.between'    => '密码长度请保持在:min到:max位之间。',
+            'password.confirmed'  => '两次输入的密码不一致。',
+        );
+        // 开始验证
+        $validator = Validator::make($data, $rules, $messages);
+        if ($validator->passes()) {
+            // 验证成功
+            // 更新用户
+            $user = Auth::user();
+            $user->password = Hash::make( Input::get('password') );
+            if ($user->save()) {
+                // 更新成功
+                return Redirect::back()
+                    ->with('success', '<strong>密码修改成功。</strong>');
+            } else {
+                // 更新失败
+                return Redirect::back()
+                    ->withInput()
+                    ->with('error', '<strong>密码修改失败。</strong>');
+            }
+        } else {
+            // 验证失败，跳回
+            return Redirect::back()->withInput()->withErrors($validator);
+        }
+    }
+
+
 
 
 }

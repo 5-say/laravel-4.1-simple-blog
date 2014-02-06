@@ -1,5 +1,9 @@
-<?php namespace Authority;
+<?php
+namespace Authority;
 
-use Eloquent;
+class Activation extends \BaseModel
+{
 
-class Activation extends Eloquent {}
+    protected $table = 'activations';
+
+}

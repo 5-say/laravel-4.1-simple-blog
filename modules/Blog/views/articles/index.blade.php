@@ -1,6 +1,6 @@
 @extends('l.base')
 
-@section('title')文章 @stop
+@section('title'){{ $resourceName }}管理 @stop
 
 @section('beforeStyle')
     {{ style('bootstrap-3.0.3') }}
@@ -17,17 +17,17 @@ body
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active'=>'posts'))
+    @include('w.navbarAdmin', array('active'=>$resource))
 
     <div class="container panel" style="margin-top:2em;padding:1em;">
 
         @include('w.notification')
 
         <h3>
-            博客文章管理
+            {{ $resourceName }}管理
             <div class="pull-right">
-                <a href="{{ route('posts.create') }}" class="btn btn-sm btn-primary">
-                    添加新文章
+                <a href="{{ route($resource.'.create') }}" class="btn btn-sm btn-primary">
+                    添加新{{ $resourceName }}
                 </a>
             </div>
         </h3>
@@ -43,15 +43,15 @@ body
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($posts as $post)
+                    @foreach ($datas as $data)
                     <tr>
-                        <td>{{ $post->title }}</td>
-                        <td>{{ $post->comments()->count() }}</td>
-                        <td>{{ $post->created_at }}（{{ $post->friendly_created_at }}）</td>
+                        <td>{{ $data->title }}</td>
+                        <td>{{ $data->comments()->count() }}</td>
+                        <td>{{ $data->created_at }}（{{ $data->friendly_created_at }}）</td>
                         <td>
-                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-xs">编辑</a>
+                            <a href="{{ route($resource.'.edit', $data->id) }}" class="btn btn-xs">编辑</a>
                             <a href="javascript:void(0)" class="btn btn-xs btn-danger"
-                                 onclick="modal('{{ route('posts.destroy', $post->id) }}')">删除</a>
+                                 onclick="modal('{{ route($resource.'.destroy', $data->id) }}')">删除</a>
                         </td>
                     </tr>
                     @endforeach
@@ -60,7 +60,7 @@ body
         </div>
 
         <div class="pull-right" style="">
-            {{ pagination($posts, 'p.slider-3') }}
+            {{ pagination($datas, 'p.slider-3') }}
         </div>
 
     </div>
@@ -69,7 +69,7 @@ body
 $modalData['modal'] = array(
     'id'=>'myModal',
     'title'=>'系统提示',
-    'message'=>'确认删除此文章？',
+    'message'=>'确认删除此'.$resourceName.'？',
     'footer'=>
 '
     <form id="real-delete" action="" method="post">

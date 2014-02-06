@@ -1,6 +1,7 @@
 <?php
 
-class ResourceController extends BaseController {
+class BaseResource extends BaseController
+{
 
 	/**
 	 * 初始化
@@ -19,11 +20,8 @@ class ResourceController extends BaseController {
             $this->namespace.'::'.$this->resource.'.index',
             $this->namespace.'::'.$this->resource.'.create',
             $this->namespace.'::'.$this->resource.'.edit',
-        ), function($view) use($resource, $resourceName)
-        {
-            $view
-                ->with('resource', $resource)
-                ->with('resourceName', $resourceName);
+        ), function ($view) use ($resource, $resourceName) {
+            $view->with(compact('resource', 'resourceName'));
         });
 	}
 
@@ -80,12 +78,34 @@ class ResourceController extends BaseController {
     public function destroy($id)
     {
         $data = $this->model->find($id);
-        if ( is_null($data) )
+        if (is_null($data))
             return Redirect::back()->with('error', '没有找到对应的'.$this->resourceName.'。');
-        elseif ( $data->delete() )
+        elseif ($data->delete())
             return Redirect::back()->with('success', $this->resourceName.'删除成功。');
         else
             return Redirect::back()->with('warning', $this->resourceName.'删除失败。');
+    }
+
+    /**
+     * 资源回收站
+     * GET      /resource/recycled
+     * @param  int  $id
+     * @return Response
+     */
+    public function recycled()
+    {
+        // 
+    }
+
+    /**
+     * 资源还原动作
+     * PATCH      /resource/{id}
+     * @param  int  $id
+     * @return Response
+     */
+    public function restore($id)
+    {
+        // 
     }
 
     /**

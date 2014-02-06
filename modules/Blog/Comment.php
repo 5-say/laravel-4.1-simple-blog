@@ -6,11 +6,11 @@ class Comment extends \BaseModel {
 
     /**
      * 模型对象关系：归属文章
-     * @return object Blog\Post
+     * @return object Blog\Article
      */
-    public function post()
+    public function article()
     {
-        return $this->belongsTo('Post');
+        return $this->belongsTo('Blog\Article', 'article_id');
     }
 
     /**
@@ -19,7 +19,7 @@ class Comment extends \BaseModel {
      */
     public function user()
     {
-        return $this->belongsTo('Authority\User');
+        return $this->belongsTo('Authority\User', 'user_id');
     }
 
 

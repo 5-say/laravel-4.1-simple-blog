@@ -1,10 +1,12 @@
-<?php namespace Authority;
+<?php
+namespace Authority;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Hash;
 
-class User extends \BaseModel implements UserInterface, RemindableInterface {
+class User extends \BaseModel implements UserInterface, RemindableInterface
+{
 
     /**
      * The database table used by the model.

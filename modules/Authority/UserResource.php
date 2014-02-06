@@ -1,4 +1,5 @@
-<?php namespace Authority;
+<?php
+namespace Authority;
 
 use View;
 use Config;
@@ -9,7 +10,8 @@ use Auth;
 use Carbon\Carbon;
 use Hash;
 
-class UserController extends \BaseController {
+class UserResource extends \BaseResource
+{
 
     /**
      * 资源列表页面
