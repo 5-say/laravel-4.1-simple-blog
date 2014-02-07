@@ -1,81 +1,62 @@
-@extends('l.base')
+@extends('Admin::l.base', array('active' => $resource))
 
-@section('title'){{ $resourceName }}管理 @stop
-
-@section('beforeStyle')
-    {{ style('bootstrap-3.0.3') }}
-@stop
-
-@section('style')
-body
-{
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #eee;
-}
-@parent @stop
+@section('title') @parent {{ $resourceName }}管理 @stop
 
 @section('container')
 
-    @include('w.navbarAdmin', array('active' => $resource))
+    @include('w.notification')
 
-    <div class="container panel" style="margin-top:2em;padding:1em;">
-
-        @include('w.notification')
-
-        <h3>
-            {{ $resourceName }}管理
-            <div class="pull-right">
-                <a href="{{ route($resource.'.create') }}" class="btn btn-sm btn-primary">
-                    添加新{{ $resourceName }}
-                </a>
-            </div>
-        </h3>
-
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>身份</th>
-                        <th>邮箱</th>
-                        <th>注册时间</th>
-                        <th>最后登录时间</th>
-                        <th style="width:7em;text-align:center;">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $currentId = Auth::user()->id; ?>
-                    @foreach ($datas as $data)
-                    <tr>
-                        <td>{{ $data->is_admin ? '管理员' : '普通用户' }}</td>
-                        <td>{{ $data->email }}</td>
-                        <td>{{ $data->created_at }}（{{ $data->friendly_created_at }}）</td>
-                        <td>{{ $data->signin_at }}（{{ $data->friendly_signin_at }}）</td>
-                        <td>
-                            @if($data->id!=$currentId)
-                            <a href="{{ route($resource.'.edit', $data->id) }}" class="btn btn-xs">编辑</a>
-                            <a href="javascript:void(0)" class="btn btn-xs btn-danger"
-                                 onclick="modal('{{ route($resource.'.destroy', $data->id) }}')">删除</a>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <h3>
+        {{ $resourceName }}管理
+        <div class="pull-right">
+            <a href="{{ route($resource.'.create') }}" class="btn btn-sm btn-primary">
+                添加新{{ $resourceName }}
+            </a>
         </div>
+    </h3>
 
-        <div class="pull-right" style="">
-            {{ pagination($datas, 'p.slider-3') }}
-        </div>
-
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>身份</th>
+                    <th>邮箱</th>
+                    <th>注册时间</th>
+                    <th>最后登录时间</th>
+                    <th style="width:7em;text-align:center;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $currentId = Auth::user()->id; ?>
+                @foreach ($datas as $data)
+                <tr>
+                    <td>{{ $data->is_admin ? '管理员' : '普通用户' }}</td>
+                    <td>{{ $data->email }}</td>
+                    <td>{{ $data->created_at }}（{{ $data->friendly_created_at }}）</td>
+                    <td>{{ $data->signin_at }}（{{ $data->friendly_signin_at }}）</td>
+                    <td>
+                        @if($data->id!=$currentId)
+                        <a href="{{ route($resource.'.edit', $data->id) }}" class="btn btn-xs">编辑</a>
+                        <a href="javascript:void(0)" class="btn btn-xs btn-danger"
+                             onclick="modal('{{ route($resource.'.destroy', $data->id) }}')">删除</a>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
-    
+
+    <div class="pull-right" style="">
+        {{ pagination($datas, 'p.slider-3') }}
+    </div>
+
 <?php
 $modalData['modal'] = array(
-    'id' => 'myModal',
-    'title' => '系统提示',
+    'id'      => 'myModal',
+    'title'   => '系统提示',
     'message' => '确认删除此'.$resourceName.'？',
-    'footer'=>
+    'footer'  =>
 '
     <form id="real-delete" action="" method="post">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -90,9 +71,8 @@ $modalData['modal'] = array(
 
 @stop
 
-
 @section('end')
-    {{ script(array('jquery-1.10.2', 'bootstrap-3.0.3')) }}
+    @parent
     <script>
         function modal(href)
         {

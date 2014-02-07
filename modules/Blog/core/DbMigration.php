@@ -40,9 +40,9 @@ class core_DbMigration extends Migration
             $table->string('title', 100)->unique()->comment('标题');
             $table->string('slug', 100)->unique()->comment('文章缩略名');
             $table->text('content')->comment('内容');
-            $table->string('meta_title', 100)->nullable()->comment('SEO');
-            $table->string('meta_description')->nullable()->comment('SEO');
-            $table->string('meta_keywords')->nullable()->comment('SEO');
+            $table->string('meta_title', 100)->nullable()->comment('SEO 页面标题');
+            $table->string('meta_description')->nullable()->comment('SEO 页面描述');
+            $table->string('meta_keywords')->nullable()->comment('SEO 页面关键词');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,6 +1,6 @@
 @extends('l.base')
 
-@section('title')Demo @stop
+@section('title')Demo Blog @stop
 
 @section('beforeStyle')
     {{ style('bootstrap-3.0.3') }}
@@ -81,7 +81,11 @@ body
                         <p>{{ Str::limit($article->content, 200) }}</p>
                         <p>
                             <i class="glyphicon glyphicon-calendar"></i><span> {{ $article->created_at }}（{{ $article->friendly_created_at }}）</span>
-                            <a target="_blank" href="{{ route('blog.show', $article->slug) }}#comments" class="btn btn-default btn-xs" style="margin-top:-2px;"
+                            <a target="_blank" href="{{ route('blog.show', $article->slug) }}#comments">
+                                <i class="glyphicon glyphicon-share" style="font-size:0.5em;"></i>
+                            </a>
+                            <a href="{{ route('blog.show', $article->slug) }}#comments"
+                                class="btn btn-default btn-xs" style="margin-top:-2px;"
                                 role="button">评论（{{ $article->comments->count() }}）</a>
                         </p>
                     </div><!--/span-->

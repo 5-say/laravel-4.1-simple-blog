@@ -72,6 +72,7 @@ body
                     <div class="col-6 col-sm-6 col-lg-12 panel">
                         <h2>{{ $article->title }}</h2>
                         <p>{{ $article->content }}</p>
+                        <a name="comments"></a>
                         <p>
                             <i class="glyphicon glyphicon-calendar"></i><span> {{ $article->created_at }}（{{ $article->friendly_created_at }}）</span>
                             <a href="#" class="btn btn-default btn-xs" style="margin-top:-2px;" role="button">默认分类</a>
@@ -79,7 +80,6 @@ body
                     </div><!--/span-->
 
                     <div class="col-6 col-sm-6 col-lg-12 panel">
-                        <a name="comments"></a>
                         <h4>评论 - {{ $article->comments->count() }}</h4>
                         <ul class="media-list">
                             @foreach($article->comments as $comment)
@@ -115,8 +115,9 @@ body
                     <li class="list-group-item">
                         <h4>文章分类</h4>
                     </li>
-                    <li class="list-group-item"><a href="">默认分类</a></li>
-                    <li class="list-group-item"><a href="">其它分类</a></li>
+                    @foreach($categories as $category)
+                    <li class="list-group-item"><a href="">{{ $category->name }}</a></li>
+                    @endforeach
                 </ul>
             </div><!--/span-->
         </div><!--/row-->

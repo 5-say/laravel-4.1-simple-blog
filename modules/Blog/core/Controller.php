@@ -25,9 +25,10 @@ class core_Controller extends \BaseController
      */
     public function getBlogShow($slug)
     {
-        $article = Article::where('slug', $slug)->first();
+        $article    = Article::where('slug', $slug)->first();
         is_null($article) AND App::abort(404);
-        return View::make('Blog::show')->with(compact('article'));
+        $categories = Category::orderBy('sort_order')->get();
+        return View::make('Blog::show')->with(compact('article', 'categories'));
     }
 
     /**
