@@ -2,16 +2,10 @@
 
 @section('title') @parent 首页 @stop
 
-@section('style')
-.demo
-{
-    margin-top: 2em;
-    text-align: center;
-}
-@parent @stop
-
 @section('container')
 
-    <h1 class="demo">后台首页</h1>
+    <div style="height:30em;">
+        <h1 style="margin-top:2em; text-align:center;">后台首页</h1>
+    </div>
 
 @stop
