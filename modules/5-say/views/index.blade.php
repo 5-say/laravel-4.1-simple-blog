@@ -21,7 +21,7 @@ body
 }
 @parent @stop
 
-@section('container')
+@section('body')
 
 
     <div class="container">

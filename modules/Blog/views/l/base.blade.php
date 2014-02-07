@@ -16,14 +16,13 @@ body
 
 @section('body')
 
-    @include('Admin::w.navbar')
+    @include('Blog::w.navbar')
 
-    <div class="container panel" style="margin-top:5em; padding-bottom:1em;">
+    <div class="container" style="margin-top:5em; padding-bottom:1em;">
         @yield('container')
     </div>
 
 @stop
-
 
 @section('end')
     {{ script(array('jquery-1.10.2', 'bootstrap-3.0.3')) }}

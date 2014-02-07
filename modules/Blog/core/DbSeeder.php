@@ -19,10 +19,10 @@ class core_DbSeeder extends Seeder
 
         // 文章分类
         Category::truncate(); // 清空表
-        foreach (array('默认分类', '新分类一', '新分类二', '新分类三', '新分类四', '新分类五') as $key => $value) {
+        foreach (array('新分类一', '新分类二', '新分类三', '新分类四', '新分类五') as $key => $value) {
             Category::create(array(
                 'name'       => $value,
-                'sort_order' => $key,
+                'sort_order' => $key+1,
             ));
         }
         
@@ -30,7 +30,7 @@ class core_DbSeeder extends Seeder
         Article::truncate(); // 清空表
         for ($i = 1; $i < 60; $i++) {
             Article::create(array(
-                'category_id' => 1+$i%10,
+                'category_id' => 1+$i%5,
                 'user_id'     => $i,
                 'title'       => '标题'.$i,
                 'slug'        => 'slug-biao-ti-'.$i,
