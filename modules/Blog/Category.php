@@ -12,7 +12,7 @@ class Category extends \BaseModel
      */
     public function articles()
     {
-        return $this->belongsTo('Blog\Article', 'article_id');
+        return $this->hasMany('Blog\Article', 'category_id');
     }
 
 

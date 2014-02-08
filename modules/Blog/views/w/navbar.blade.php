@@ -45,7 +45,7 @@ $is_active = function($name='') use($active)
                 <li><a href="{{ route('admin') }}">进入后台</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        欢迎 - [ {{ Auth::user()->email }} ]
+                        [ {{ Auth::user()->email }} ]
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">

@@ -41,7 +41,7 @@
 <?php
 $is_active = function ($name='') use ($activeCategory)
 {
-    if ($activeCategory === $name)
+    if ($activeCategory == $name)
         return ' active';
     else
         return '';
@@ -54,9 +54,9 @@ $is_active = function ($name='') use ($activeCategory)
     </p>
     <div class="list-group">
         <span class="list-group-item"><h4>文章分类</h4></span>
-        <a class="list-group-item{{ $is_active('all') }}" href="">所有文章</a>
+        <a class="list-group-item{{ $is_active('all') }}" href="{{ route('home') }}">所有文章</a>
         @foreach($categories as $category)
-        <a class="list-group-item{{ $is_active($category->id) }}" href="">{{ $category->name }}</a>
+        <a class="list-group-item{{ $is_active($category->id) }}" href="{{ route('categoryArticles', $category->id) }}">{{ $category->name }}</a>
         @endforeach
     </div>
 </div><!--/span-->

@@ -7,6 +7,15 @@ class Article extends \BaseModel
     protected $table = 'articles';
 
     /**
+     * 模型对象关系：文章的分类
+     * @return object Blog\Category
+     */
+    public function category()
+    {
+        return $this->belongsTo('Blog\Category', 'category_id');
+    }
+
+    /**
      * 模型对象关系：文章的作者
      * @return object Authority\User
      */

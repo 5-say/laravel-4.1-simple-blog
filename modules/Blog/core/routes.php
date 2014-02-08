@@ -27,11 +27,13 @@ Route::group(array('prefix' => '/'), function () {
     $Blog = 'Blog\core_Controller@';
 
     # 博客首页
-    Route::get(          '/', array('as' => 'home', 'uses' => $Blog.'getIndex'));
+    Route::get('/', array('as' => 'home', 'uses' => $Blog.'getIndex'));
+    # 分类文章列表
+    Route::get('category/{id}', array('as' => 'categoryArticles', 'uses' => $Blog.'getCategoryArticles'));
     # 展示博客文章
-    Route::get(     '{slug}', array('as' => 'blog.show', 'uses' => $Blog.'getBlogShow'));
+    Route::get('{slug}', array('as' => 'blog.show', 'uses' => $Blog.'getBlogShow'));
     # 提交文章评论
-    Route::post(    '{slug}', $Blog.'postBlogComment');
+    Route::post('{slug}', $Blog.'postBlogComment');
 
     # 关于博客
     // Route::get(   'about-us', array('as' => 'aboutUs', 'uses' => $Blog.'getAboutUs'));

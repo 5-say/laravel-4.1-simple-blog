@@ -18,27 +18,21 @@ $is_active = function ($name = '') use ($active) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ route('admin') }}">Blog - Admin</a>
+            <a class="navbar-brand" href="{{ route('account') }}">用户中心</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li{{ $is_active('admin') }}><a href="{{ route('admin') }}">后台首页</a></li>
-                <li{{ $is_active('users') }}><a href="{{ route('users.index') }}">用户管理</a></li>
-                <li{{ $is_active('categories') }}><a href="{{ route('categories.index') }}">分类管理</a></li>
-                <li{{ $is_active('articles') }}><a href="{{ route('articles.index') }}">文章管理</a></li>
+                <li{{ $is_active('') }}><a href="{{ route('account.userInfo') }}">账号信息</a></li>
+                <li{{ $is_active('') }}><a href="{{ route('account.changePassword') }}">修改密码</a></li>
+                <li{{ $is_active('') }}><a href="{{ route('account.changePortrait') }}">更换头像</a></li>
+                <li{{ $is_active('') }}><a href="{{ route('account.myComments') }}">我的回复</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ route('home') }}">回到博客</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        [ {{ Auth::user()->email }} ] <b class="caret"></b>
+                <li class="">
+                    <a href="#" >
+                        [ {{ Auth::user()->email }} ]
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">账号信息</a></li>
-                        <li><a href="{{ route('changePassword') }}">修改密码</a></li>
-                        <li class="divider"></li>
-                        <li><a href="{{ route('logout') }}">退出</a></li>
-                    </ul>
                 </li>
             </ul>
         </div><!--/.nav-collapse -->

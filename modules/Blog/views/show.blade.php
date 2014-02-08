@@ -1,5 +1,7 @@
 @extends('Blog::l.base', array('active' => 'home'))
 
+@section('description'){{ $article->description }} @stop
+@section('keywords'){{ $article->keywords }} @stop
 @section('title'){{ $article->title }} - Simple - Blog @stop
 
 @section('container')
@@ -17,7 +19,6 @@
                     <a name="comments"></a>
                     <p>
                         <i class="glyphicon glyphicon-calendar"></i><span> {{ $article->created_at }}（{{ $article->friendly_created_at }}）</span>
-                        <a href="#" class="btn btn-default btn-xs" style="margin-top:-2px;" role="button">默认分类</a>
                     </p>
                 </div><!--/span-->
 
@@ -52,7 +53,7 @@
             </div><!--/row-->
         </div><!--/span-->
 
-        @include('Blog::w.sidebar', array('activeCategory' => 'all'))
+        @include('Blog::w.sidebar', array('activeCategory' => $article->category->id))
         
     </div><!--/row-->
 

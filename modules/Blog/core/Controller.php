@@ -11,11 +11,26 @@ use Auth;
 class core_Controller extends \BaseController
 {
 
+    /**
+     * 博客首页
+     * @return Respanse
+     */
     public function getIndex()
     {
         $articles   = Article::paginate(5);
         $categories = Category::orderBy('sort_order')->get();
         return View::make('Blog::index')->with(compact('articles', 'categories'));
+    }
+
+    /**
+     * 分类文章列表
+     * @return Respanse
+     */
+    public function getCategoryArticles($category_id)
+    {
+        $articles   = Article::where('category_id', $category_id)->paginate(5);
+        $categories = Category::orderBy('sort_order')->get();
+        return View::make('Blog::categoryArticles')->with(compact('articles', 'categories', 'category_id'));
     }
 
     /**
