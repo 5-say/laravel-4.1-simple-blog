@@ -32,16 +32,16 @@ $is_active = function ($name='') use ($active)
 @elseif(! Auth::user()->is_admin){{--普通登录用户--}}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        欢迎 - [ {{ Auth::user()->email }} ] <b class="caret"></b>
+                        [ {{ Auth::user()->email }} ]
+                        <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">账号信息</a></li>
-                        <li><a href="{{ route('changePassword') }}">修改密码</a></li>
+                        <li><a href="{{ route('account') }}">用户中心</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>
                 </li>
-@else{{--管理员--}}
+@elseif(Auth::user()->is_admin){{--管理员--}}
                 <li><a href="{{ route('admin') }}">进入后台</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -49,8 +49,7 @@ $is_active = function ($name='') use ($active)
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">账号信息</a></li>
-                        <li><a href="{{ route('account.changePassword') }}">修改密码</a></li>
+                        <li><a href="{{ route('account') }}">用户中心</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>

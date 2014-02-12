@@ -9,7 +9,7 @@ class BlogController extends BaseController
      */
     public function getIndex()
     {
-        $articles   = Article::paginate(5);
+        $articles   = Article::with('comments')->paginate(5);
         $categories = Category::orderBy('sort_order')->get();
         return View::make('Blog::index')->with(compact('articles', 'categories'));
     }

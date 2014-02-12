@@ -1,4 +1,4 @@
-@extends('Account::l.base', array('active' => ''))
+@extends('Account::l.base', array('active' => 'changePassword'))
 
 @section('title') @parent 修改密码 @stop
 
