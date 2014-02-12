@@ -27,5 +27,5 @@ module('Account');
 // 权限模块
 module('Authority', true);
 // 博客
-// module('Blog');
+module('Blog');
 
