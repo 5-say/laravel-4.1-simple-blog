@@ -52,7 +52,7 @@ function link_to_route($name, $title = null, $parameters = array(), $attributes 
 */
 
 /**
- * 无断点调试，结合 barryvdh/laravel-debugbar
+ * 无断点调试，可配合 barryvdh/laravel-debugbar 使用
  * @return void
  */
 function d()

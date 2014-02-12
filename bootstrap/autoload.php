@@ -3,7 +3,7 @@
 define('LARAVEL_START', microtime(true));
 
 // 引入自定义函数库
-if (file_exists($function = __DIR__.'/../app/functions.php'))
+if (file_exists($function = __DIR__.'/../modules/functions.php'))
 {
     require $function;
 }
