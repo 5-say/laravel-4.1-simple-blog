@@ -38,6 +38,12 @@
             <div class="tab-pane active" id="tab-general" style="margin:0 1em;">
 
                 <div class="form-group">
+                    <label for="category">分类</label>
+                    {{ $errors->first('category', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
+                    {{ Form::select('category', $categoryLists, 1, array('class' => 'form-control')) }}
+                </div>
+
+                <div class="form-group">
                     <label for="title">标题</label>
                     {{ $errors->first('title', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
                     <input class="form-control" type="text" name="title" id="title" value="{{ Input::old('title') }}" />

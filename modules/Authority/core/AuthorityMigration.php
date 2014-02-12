@@ -1,18 +1,16 @@
 <?php
-namespace Authority;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Schema;
 
-class core_DbMigration extends Migration
+class core_AuthorityMigration extends Migration
 {
 
     public function refresh()
     {
         $this->down();
         $this->up();
-        with(new core_DbSeeder)->run();
+        App::make('core_AuthoritySeeder')->run();
     }
 
     /**

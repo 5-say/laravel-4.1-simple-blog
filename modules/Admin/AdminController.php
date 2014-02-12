@@ -1,9 +1,6 @@
 <?php
-namespace Admin;
 
-use View;
-
-class core_Controller extends \BaseController
+class AdminController extends BaseController
 {
 
     /**

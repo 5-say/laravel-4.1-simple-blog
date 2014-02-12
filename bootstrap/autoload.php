@@ -2,6 +2,12 @@
 
 define('LARAVEL_START', microtime(true));
 
+// 引入自定义函数库
+if (file_exists($function = __DIR__.'/../app/functions.php'))
+{
+    require $function;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Composer Auto Loader

@@ -1,9 +1,4 @@
-<?php # 注意：此文件位于顶层命名空间！！！
-
-// 注册视图别名
-View::addNamespace('Authority', __DIR__.'/../views');
-// 注册配置别名（模块不使用独立配置的可以注释掉）
-Config::package('_modules/Authority', __DIR__, 'Authority');
+<?php
 // 覆盖原始 auth 配置
 Config::set('auth', Config::get('Authority::config'));
 
@@ -56,7 +51,7 @@ Route::filter('not.self', function ($route, $request) {
  */
 Route::group(array('prefix' => '/'), function () {
     
-    $Authority = 'Authority\core_Controller@';
+    $Authority = 'AuthorityController@';
 
     # 退出
     Route::get('logout', array('as' => 'logout', 'uses' => $Authority.'getLogout'));
@@ -87,7 +82,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function () {
     # 用户管理
     Route::group(array('prefix' => 'users'), function () {
         $resource   = 'users';
-        $controller = 'Authority\UserResource@';
+        $controller = 'UserResource@';
         Route::get(        '/' , array('as' => $resource.'.index'   , 'uses' => $controller.'index'  ));
         Route::get(   'create' , array('as' => $resource.'.create'  , 'uses' => $controller.'create' ));
         Route::post(       '/' , array('as' => $resource.'.store'   , 'uses' => $controller.'store'  ));
@@ -98,10 +93,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function () {
     });
 });
 /**
- * 用户后台
+ * 用户中心
  */
 Route::group(array('prefix' => 'account'), function () {
-    $Account = 'Authority\core_Controller@';
+    $Account = 'AuthorityController@';
     # 修改当前账号密码
     Route::get('change-password', array('as' => 'account.changePassword', 'uses' => $Account.'getChangePassword'));
     Route::put('change-password', $Account.'putChangePassword');

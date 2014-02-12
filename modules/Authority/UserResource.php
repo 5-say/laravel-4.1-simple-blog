@@ -1,23 +1,12 @@
 <?php
-namespace Authority;
 
-use View;
-use Config;
-use Input;
-use Validator;
-use Redirect;
-use Auth;
-use Carbon\Carbon;
-use Hash;
-
-class UserResource extends \BaseResource
+class UserResource extends BaseResource
 {
-
     /**
-     * 模块命名空间
+     * 资源视图目录
      * @var string
      */
-    protected $namespace = 'Authority';
+    protected $resourceView = 'Authority::admin.User';
 
     /**
      * 资源模型名称，初始化后转为模型实例
@@ -38,7 +27,7 @@ class UserResource extends \BaseResource
     protected $resourceTable = 'users';
 
     /**
-     * 资源名称
+     * 资源名称（中文）
      * @var string
      */
     protected $resourceName = '用户';

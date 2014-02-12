@@ -1,10 +1,6 @@
 <?php
-namespace Blog;
 
-use Seeder;
-use Eloquent;
-
-class core_DbSeeder extends Seeder
+class core_BlogSeeder extends Seeder
 {
 
     /**

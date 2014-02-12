@@ -1,9 +1,6 @@
 <?php
-namespace Account;
 
-use View;
-
-class core_Controller extends \BaseController
+class AccountController extends BaseController
 {
 
     /**

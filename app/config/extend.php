@@ -10,9 +10,11 @@
 return array(
 
     /**
-     * 网站信息配置
+     * 需要预定义的系统常量
      */
-    'webSiteName' => 'Demo',  //  网站名称
+    'define' => array(
+        'WEB_SITE_NAME' => 'Demo Blog',  //  网站名称
+    ),
 
     /**
      * 网站静态资源文件别名配置

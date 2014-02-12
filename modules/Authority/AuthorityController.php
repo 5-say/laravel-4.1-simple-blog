@@ -1,20 +1,6 @@
 <?php
-namespace Authority;
 
-use View;
-use Input;
-use Validator;
-use Redirect;
-use Mail;
-use Hash;
-use App;
-use Auth;
-use Carbon\Carbon;
-use Password;
-use Lang;
-use Config;
-
-class core_Controller extends \BaseController
+class AuthorityController extends BaseController
 {
     /**
      * 登录

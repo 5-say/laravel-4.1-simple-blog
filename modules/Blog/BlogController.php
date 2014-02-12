@@ -1,14 +1,6 @@
 <?php
-namespace Blog;
 
-use View;
-use Config;
-use App;
-use Input;
-use Redirect;
-use Auth;
-
-class core_Controller extends \BaseController
+class BlogController extends BaseController
 {
 
     /**
