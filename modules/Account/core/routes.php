@@ -26,10 +26,10 @@ Route::group(array('prefix' => 'account'), function () {
     # 用户中心首页
     Route::get('/', array('as' => 'account.userInfo', 'uses' => $Account.'getIndex'));
     # 用户中心首页
-    Route::get('/', array('as' => 'account.changePassword', 'uses' => $Account.'getIndex'));
+    // Route::get('/', array('as' => 'account.changePassword', 'uses' => $Account.'getIndex'));
     # 用户中心首页
     Route::get('/', array('as' => 'account.changePortrait', 'uses' => $Account.'getIndex'));
-    # 用户中心首页
+    # 我的评论管理
     Route::get('/', array('as' => 'account.myComments', 'uses' => $Account.'getIndex'));
 
 });

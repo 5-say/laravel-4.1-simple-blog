@@ -35,7 +35,7 @@ $is_active = function ($name = '') use ($active) {
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">账号信息</a></li>
-                        <li><a href="{{ route('changePassword') }}">修改密码</a></li>
+                        @if(0) <li><a href="{{ route('account9.changePassword') }}">修改密码</a></li> @endif
                         <li class="divider"></li>
                         <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>

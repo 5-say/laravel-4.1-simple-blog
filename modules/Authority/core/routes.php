@@ -56,7 +56,7 @@ Route::filter('not.self', function ($route, $request) {
  */
 Route::group(array('prefix' => '/'), function () {
     
-    $Authority = 'Authority\AuthorityController@';
+    $Authority = 'Authority\core_Controller@';
 
     # 退出
     Route::get('logout', array('as' => 'logout', 'uses' => $Authority.'getLogout'));
@@ -103,7 +103,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function () {
 Route::group(array('prefix' => 'account'), function () {
     $Account = 'Authority\core_Controller@';
     # 修改当前账号密码
-    Route::get('change-password', array('as' => 'changePassword', 'uses' => $Account.'getChangePassword'));
+    Route::get('change-password', array('as' => 'account.changePassword', 'uses' => $Account.'getChangePassword'));
     Route::put('change-password', $Account.'putChangePassword');
 });
 

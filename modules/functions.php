@@ -1,7 +1,11 @@
 <?php
+d();
+// 注册模块类文件自动载入
+ClassLoader::addDirectories(__DIR__);
+// 注册模块公共配置文件
+// 调用方法 Config::get('module::xxx');
+Config::package('5-say/modules', __DIR__, 'module');
 
-ClassLoader::addDirectories(__DIR__);                // 注册模块类文件自动载入
-Config::package('5-say/modules', __DIR__, 'module'); // 注册模块公共配置文件
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +24,7 @@ Config::package('5-say/modules', __DIR__, 'module'); // 注册模块公共配置
 function d()
 {
     if (class_exists('Barryvdh\Debugbar\Facade')) {
-        Barryvdh\Debugbar\Facade::disable();
+        Barryvdh\Debugbar\Facade::enable();
         array_map(function ($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
     } else {
         array_map(function ($x) { var_dump($x); }, func_get_args());
@@ -30,7 +34,7 @@ function d()
 function d_()
 {
     if (class_exists('Barryvdh\Debugbar\Facade')) {
-        Barryvdh\Debugbar\Facade::disable();
+        Barryvdh\Debugbar\Facade::enable();
         echo '<span></span>';
         array_map(function ($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
     } else {
@@ -45,7 +49,7 @@ function d_()
  * @param  string $comment    当存在同名参数时用以区分的注释字符串
  * @return 成功时返回写入到文件内数据的字节数，失败时返回FALSE
  */
-function change_config($configName, $newConfig, $comment='')
+function change_config($configName, $newConfig, $comment = '')
 {
     $oldConfig      = Config::get($configName);
     $pathArr        = explode('.', $configName);
@@ -86,7 +90,7 @@ function module($module)
  * @param  array        $attributes 标签中需要加入的其它参数的数组
  * @return string
  */
-function style($aliases, $attributes=array(), $interim='')
+function style($aliases, $attributes = array(), $interim = '')
 {
     if (is_array($aliases)) {
         foreach ($aliases as $key => $value) {
@@ -105,7 +109,7 @@ function style($aliases, $attributes=array(), $interim='')
  * @param  array        $attributes 标签中需要加入的其它参数的数组
  * @return string
  */
-function script($aliases, $attributes=array(), $interim='')
+function script($aliases, $attributes = array(), $interim = '')
 {
     if (is_array($aliases)) {
         foreach ($aliases as $key => $value) {
@@ -124,7 +128,7 @@ function script($aliases, $attributes=array(), $interim='')
  * @param  array  $attributes 标签中需要加入的其它参数的数组
  * @return string
  */
-function or_script($aliases, $attributes=array())
+function or_script($aliases, $attributes = array())
 {
     $jsAliases         = Config::get('module::webAssets.jsAliases');
     $url               = isset($jsAliases[$aliases]) ? $jsAliases[$aliases] : $aliases;
@@ -159,7 +163,7 @@ function friendly_date($theDate)
  * @param  string                          $viewName  分页视图名称
  * @return \Illuminate\View\View
  */
-function pagination(Illuminate\Pagination\Paginator $paginator, $viewName=null)
+function pagination(Illuminate\Pagination\Paginator $paginator, $viewName = null)
 {
     $viewName = $viewName ?: Config::get('view.pagination');
     $paginator->getEnvironment()->setViewName($viewName);
