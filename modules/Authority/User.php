@@ -1,11 +1,9 @@
 <?php
-namespace Authority;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
-use Hash;
 
-class User extends \BaseModel implements UserInterface, RemindableInterface
+class User extends BaseModel implements UserInterface, RemindableInterface
 {
 
     /**
@@ -58,8 +56,10 @@ class User extends \BaseModel implements UserInterface, RemindableInterface
      */
     public function getFriendlySigninAtAttribute()
     {
-        if ( is_null($this->signin_at) ) return '新账号未登录';
-        return friendly_date($this->signin_at);
+        if (is_null($this->signin_at))
+            return '新账号未登录';
+        else
+            return friendly_date($this->signin_at);
     }
 
 }

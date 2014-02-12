@@ -1,28 +1,31 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
-
 
 /**
- * 模块化
+ * 捕获无效参数异常
  */
-include base_path('modules/functions.php');
+App::error(function (InvalidArgumentException $exception) {
+    $debug = Config::get('app.debug', false);
+    // 获取异常消息、类型、核心内容
+    preg_match('/(\w+) \[(.+)\].+/', $exception->getMessage(), $messageArray);
+    list($message, $type, $content) = $messageArray;
+    switch ($type) {
+        case 'View':  // 没有找到对应的视图文件
+            if ($debug) return $message;
+            break;
+    }
+});
+
+
+
 // 开发辅助
 module('5-say');
-// 权限
-module('Authority');
-// 管理员后台
+// 后台
 module('Admin');
-// 用户后台
+// 用户中心
 module('Account');
+// 权限模块
+module('Authority', true);
 // 博客
 module('Blog');
+

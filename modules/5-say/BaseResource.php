@@ -1,49 +1,74 @@
 <?php
 
-class ArticleResource extends BaseResource
+class BaseResource extends BaseController
 {
     /**
      * 资源视图目录
      * @var string
      */
-    protected $resourceView = 'Blog::admin.Article';
+    protected $resourceView = '';
 
     /**
      * 资源模型名称，初始化后转为模型实例
      * @var string|Illuminate\Database\Eloquent\Model
      */
-    protected $model = 'Article';
+    protected $model = '';
 
     /**
      * 资源标识
      * @var string
      */
-    protected $resource = 'articles';
+    protected $resource = '';
 
     /**
      * 资源数据库表
      * @var string
      */
-    protected $resourceTable = 'articles';
+    protected $resourceTable = '';
 
     /**
      * 资源名称（中文）
      * @var string
      */
-    protected $resourceName = '文章';
+    protected $resourceName = '';
 
     /**
      * 自定义验证消息
      * @var array
      */
-    protected $validatorMessages = array(
-        'title.required'   => '请填写文章标题。',
-        'title.unique'     => '已有同名文章。',
-        'slug.required'    => '请填写文章 sulg。',
-        'slug.unique'      => '已有同名 sulg。',
-        'content.required' => '请填写文章内容。',
-        'category.exists'  => '请填选择正确的文章分类。',
-    );
+    protected $validatorMessages = array();
+
+    /**
+     * 初始化
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // 实例化资源模型
+        $this->model  = App::make($this->model);
+        // 视图合成器
+        $resource     = $this->resource;
+        $resourceName = $this->resourceName;
+        View::composer(array(
+            $this->resourceView.'.index',
+            $this->resourceView.'.create',
+            $this->resourceView.'.edit',
+        ), function ($view) use ($resource, $resourceName) {
+            $view->with(compact('resource', 'resourceName'));
+        });
+    }
+
+    /**
+     * 资源列表页面
+     * GET         /resource
+     * @return Response
+     */
+    public function index()
+    {
+        $datas = $this->model->paginate(15);
+        return View::make($this->resourceView.'.index')->with(compact('datas'));
+    }
 
     /**
      * 资源创建页面
@@ -52,8 +77,7 @@ class ArticleResource extends BaseResource
      */
     public function create()
     {
-        $categoryLists = Category::lists('name', 'id');
-        return View::make($this->resourceView.'.create')->with(compact('categoryLists'));
+        return View::make($this->resourceView.'.create');
     }
 
     /**
@@ -68,10 +92,7 @@ class ArticleResource extends BaseResource
         // 创建验证规则
         $unique = $this->unique();
         $rules  = array(
-            'title'    => 'required|'.$unique,
-            'slug'     => 'required|'.$unique,
-            'content'  => 'required',
-            'category' => 'exists:article_categories,id',
+            # --- --- --- --- --- --- --- --- --- --- 此处添加验证规则 #
         );
         // 自定义验证消息
         $messages = $this->validatorMessages;
@@ -81,14 +102,7 @@ class ArticleResource extends BaseResource
             // 验证成功
             // 添加资源
             $model = $this->model;
-            $model->user_id          = Auth::user()->id;
-            $model->category_id      = $data['category'];
-            $model->title            = e($data['title']);
-            $model->slug             = e($data['slug']);
-            $model->content          = e($data['content']);
-            $model->meta_title       = e($data['meta_title']);
-            $model->meta_description = e($data['meta_description']);
-            $model->meta_keywords    = e($data['meta_keywords']);
+            # --- --- --- --- --- --- --- --- --- --- 此处为模型对象的属性赋值 #
             if ($model->save()) {
                 // 添加成功
                 return Redirect::back()
@@ -106,6 +120,17 @@ class ArticleResource extends BaseResource
     }
 
     /**
+     * 资源展示页面
+     * GET         /resource/{id}
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
      * 资源编辑页面
      * GET         /resource/{id}/edit
      * @param  int  $id
@@ -114,8 +139,7 @@ class ArticleResource extends BaseResource
     public function edit($id)
     {
         $data = $this->model->find($id);
-        $categoryLists = Category::lists('name', 'id');
-        return View::make($this->resourceView.'.edit')->with(compact('data', 'categoryLists'));
+        return View::make($this->resourceView.'.edit')->with('data', $data);
     }
 
     /**
@@ -130,10 +154,7 @@ class ArticleResource extends BaseResource
         $data = Input::all();
         // 创建验证规则
         $rules = array(
-            'title'    => 'required|'.$this->unique('title', $id),
-            'slug'     => 'required|'.$this->unique('slug', $id),
-            'content'  => 'required',
-            'category' => 'exists:article_categories,id',
+            # --- --- --- --- --- --- --- --- --- --- 此处添加验证规则 #
         );
         // 自定义验证消息
         $messages  = $this->validatorMessages;
@@ -143,13 +164,7 @@ class ArticleResource extends BaseResource
             // 验证成功
             // 更新资源
             $model = $this->model->find($id);
-            $model->category_id      = $data['category'];
-            $model->title            = e($data['title']);
-            $model->slug             = e($data['slug']);
-            $model->content          = e($data['content']);
-            $model->meta_title       = e($data['meta_title']);
-            $model->meta_description = e($data['meta_description']);
-            $model->meta_keywords    = e($data['meta_keywords']);
+            # --- --- --- --- --- --- --- --- --- --- 此处为模型对象的属性赋值 #
             if ($model->save()) {
                 // 更新成功
                 return Redirect::back()
@@ -164,6 +179,59 @@ class ArticleResource extends BaseResource
             // 验证失败
             return Redirect::back()->withInput()->withErrors($validator);
         }
+    }
+
+    /**
+     * 资源删除动作
+     * DELETE      /resource/{id}
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        $data = $this->model->find($id);
+        if (is_null($data))
+            return Redirect::back()->with('error', '没有找到对应的'.$this->resourceName.'。');
+        elseif ($data->delete())
+            return Redirect::back()->with('success', $this->resourceName.'删除成功。');
+        else
+            return Redirect::back()->with('warning', $this->resourceName.'删除失败。');
+    }
+
+    /**
+     * 资源回收站
+     * GET      /resource/recycled
+     * @param  int  $id
+     * @return Response
+     */
+    public function recycled()
+    {
+        // 
+    }
+
+    /**
+     * 资源还原动作
+     * PATCH      /resource/{id}
+     * @param  int  $id
+     * @return Response
+     */
+    public function restore($id)
+    {
+        // 
+    }
+
+    /**
+     * 构造 unique 验证规则
+     * @param  string $column 字段名称
+     * @param  int    $id     排除指定 ID
+     * @return string
+     */
+    protected function unique($column = null, $id = null)
+    {
+        if (is_null($column))
+            return 'unique:'.$this->resourceTable;
+        else
+            return 'unique:'.$this->resourceTable.','.$column.','.$id;
     }
 
 

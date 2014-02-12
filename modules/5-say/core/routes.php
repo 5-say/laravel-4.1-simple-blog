@@ -1,9 +1,6 @@
 <?php
 include __DIR__.'/Controller.php';
 
-// 注册视图别名
-View::addNamespace('5-say', __DIR__.'/../views');
-
 /*
 |--------------------------------------------------------------------------
 | Functions

@@ -1,15 +1,8 @@
 <?php
-d();
-// 注册模块类文件自动载入
-ClassLoader::addDirectories(__DIR__);
-// 注册模块公共配置文件
-// 调用方法 Config::get('module::xxx');
-Config::package('5-say/modules', __DIR__, 'module');
-
 
 /*
 |--------------------------------------------------------------------------
-| 开发辅助函数
+| 复写官方函数
 |--------------------------------------------------------------------------
 |
 | 官方函数库路径
@@ -18,7 +11,48 @@ Config::package('5-say/modules', __DIR__, 'module');
 */
 
 /**
- * 无断点调试，结合 barryvdh/laravel-debugbar
+ * Generate a URL to a named route.
+ *
+ * @param  string  $route
+ * @param  string  $parameters
+ * @return string
+ */
+function route($route, $parameters = array())
+{
+    if (Route::getRoutes()->hasNamedRoute($route))
+        return app('url')->route($route, $parameters);
+    else
+        return 'javascript:void(0)';
+}
+
+/**
+ * Generate a HTML link to a named route.
+ *
+ * @param  string  $name
+ * @param  string  $title
+ * @param  array   $parameters
+ * @param  array   $attributes
+ * @return string
+ */
+function link_to_route($name, $title = null, $parameters = array(), $attributes = array())
+{
+    if (Route::getRoutes()->hasNamedRoute($name))
+        return app('html')->linkRoute($name, $title, $parameters, $attributes);
+    else
+        return '<a href="javascript:void(0)"'.HTML::attributes($attributes).'>'.$name.'</a>';
+}
+
+
+
+/*
+|--------------------------------------------------------------------------
+| 开发辅助函数
+|--------------------------------------------------------------------------
+|
+*/
+
+/**
+ * 无断点调试，可配合 barryvdh/laravel-debugbar 使用
  * @return void
  */
 function d()
@@ -76,12 +110,23 @@ function change_config($configName, $newConfig, $comment = '')
 
 /**
  * 载入模块（用于模块化开发）
- * @param  string $module 模块名称
+ * @param  string  $module    模块名称
+ * @param  boolean $hasConfig 该模块是否使有独立配置文件
+ * @param  boolean $hasConfig 该模块是否使有独立配置文件
  * @return void
  */
-function module($module)
+function module($module, $hasConfig = false, $hasView = true)
 {
-    include __DIR__.'/'.$module.'/core/routes.php';
+    $path = base_path('modules/'.$module);
+    // 注册模块类文件自动载入
+    ClassLoader::addDirectories($path);
+    // 注册模块视图别名
+    $view = View::addNamespace($module, $path.'/views');
+    // 注册模块配置文件
+    // 调用方法 Config::get('moduleName::xxx');
+    $hasConfig AND Config::package('5-say/modules', $path.'/core', $module);
+    // 引入模块路由文件
+    include $path.'/core/routes.php';
 }
 
 /**
@@ -98,7 +143,7 @@ function style($aliases, $attributes = array(), $interim = '')
         }
         return $interim;
     }
-    $cssAliases = Config::get('module::webAssets.cssAliases');
+    $cssAliases = Config::get('extend.webAssets.cssAliases');
     $url        = isset($cssAliases[$aliases]) ? $cssAliases[$aliases] : $aliases;
     return HTML::style($url, $attributes);
 }
@@ -117,7 +162,7 @@ function script($aliases, $attributes = array(), $interim = '')
         }
         return $interim;
     }
-    $jsAliases = Config::get('module::webAssets.jsAliases');
+    $jsAliases = Config::get('extend.webAssets.jsAliases');
     $url       = isset($jsAliases[$aliases]) ? $jsAliases[$aliases] : $aliases;
     return HTML::script($url, $attributes);
 }
@@ -130,7 +175,7 @@ function script($aliases, $attributes = array(), $interim = '')
  */
 function or_script($aliases, $attributes = array())
 {
-    $jsAliases         = Config::get('module::webAssets.jsAliases');
+    $jsAliases         = Config::get('extend.webAssets.jsAliases');
     $url               = isset($jsAliases[$aliases]) ? $jsAliases[$aliases] : $aliases;
     $attributes['src'] = URL::asset($url);
     return "'<script".HTML::attributes($attributes).">'+'<'+'/script>'";

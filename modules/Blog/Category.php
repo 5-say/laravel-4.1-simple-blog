@@ -1,18 +1,17 @@
 <?php
-namespace Blog;
 
-class Category extends \BaseModel
+class Category extends BaseModel
 {
 
     protected $table = 'article_categories';
 
     /**
      * 模型对象关系：分类下的文章
-     * @return object Blog\Article
+     * @return object Illuminate\Database\Eloquent\Collection
      */
     public function articles()
     {
-        return $this->hasMany('Blog\Article', 'category_id');
+        return $this->hasMany('Article', 'category_id');
     }
 
 

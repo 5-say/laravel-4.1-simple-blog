@@ -13,9 +13,9 @@ class core_Controller extends BaseController
         $directories = array();
         foreach (File::directories($beginPath) as $value) {
             $dir = basename($value);
-            $directories[$dir] = $dir.' 模块';
+            $directories[$dir] = '模块 '.$dir;
         }
-        unset($directories['5-say'], $directories['views']);
+        unset($directories['5-say'], $directories['commonViews']);
         return View::make('5-say::index')->with(compact('directories'));
     }
 
@@ -25,17 +25,17 @@ class core_Controller extends BaseController
      */
     public function putRefresh()
     {
-        $directory = Input::get('refresh');
-        $exists    = File::exists(__DIR__.'/../../'.$directory.'/core/DbMigration.php');
-        if (! $exists) {
+        $module    = Input::get('refresh');
+        $migration = 'core_'.$module.'Migration';
+        if (! class_exists($migration)) {
             return Redirect::back()
                 ->withInput()
-                ->withErrors(array('err' => $directory.' 模块，迁移文件不存在。'));
+                ->withErrors(array('err' => $module.' 模块，迁移文件不存在。'));
         } else {
-            App::make($directory.'\core_DbMigration')->refresh();
+            App::make($migration)->refresh();
             return Redirect::back()
                 ->withInput()
-                ->withErrors(array('succ' => $directory.' 模块，迁移完成。'));
+                ->withErrors(array('succ' => $module.' 模块，迁移完成。'));
         }
     }
 
@@ -45,17 +45,17 @@ class core_Controller extends BaseController
      */
     public function putSeed()
     {
-        $directory = Input::get('seed');
-        $exists    = File::exists(__DIR__.'/../../'.$directory.'/core/DbSeeder.php');
-        if (! $exists) {
+        $module = Input::get('seed');
+        $seeder = 'core_'.$module.'Seeder';
+        if (! class_exists($seeder)) {
             return Redirect::back()
                 ->withInput()
-                ->withErrors(array('err' => $directory.' 模块，填充文件不存在。'));
+                ->withErrors(array('err' => $module.' 模块，填充文件不存在。'));
         } else {
-            App::make($directory.'\core_DbSeeder')->run();
+            App::make($seeder)->run();
             return Redirect::back()
                 ->withInput()
-                ->withErrors(array('succ' => $directory.' 模块，填充完成。'));
+                ->withErrors(array('succ' => $module.' 模块，填充完成。'));
         }
     }
 

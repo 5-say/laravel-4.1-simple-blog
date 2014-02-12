@@ -1,19 +1,12 @@
 <?php
-namespace Blog;
 
-use Input;
-use Validator;
-use View;
-use Redirect;
-
-class CategoryResource extends \BaseResource
+class CategoryResource extends BaseResource
 {
-
     /**
-     * 模块命名空间
+     * 资源视图目录
      * @var string
      */
-    protected $namespace = 'Blog';
+    protected $resourceView = 'Blog::admin.Category';
 
     /**
      * 资源模型名称，初始化后转为模型实例
@@ -34,10 +27,10 @@ class CategoryResource extends \BaseResource
     protected $resourceTable = 'article_categories';
 
     /**
-     * 资源名称
+     * 资源名称（中文）
      * @var string
      */
-    protected $resourceName = '分类';
+    protected $resourceName = '文章分类';
 
     /**
      * 自定义验证消息
@@ -55,10 +48,10 @@ class CategoryResource extends \BaseResource
      * GET         /resource
      * @return Response
      */
-    protected function index()
+    public function index()
     {
         $datas = $this->model->orderBy('sort_order')->paginate(15);
-        return View::make($this->namespace.'::'.$this->resource.'.index')->with(compact('datas'));
+        return View::make($this->resourceView.'.index')->with(compact('datas'));
     }
 
     /**

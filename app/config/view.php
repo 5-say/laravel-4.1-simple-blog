@@ -15,7 +15,7 @@ return array(
 
 	'paths' => array(
 		__DIR__.'/../views',
-		base_path('modules/views'), // 模块公共视图目录
+		__DIR__.'/../../modules/commonViews', // 附加模块公共视图目录
 	),
 
 	/*

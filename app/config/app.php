@@ -54,7 +54,7 @@ return array(
 	*/
 
 	// 'locale' => 'en',
-    'locale' => 'zh-CN',
+	'locale' => 'zh-CN',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -108,8 +108,6 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-
-		'Barryvdh\Debugbar\ServiceProvider',
 
 	),
 

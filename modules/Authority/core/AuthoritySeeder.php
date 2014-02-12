@@ -1,11 +1,6 @@
 <?php
-namespace Authority;
 
-use Seeder;
-use Eloquent;
-use Hash;
-
-class core_DbSeeder extends Seeder
+class core_AuthoritySeeder extends Seeder
 {
     /**
      * Run the database seeds.
