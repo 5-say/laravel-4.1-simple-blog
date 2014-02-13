@@ -75,6 +75,7 @@ Route::group(array('prefix' => '/'), function () {
         Route::post('forgot-password/{token}', $Authority.'postReset');
     });
 });
+
 /**
  * 管理员后台
  */
@@ -92,11 +93,12 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function () {
         Route::delete(  '{id}' , array('as' => $resource.'.destroy' , 'uses' => $controller.'destroy'))->before('not.self');
     });
 });
+
 /**
  * 用户中心
  */
 Route::group(array('prefix' => 'account'), function () {
-    $Account = 'AuthorityController@';
+    $Account = 'UserAccount@';
     # 修改当前账号密码
     Route::get('change-password', array('as' => 'account.changePassword', 'uses' => $Account.'getChangePassword'));
     Route::put('change-password', $Account.'putChangePassword');
