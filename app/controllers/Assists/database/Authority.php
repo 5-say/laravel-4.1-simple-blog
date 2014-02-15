@@ -73,7 +73,6 @@ class Assists_database_Authority
     {
         // 强制解除 Eloquent::create() 批量赋值限制
         Eloquent::unguard();
-
         // 用户
         User::truncate(); // 清空表
         $password = Hash::make('111111');
@@ -88,7 +87,7 @@ class Assists_database_Authority
             'password' => $password,
             ));
         }
-
     }
+
 
 }

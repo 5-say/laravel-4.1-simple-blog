@@ -5,13 +5,17 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends BaseModel implements UserInterface, RemindableInterface
 {
-
     /**
-     * The database table used by the model.
-     *
+     * 数据库表名称（不包含前缀）
      * @var string
      */
     protected $table = 'users';
+
+    /**
+     * 软删除
+     * @var boolean
+     */
+    protected $softDelete = true;
 
     /**
      * The attributes excluded from the model's JSON form.

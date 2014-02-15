@@ -1,22 +1,22 @@
-@extends('l.authority', array('active' => 'signup'))
+@extends('l.authority', array('active' => 'signin'))
 
-@section('title') 注册 @parent @stop
+@section('title') 密码重置 @parent @stop
 
 @section('style')
     @parent
-    .form-signup {
+    .form-register {
         max-width: 330px;
         padding: 15px;
         margin: 0 auto;
     }
-    .form-signup .form-signup-heading,
-    .form-signup .checkbox {
+    .form-register .form-register-heading,
+    .form-register .checkbox {
         margin-bottom: 10px;
     }
-    .form-signup .checkbox {
+    .form-register .checkbox {
         font-weight: normal;
     }
-    .form-signup .form-control {
+    .form-register .form-control {
         position: relative;
         font-size: 16px;
         height: auto;
@@ -25,22 +25,22 @@
            -moz-box-sizing: border-box;
                 box-sizing: border-box;
     }
-    .form-signup input{
+    .form-register input{
         margin-top: 10px;
     }
-    .form-signup button{
+    .form-register button{
         margin-top: 10px;
     }
-    .form-signup strong.error{
+    .form-register strong.error{
         color: #b94a48;
     }
 @stop
 
 @section('container')
 
-    {{ Form::open(array('class' => 'form-signup', 'role' => 'form')) }}
-        <h2 class="form-signup-heading">用户注册</h2>
-        <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" placeholder="邮箱" required autofocus>
+    {{ Form::open(array('class' => 'form-register', 'role' => 'form')) }}
+        <h2 class="form-register-heading">密码重置</h2>
+        <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" placeholder="请输入您注册时所使用的邮箱" required autofocus>
         {{ $errors->first('email', '<strong class="error">:message</strong>') }}
         <div class="input-group">
             <input name="password" type="password" class="form-control" placeholder="密码" required>
@@ -50,11 +50,17 @@
         </div>
         {{ $errors->first('password', '<strong class="error">:message</strong>') }}
         <input name="password_confirmation" type="password" class="form-control" placeholder="确认密码" required>
-        <button class="btn btn-lg btn-success btn-block" type="submit">注 册</button>
+        <input type="hidden" name="token" value="{{ $token }}">
+        <button class="btn btn-lg btn-danger btn-block" type="submit">重 置</button>
+        @if( Session::get('error') )
+        <div class="alert alert-warning alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>{{ Session::get('error') }}</strong>
+        </div>
+        @endif
     {{ Form::close() }}
 
 @stop
-
 
 @section('end')
     @parent

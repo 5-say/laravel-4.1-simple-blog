@@ -1,25 +1,7 @@
 <?php
 
-class Authority_IndexController extends BaseController
+class AuthorityController extends BaseController
 {
-    /**
-     * 初始化
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * 页面：默认
-     * @return Response
-     */
-    public function getIndex()
-    {
-        return __FILE__;
-    }
-
     /**
      * 页面：登录
      * @return Response
@@ -228,6 +210,5 @@ class Authority_IndexController extends BaseController
                 return Redirect::to('/');
         }
     }
-
 
 }

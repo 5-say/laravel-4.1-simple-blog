@@ -2,79 +2,106 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application & Route Filters
+| 注册应用程序事件，执行顺序如下：
 |--------------------------------------------------------------------------
 |
-| Below you will find the "before" and "after" events for the application
-| which may be used to do any work before or after a request into your
-| application. Here you may also register your custom route filters.
+| 1.执行 应用程序事件   App::before   参数 $request
+| 2.执行 前置过滤器   Route::filter   参数 $route, $request
+| 
+| 3.执行（之前注册进路由的）匿名回调函数或相应的控制器方法，并取得响应实例 $response
+| 
+| 4.执行 后置过滤器   Route::filter   参数 $route, $request, $response
+| 5.执行 应用程序事件   App::after    参数 $request, $response
+| 
+| 6.向客户端返回响应实例 $response
+| 
+| 7.执行 应用程序事件   App::finish   参数 $request, $response
+| 8.执行 应用程序事件   App::shutdown 参数 $application
 |
 */
 
-// App::before(function($request)
-// {
-// 	//
-// });
+# App::before(function ($request) {});
 
+# App::after(function ($request, $response) {});
 
-// App::after(function($request, $response)
-// {
-// 	//
-// });
+# App::finish(function ($request, $response) {});
+
+# App::shutdown(function($application) {});
+
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Filters
+| [前置] 过滤器
 |--------------------------------------------------------------------------
-|
-| The following filters are used to verify that the user of the current
-| session is logged into this application. The "basic" filter easily
-| integrates HTTP Basic authentication for quick, simple checking.
+# Route::filter('beforeFilter', function ($route, $request) {});
 |
 */
 
-// Route::filter('auth', function()
-// {
-// 	if (Auth::guest()) return Redirect::guest('login');
-// });
 
-
-// Route::filter('auth.basic', function()
-// {
-// 	return Auth::basic();
-// });
-
-/*
-|--------------------------------------------------------------------------
-| Guest Filter
-|--------------------------------------------------------------------------
-|
-| The "guest" filter is the counterpart of the authentication filters as
-| it simply checks that the current user is not logged in. A redirect
-| response will be issued if they are, which you may freely change.
-|
-*/
-
-// Route::filter('guest', function()
-// {
-// 	if (Auth::check()) return Redirect::to('/');
-// });
-
-/*
-|--------------------------------------------------------------------------
-| CSRF Protection Filter
-|--------------------------------------------------------------------------
-|
-| The CSRF filter is responsible for protecting your application against
-| cross-site request forgery attacks. If this special token in a user
-| session does not match the one given in this request, we'll bail.
-|
-*/
-
+# CSRF保护过滤器，防止跨站点请求伪造攻击
 Route::filter('csrf', function()
 {
-	if (Session::token() != Input::get('_token'))
-	{
-		throw new Illuminate\Session\TokenMismatchException;
-	}
+    if (Session::token() != Input::get('_token'))
+        throw new Illuminate\Session\TokenMismatchException;
 });
+
+# 必须是管理员
+Route::filter('admin', function () {
+    // 拦截非管理员用户，跳转回上一页面
+    if (! Auth::user()->is_admin) return Redirect::back();
+});
+
+# 必须是登录用户
+Route::filter('auth', function () {
+    // 拦截未登录用户并记录当前 URL，跳转到登录页面
+    if (Auth::guest()) return Redirect::guest(route('signin'));
+});
+
+# HTTP 基础身份验证过滤器 - 单次弹窗登录验证
+Route::filter('auth.basic', function () {
+    return Auth::basic();
+});
+
+# 必须是游客（较少应用）
+Route::filter('guest', function () {
+    // 拦截已登录用户
+    if (Auth::check()) return Redirect::to('/');
+});
+
+# 禁止对自己的账号进行危险操作
+Route::filter('not.self', function ($route) {
+    // 拦截自身用户 ID
+    if (Auth::user()->id == $route->parameter('id'))
+        return Redirect::back();
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
+| [后置] 过滤器
+|--------------------------------------------------------------------------
+# Route::filter('afterFilter', function ($route, $request, $response) {});
+|
+*/
+
+
+
+/*
+|--------------------------------------------------------------------------
+| 事件监控
+|--------------------------------------------------------------------------
+|
+*/
+# 用户登录事件
+Event::listen('auth.login', function ($user, $remember) {
+    // 记录最后登录时间
+    $user->signin_at = new Carbon;
+    $user->save();
+    // 后期可附加权限相关操作
+    // ...
+});
+# 用户退出事件
+// Event::listen('auth.logout', function ($user) {
+//     // 
+// });

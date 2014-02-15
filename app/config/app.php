@@ -109,7 +109,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		'Barryvdh\Debugbar\ServiceProvider',
+		// 'Barryvdh\Debugbar\ServiceProvider',
 
 	),
 
@@ -176,6 +176,8 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
+
+		'Carbon'          => 'Carbon\Carbon',
 
 	),
 

@@ -2,12 +2,11 @@
 
 class BaseModel extends Eloquent
 {
-
     /**
-     * 开启软删除
+     * 软删除
      * @var boolean
      */
-    protected $softDelete = true;
+    protected $softDelete = false;
 
     /**
      * 访问器：友好的创建时间

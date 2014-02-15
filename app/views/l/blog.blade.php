@@ -18,7 +18,7 @@ body
 
     @include('w.blogNavbar')
 
-    <div class="container panel" style="margin-top:5em; padding-bottom:1em;">
+    <div class="container" style="margin-top:5em; padding-bottom:1em;">
         @yield('container')
     </div>
 

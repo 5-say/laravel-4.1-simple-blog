@@ -1,6 +1,6 @@
-@extends('l.authority')
+@extends('l.authority', array('active' => 'signin'))
 
-@section('title') @parent 激活成功 @stop
+@section('title') 激活成功 @parent @stop
 
 @section('container')
 
