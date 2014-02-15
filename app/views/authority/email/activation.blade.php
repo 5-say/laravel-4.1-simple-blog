@@ -1,0 +1,1 @@
+authority/email/activation.blade.php
