@@ -76,11 +76,11 @@ class Assists_database_Authority
         // 用户
         User::truncate(); // 清空表
         $password = Hash::make('111111');
-        // User::create(array(
-        //     'email'    => 'bcw.5@foxmail.com',
-        //     'password' => $password,
-        //     'is_admin' => 1,
-        // ));
+        User::create(array(
+            'email'    => 'admin@demo.com',
+            'password' => $password,
+            'is_admin' => 1,
+        ));
         for ($i = 1; $i < 60; $i++) {
             User::create(array(
             'email'    => 'a'.$i.'@a.com',

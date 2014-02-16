@@ -120,12 +120,15 @@ Route::get('/5-say/make/controller/{controller}/{method}', array('as' => 'makeCo
  */
 App::error(function (InvalidArgumentException $exception) {
     // 获取异常消息、类型、核心内容
-    preg_match('/(\w+) \[(.+)\].+/', $exception->getMessage(), $messageArray);
+    preg_match('/([\w ]+) \[(.+)\].+/', $exception->getMessage(), $messageArray);
     list($message, $type, $content) = $messageArray;
     switch ($type) {
         case 'View':  // 没有找到对应的视图文件
             $link = link_to_route('makeView', '创建视图 '.$content, $content);
             return Response::make($link);
+            break;
+        case 'No hint path defined for':  // 没有找到对应的视图别名
+            return Response::make('没有找到对应的视图别名 '.$content.'::');
             break;
     }
 });

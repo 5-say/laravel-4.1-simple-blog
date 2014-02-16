@@ -38,6 +38,9 @@ Route::group(array('prefix' => 'auth'), function () {
 |--------------------------------------------------------------------------
 */
 Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function () {
+    $Admin = 'AdminController@';
+    # 后台首页
+    Route::get('/', array('as' => 'admin', 'uses' => $Admin.'getIndex'));
     # 用户管理
     Route::group(array('prefix' => 'users'), function () {
         $resource   = 'users';

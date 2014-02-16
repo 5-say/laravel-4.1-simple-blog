@@ -1,6 +1,5 @@
 <?php
-$is_active = function ($name='') use ($active)
-{
+$is_active = function ($name = '') use ($active) {
     if ($active === $name)
         return ' class="active"';
     else
@@ -19,31 +18,20 @@ $is_active = function ($name='') use ($active)
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ route('home') }}">Demo</a>
+            <a class="navbar-brand" href="{{ route('account') }}">用户中心</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li{{ $is_active('home') }}><a href="{{ route('home') }}">首页</a></li>
+                <li{{ $is_active('userInfo') }}><a href="{{ route('account.userInfo') }}">账号信息</a></li>
+                <li{{ $is_active('changePassword') }}><a href="{{ route('account.changePassword') }}">修改密码</a></li>
+                <li{{ $is_active('changePortrait') }}><a href="{{ route('account.changePortrait') }}">编辑头像</a></li>
+                <li{{ $is_active('myComments') }}><a href="{{ route('account.myComments') }}">我的回复</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-@if(Auth::guest()){{--游客--}}
-                <li{{ $is_active('signin') }}><a href="{{ route('signin') }}">登录</a></li>
-                <li{{ $is_active('signup') }}><a href="{{ route('signup') }}">注册</a></li>
-@elseif(! Auth::user()->is_admin){{--普通登录用户--}}
-                <li><a href="{{ route('account') }}">用户中心</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        [ {{ Auth::user()->email }} ]
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ route('logout') }}">退出</a></li>
-                        <li class="divider"></li>
-                    </ul>
-                </li>
-@elseif(Auth::user()->is_admin){{--管理员--}}
+                @if(Auth::user()->is_admin)
                 <li><a href="{{ route('admin') }}">进入后台</a></li>
-                <li><a href="{{ route('account') }}">用户中心</a></li>
+                @endif
+                <li><a href="{{ route('home') }}">回到博客</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         [ {{ Auth::user()->email }} ]
@@ -54,7 +42,6 @@ $is_active = function ($name='') use ($active)
                         <li class="divider"></li>
                     </ul>
                 </li>
-@endif
             </ul>
         </div><!--/.nav-collapse -->
     </div>

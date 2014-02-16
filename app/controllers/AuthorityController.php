@@ -29,7 +29,7 @@ class AuthorityController extends BaseController
             // 登录失败，跳回
             return Redirect::back()
                 ->withInput()
-                ->withErrors('attempt', '“邮箱”或“密码”错误，请重新登录。');
+                ->withErrors(array('attempt' => '“邮箱”或“密码”错误，请重新登录。'));
         }
     }
 
