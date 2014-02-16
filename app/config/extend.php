@@ -10,13 +10,6 @@
 return array(
 
     /**
-     * 需要预定义的系统常量
-     */
-    'define' => array(
-        'WEB_SITE_NAME' => 'Demo Blog',  //  网站名称
-    ),
-
-    /**
      * 网站静态资源文件别名配置
      */
     'webAssets' => array(
