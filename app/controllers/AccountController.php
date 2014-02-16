@@ -26,7 +26,7 @@ class AccountController extends BaseController
      */
     public function putChangePassword()
     {
-        // 获取所有表单数据.
+        // 获取所有表单数据
         $data = Input::all();
         // 验证旧密码
         if (! Hash::check($data['password_old'], Auth::user()->password) )
@@ -79,7 +79,49 @@ class AccountController extends BaseController
      */
     public function putChangePortrait()
     {
-        // 
+        // 获取所有表单数据
+        $data  = Input::all();
+        // 创建验证规则
+        $rules = array(
+            'portrait' => 'required|mimes:jpeg,gif,png|max:1024',
+        );
+        // 自定义验证消息
+        $messages = array(
+            'portrait.required' => '请选择需要上传的图片。',
+            'portrait.mimes'    => '请上传 :values 格式的图片。',
+            'portrait.max'      => '图片的大小请控制在 1M 以内。',
+        );
+        // 开始验证
+        $validator = Validator::make($data, $rules, $messages);
+        if ($validator->passes()) {
+            // 验证成功
+            $image    = Input::file('portrait');
+            $ext      = $image->guessClientExtension();  // 根据 mime 类型取得真实拓展名
+            $fullname = $image->getClientOriginalName(); // 客户端文件名，包括客户端拓展名
+            $hashname = date('H.i.s').'-'.md5($fullname).'.'.$ext; // 哈希处理过的文件名，包括真实拓展名
+            // 图片信息入库
+            $user           = Auth::user();
+            $oldImage       = $user->portrait;
+            $user->portrait = $hashname;
+            $user->save();
+            // 存储不同尺寸的图片
+            $portrait = Image::make($image->getRealPath());
+            $portrait->resize(220, 220)->save(public_path('portrait/large/'.$hashname));
+            $portrait->resize(128, 128)->save(public_path('portrait/medium/'.$hashname));
+            $portrait->resize(64, 64)->save(public_path('portrait/small/'.$hashname));
+            // 删除旧头像
+            File::delete(
+                public_path('portrait/large/'.$oldImage),
+                public_path('portrait/medium/'.$oldImage),
+                public_path('portrait/small/'.$oldImage)
+            );
+            // dd($hashname, public_path('portrait/large/'.$hashname));
+            // 返回成功信息
+            return Redirect::back()->with('success', '操作成功。');
+        } else {
+            // 验证失败
+            return Redirect::back()->with('error', $validator->messages()->first());
+        }
     }
 
 

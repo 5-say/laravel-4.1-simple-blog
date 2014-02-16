@@ -117,10 +117,3 @@ Route::group(array(), function () {
 | 特殊功能
 |--------------------------------------------------------------------------
 */
-# ident 头像生成
-Route::get('ident/{email}/{size?}', function ($email, $size = 64) {
-    $identicon = new Identicon\Identicon();
-    // $identicon->displayImage('bcw.5@foxmail.com');
-    // $identicon->displayImage('admin@dem2.com', 128);
-    echo $identicon->getImageDataUri('admin@dem2.com', 128);
-});

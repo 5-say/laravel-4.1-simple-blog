@@ -70,10 +70,10 @@ class User extends BaseModel implements UserInterface, RemindableInterface
      * 访问器：用户头像（大）
      * @return string 用户头像的 URI
      */
-    public function getPortraitLargeAttribute($value)
+    public function getPortraitLargeAttribute()
     {
-        if ($value)
-            return asset('portrait/large/'.$value);
+        if ($this->portrait)
+            return asset('portrait/large/'.$this->portrait);
         else
             return with(new Identicon)->getImageDataUri($this->email, 220);
     }
@@ -82,10 +82,10 @@ class User extends BaseModel implements UserInterface, RemindableInterface
      * 访问器：用户头像（中）
      * @return string 用户头像的 URI
      */
-    public function getPortraitMediumAttribute($value)
+    public function getPortraitMediumAttribute()
     {
-        if ($value)
-            return asset('portrait/medium/'.$value);
+        if ($this->portrait)
+            return asset('portrait/medium/'.$this->portrait);
         else
             return with(new Identicon)->getImageDataUri($this->email, 128);
     }
@@ -94,10 +94,10 @@ class User extends BaseModel implements UserInterface, RemindableInterface
      * 访问器：用户头像（小）
      * @return string 用户头像的 URI
      */
-    public function getPortraitSmallAttribute($value)
+    public function getPortraitSmallAttribute()
     {
-        if ($value)
-            return asset('portrait/small/'.$value);
+        if ($this->portrait)
+            return asset('portrait/small/'.$this->portrait);
         else
             return with(new Identicon)->getImageDataUri($this->email, 64);
     }

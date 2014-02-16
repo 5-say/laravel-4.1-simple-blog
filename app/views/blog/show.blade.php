@@ -25,6 +25,7 @@
                 <div class="col-6 col-sm-6 col-lg-12 panel">
                     <h4>评论 - {{ $article->comments->count() }}</h4>
                     <ul class="media-list">
+                        <?php $article->load('comments.user') ?>
                         @foreach($article->comments as $comment)
                         <li class="media">
                             <a class="pull-left" href="#">
