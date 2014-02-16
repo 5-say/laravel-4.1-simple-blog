@@ -67,6 +67,42 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     }
 
     /**
+     * 访问器：用户头像（大）
+     * @return string 用户头像的 URI
+     */
+    public function getPortraitLargeAttribute($value)
+    {
+        if ($value)
+            return asset('portrait/large/'.$value);
+        else
+            return with(new Identicon)->getImageDataUri($this->email, 220);
+    }
+
+    /**
+     * 访问器：用户头像（中）
+     * @return string 用户头像的 URI
+     */
+    public function getPortraitMediumAttribute($value)
+    {
+        if ($value)
+            return asset('portrait/medium/'.$value);
+        else
+            return with(new Identicon)->getImageDataUri($this->email, 128);
+    }
+
+    /**
+     * 访问器：用户头像（小）
+     * @return string 用户头像的 URI
+     */
+    public function getPortraitSmallAttribute($value)
+    {
+        if ($value)
+            return asset('portrait/small/'.$value);
+        else
+            return with(new Identicon)->getImageDataUri($this->email, 64);
+    }
+
+    /**
      * 调整器：密码
      * @param  string $value 未处理的密码字符串
      * @return void

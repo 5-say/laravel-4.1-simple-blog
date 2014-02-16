@@ -100,7 +100,7 @@ class Assists_database_Blog
         Comment::truncate(); // 清空表
         for ($i = 1; $i < 30; $i++) {
             Comment::create(array(
-                'user_id'    => 1+$i%3,
+                'user_id'    => 1+$i%30,
                 'article_id' => 1+$i%5,
                 'content'    => '评论内容'.$i,
             ));

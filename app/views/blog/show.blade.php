@@ -28,7 +28,7 @@
                         @foreach($article->comments as $comment)
                         <li class="media">
                             <a class="pull-left" href="#">
-                                <img class="media-object img-thumbnail" width="64" height="64" src="..." alt="...">
+                                <img class="media-object img-thumbnail" width="64" height="64" src="{{ $comment->user->portrait_small }}" alt="头像（小）">
                             </a>
                             <div class="media-body well well-sm">
                                 <h5 class="media-heading">{{ $comment->user->email }}

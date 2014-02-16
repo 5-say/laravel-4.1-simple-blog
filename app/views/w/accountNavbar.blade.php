@@ -24,7 +24,7 @@ $is_active = function ($name = '') use ($active) {
             <ul class="nav navbar-nav">
                 <li{{ $is_active('userInfo') }}><a href="{{ route('account.userInfo') }}">账号信息</a></li>
                 <li{{ $is_active('changePassword') }}><a href="{{ route('account.changePassword') }}">修改密码</a></li>
-                <li{{ $is_active('changePortrait') }}><a href="{{ route('account.changePortrait') }}">编辑头像</a></li>
+                <li{{ $is_active('changePortrait') }}><a href="{{ route('account.changePortrait') }}">更改头像</a></li>
                 <li{{ $is_active('myComments') }}><a href="{{ route('account.myComments') }}">我的回复</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

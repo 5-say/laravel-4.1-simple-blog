@@ -22,7 +22,7 @@ class AccountController extends BaseController
 
     /**
      * 动作：修改当前账号密码
-     * @return [type] [description]
+     * @return Response
      */
     public function putChangePassword()
     {
@@ -62,6 +62,24 @@ class AccountController extends BaseController
             // 验证失败，跳回
             return Redirect::back()->withInput()->withErrors($validator);
         }
+    }
+
+    /**
+     * 页面：更改头像
+     * @return Response
+     */
+    public function getChangePortrait()
+    {
+        return View::make('account.changePortrait');
+    }
+
+    /**
+     * 动作：更改头像
+     * @return Response
+     */
+    public function putChangePortrait()
+    {
+        // 
     }
 
 
