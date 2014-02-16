@@ -74,7 +74,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public function setPasswordAttribute($value)
     {
         // 若传入的字符串已经进行了 Hash 加密，则不重复处理
-        Hash::needsRehash($value) AND $this->attributes['password'] = Hash::make($value);
+        $this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;
     }
 
 }
