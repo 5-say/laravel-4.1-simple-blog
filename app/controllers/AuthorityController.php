@@ -94,7 +94,7 @@ class AuthorityController extends BaseController
                 Mail::send('authority.email.activation', $with, function ($message) use ($user) {
                     $message
                         ->to($user->email)
-                        ->subject('Demo 账号激活邮件'); // 标题
+                        ->subject('Simple - Blog 账号激活邮件'); // 标题
                 });
                 // 跳转到注册成功页面，提示用户激活
                 return Redirect::route('signupSuccess', $user->email);
@@ -146,7 +146,7 @@ class AuthorityController extends BaseController
         // 删除令牌
         $activation->delete();
         // 激活成功提示
-        return View::make('authority.activation');
+        return View::make('authority.activationSuccess');
     }
 
     /**

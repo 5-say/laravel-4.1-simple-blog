@@ -1,61 +1,59 @@
 <?php
 
-class Admin_UserResource extends BaseResource
+class Admin_ArticleResource extends BaseResource
 {
     /**
      * 资源视图目录
      * @var string
      */
-    protected $resourceView = 'admin.user';
+    protected $resourceView = 'admin.article';
 
     /**
      * 资源模型名称，初始化后转为模型实例
      * @var string|Illuminate\Database\Eloquent\Model
      */
-    protected $model = 'User';
+    protected $model = 'Article';
 
     /**
      * 资源标识
      * @var string
      */
-    protected $resource = 'users';
+    protected $resource = 'articles';
 
     /**
      * 资源数据库表
      * @var string
      */
-    protected $resourceTable = 'users';
+    protected $resourceTable = 'articles';
 
     /**
      * 资源名称（中文）
      * @var string
      */
-    protected $resourceName = '用户';
+    protected $resourceName = '文章';
 
     /**
      * 自定义验证消息
      * @var array
      */
     protected $validatorMessages = array(
-        'email.required'      => '请输入邮箱地址。',
-        'email.email'         => '请输入正确的邮箱地址。',
-        'email.unique'        => '此邮箱已被使用。',
-        'password.required'   => '请输入密码。',
-        'password.alpha_dash' => '密码格式不正确。',
-        'password.between'    => '密码长度请保持在:min到:max位之间。',
-        'password.confirmed'  => '两次输入的密码不一致。',
-        'is_admin.in'         => '非法输入。',
+        'title.required'   => '请填写文章标题。',
+        'title.unique'     => '已有同名文章。',
+        'slug.required'    => '请填写文章 sulg。',
+        'slug.unique'      => '已有同名 sulg。',
+        'content.required' => '请填写文章内容。',
+        'category.exists'  => '请填选择正确的文章分类。',
     );
 
     /**
-     * 资源列表页面
-     * GET         /resource
+     * 资源创建页面
+     * GET         /resource/create
      * @return Response
      */
-    public function index()
+    public function create()
     {
-        $datas = $this->model->orderBy('created_at', 'DESC')->paginate(15);
-        return View::make($this->resourceView.'.index')->with(compact('datas'));
+        $categoryLists = Category::lists('name', 'id');
+        return View::make($this->resourceView.'.create')->with(compact('categoryLists'));
     }
 
     /**
@@ -70,9 +68,10 @@ class Admin_UserResource extends BaseResource
         // 创建验证规则
         $unique = $this->unique();
         $rules  = array(
-            'email'    => 'required|email|'.$unique,
-            'password' => 'required|alpha_dash|between:6,16|confirmed',
-            'is_admin' => 'in:1',
+            'title'    => 'required|'.$unique,
+            'slug'     => 'required|'.$unique,
+            'content'  => 'required',
+            'category' => 'exists:article_categories,id',
         );
         // 自定义验证消息
         $messages = $this->validatorMessages;
@@ -82,10 +81,14 @@ class Admin_UserResource extends BaseResource
             // 验证成功
             // 添加资源
             $model = $this->model;
-            $model->email        = Input::get('email');
-            $model->password     = Hash::make( Input::get('password') );
-            $model->is_admin     = (int)Input::get('is_admin', 0);
-            $model->activated_at = new Carbon;
+            $model->user_id          = Auth::user()->id;
+            $model->category_id      = $data['category'];
+            $model->title            = e($data['title']);
+            $model->slug             = e($data['slug']);
+            $model->content          = e($data['content']);
+            $model->meta_title       = e($data['meta_title']);
+            $model->meta_description = e($data['meta_description']);
+            $model->meta_keywords    = e($data['meta_keywords']);
             if ($model->save()) {
                 // 添加成功
                 return Redirect::back()
@@ -103,6 +106,19 @@ class Admin_UserResource extends BaseResource
     }
 
     /**
+     * 资源编辑页面
+     * GET         /resource/{id}/edit
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $data = $this->model->find($id);
+        $categoryLists = Category::lists('name', 'id');
+        return View::make($this->resourceView.'.edit')->with(compact('data', 'categoryLists'));
+    }
+
+    /**
      * 资源编辑动作
      * PUT/PATCH   /resource/{id}
      * @param  int  $id
@@ -114,9 +130,10 @@ class Admin_UserResource extends BaseResource
         $data = Input::all();
         // 创建验证规则
         $rules = array(
-            'email'    => 'required|email|'.$this->unique('email', $id),
-            'password' => 'alpha_dash|between:6,16|confirmed',
-            'is_admin' => 'in:1',
+            'title'    => 'required|'.$this->unique('title', $id),
+            'slug'     => 'required|'.$this->unique('slug', $id),
+            'content'  => 'required',
+            'category' => 'exists:article_categories,id',
         );
         // 自定义验证消息
         $messages  = $this->validatorMessages;
@@ -126,8 +143,13 @@ class Admin_UserResource extends BaseResource
             // 验证成功
             // 更新资源
             $model = $this->model->find($id);
-            $model->email    = Input::get('email');
-            $model->is_admin = (int)Input::get('is_admin', 0);
+            $model->category_id      = $data['category'];
+            $model->title            = e($data['title']);
+            $model->slug             = e($data['slug']);
+            $model->content          = e($data['content']);
+            $model->meta_title       = e($data['meta_title']);
+            $model->meta_description = e($data['meta_description']);
+            $model->meta_keywords    = e($data['meta_keywords']);
             if ($model->save()) {
                 // 更新成功
                 return Redirect::back()
