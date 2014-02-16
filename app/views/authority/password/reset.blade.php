@@ -51,13 +51,13 @@
         {{ $errors->first('password', '<strong class="error">:message</strong>') }}
         <input name="password_confirmation" type="password" class="form-control" placeholder="确认密码" required>
         <input type="hidden" name="token" value="{{ $token }}">
-        <button class="btn btn-lg btn-danger btn-block" type="submit">重 置</button>
         @if( Session::get('error') )
         <div class="alert alert-warning alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <strong>{{ Session::get('error') }}</strong>
         </div>
         @endif
+        <button class="btn btn-lg btn-danger btn-block" type="submit">重 置</button>
     {{ Form::close() }}
 
 @stop

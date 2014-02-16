@@ -54,7 +54,7 @@ class Assists_database_Authority
             $table->increments('id');
             $table->string('email', 60)->index()->comment('邮箱');
             $table->string('token', 40)->index()->comment('令牌');
-            $table->timestamps();
+            $table->timestamp('created_at')->comment('创建时间');
         });
         // 密码重置
         Schema::create('password_reminders', function (Blueprint $table) {

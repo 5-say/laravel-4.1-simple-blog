@@ -135,12 +135,12 @@ class AuthorityController extends BaseController
     public function getActivate($activationCode)
     {
         // 数据库验证令牌
-        $activation = Activation::whereRaw("token = '{$activationCode}'")->first();
+        $activation = Activation::where('token', $activationCode)->first();
         // 数据库中无令牌，抛出404
         is_null($activation) AND App::abort(404);
         // 数据库中有令牌
         // 激活对应用户
-        $user = User::whereRaw("email = '{$activation->email}'")->first();
+        $user = User::where('email', $activation->email)->first();
         $user->activated_at = new Carbon;
         $user->save();
         // 删除令牌
@@ -165,8 +165,11 @@ class AuthorityController extends BaseController
     public function postForgotPassword()
     {
         // 调用系统提供的类
+        $response = Password::remind(Input::only('email'), function ($m, $user, $token) {
+            $m->subject('Simple - Blog 密码重置邮件'); // 标题
+        });
         // 检测邮箱并发送密码重置邮件
-        switch ($response = Password::remind(Input::only('email'))) {
+        switch ($response) {
             case Password::INVALID_USER:
                 return Redirect::back()->with('error', Lang::get($response));
             case Password::REMINDER_SENT:
@@ -180,6 +183,8 @@ class AuthorityController extends BaseController
      */
     public function getReset($token)
     {
+        // 数据库中无令牌，抛出404
+        is_null(PassowrdReminder::where('token', $token)->first()) AND App::abort(404);
         return View::make('authority.password.reset')->with('token', $token);
     }
 
@@ -195,8 +200,11 @@ class AuthorityController extends BaseController
         );
 
         $response = Password::reset($credentials, function ($user, $password) {
+            // 保存新密码
             $user->password = Hash::make($password);
             $user->save();
+            // 登录用户
+            Auth::login($user);
         });
 
         switch ($response) {
