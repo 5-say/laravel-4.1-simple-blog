@@ -47,7 +47,7 @@ class AccountController extends BaseController
             // 验证成功
             // 更新用户
             $user = Auth::user();
-            $user->password = Hash::make( Input::get('password') );
+            $user->password = Input::get('password');
             if ($user->save()) {
                 // 更新成功
                 return Redirect::back()

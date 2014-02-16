@@ -83,7 +83,7 @@ class Admin_UserResource extends BaseResource
             // 添加资源
             $model = $this->model;
             $model->email        = Input::get('email');
-            $model->password     = Hash::make( Input::get('password') );
+            $model->password     = Input::get('password');
             $model->is_admin     = (int)Input::get('is_admin', 0);
             $model->activated_at = new Carbon;
             if ($model->save()) {

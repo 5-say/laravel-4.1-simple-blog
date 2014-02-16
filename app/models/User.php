@@ -66,4 +66,15 @@ class User extends BaseModel implements UserInterface, RemindableInterface
             return friendly_date($this->signin_at);
     }
 
+    /**
+     * 调整器：密码
+     * @param  string $value 未处理的密码字符串
+     * @return void
+     */
+    public function setPasswordAttribute($value)
+    {
+        // 若传入的字符串已经进行了 Hash 加密，则不重复处理
+        Hash::needsRehash($value) AND $this->attributes['password'] = Hash::make($value);
+    }
+
 }

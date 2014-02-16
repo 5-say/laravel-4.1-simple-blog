@@ -81,7 +81,7 @@ class AuthorityController extends BaseController
             // 验证成功，添加用户
             $user = new User;
             $user->email    = Input::get('email');
-            $user->password = Hash::make( Input::get('password') );
+            $user->password = Input::get('password');
             if ($user->save()) {
                 // 添加成功
                 // 生成激活码
@@ -201,7 +201,7 @@ class AuthorityController extends BaseController
 
         $response = Password::reset($credentials, function ($user, $password) {
             // 保存新密码
-            $user->password = Hash::make($password);
+            $user->password = $password;
             $user->save();
             // 登录用户
             Auth::login($user);
