@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 文章评论
+ */
 class Comment extends BaseModel
 {
     /**

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 文章
+ */
 class Article extends BaseModel
 {
     /**

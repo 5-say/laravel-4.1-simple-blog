@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 文章分类
+ */
 class Category extends BaseModel
 {
     /**
