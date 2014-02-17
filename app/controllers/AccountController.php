@@ -115,7 +115,6 @@ class AccountController extends BaseController
                 public_path('portrait/medium/'.$oldImage),
                 public_path('portrait/small/'.$oldImage)
             );
-            // dd($hashname, public_path('portrait/large/'.$hashname));
             // 返回成功信息
             return Redirect::back()->with('success', '操作成功。');
         } else {
