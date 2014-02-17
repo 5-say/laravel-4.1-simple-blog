@@ -48,19 +48,15 @@
     
 <?php
 $modalData['modal'] = array(
-    'id' => 'myModal',
-    'title' => '系统提示',
+    'id'      => 'myModal',
+    'title'   => '系统提示',
     'message' => '确认删除此'.$resourceName.'？',
-    'footer'=>
-'
-    <form id="real-delete" action="" method="post">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-        <input type="hidden" name="_method" value="DELETE" />
-        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-sm btn-danger">确认删除</button>
-    </form>
-',
-        );
+    'footer'  =>
+        Form::open(array('id' => 'real-delete', 'method' => 'delete')).'
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-sm btn-danger">确认删除</button>'.
+        Form::close(),
+);
 ?>
     @include('w.modal', $modalData)
 

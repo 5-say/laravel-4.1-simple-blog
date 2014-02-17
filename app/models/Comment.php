@@ -11,6 +11,12 @@ class Comment extends BaseModel
     protected $table = 'article_comments';
 
     /**
+     * 软删除
+     * @var boolean
+     */
+    protected $softDelete = true;
+
+    /**
      * 模型对象关系：归属文章
      * @return object Article
      */

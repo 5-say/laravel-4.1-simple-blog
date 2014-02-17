@@ -64,6 +64,7 @@ class Assists_database_Blog
             $table->integer('user_id')->unsigned()->comment('作者ID');
             $table->integer('article_id')->unsigned()->comment('归属文章ID');
             $table->text('content')->comment('内容');
+            // $table->timestamp('apply_delete_at')->nullable()->comment('用户申请删除评论的时间');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -16,7 +16,7 @@ class BaseController extends Controller
 	public function __construct()
 	{
 		// CSRF 保护
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('csrf', array('on' => 'post|put|delete'));
 		// 实例化 消息对象
 		$this->messages = new Illuminate\Support\MessageBag;
 	}

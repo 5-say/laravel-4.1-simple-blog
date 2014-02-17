@@ -1,40 +1,28 @@
-@extends('l.admin', array('active' => $resource))
-
-@section('title') @parent {{ $resourceName }}管理 @stop
+@extends('l.account', array('active' => 'myComments'))
 
 @section('container')
 
     @include('w.notification')
 
-    <h3>
-        {{ $resourceName }}管理
-        <div class="pull-right">
-            <a href="{{ route($resource.'.create') }}" class="btn btn-sm btn-primary">
-                添加新{{ $resourceName }}
-            </a>
-        </div>
-    </h3>
+    <h3>我评论过的文章</h3>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>标题</th>
-                    <th>评论数</th>
-                    <th>创建时间</th>
-                    <th style="width:7em;text-align:center;">操作</th>
+                    <th>文章标题</th>
+                    <th>评论内容</th>
+                    <th style="width:5em;text-align:center;">操作</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($datas as $data)
+                @foreach ($comments as $comment)
                 <tr>
-                    <td>{{ $data->title }}</td>
-                    <td>{{ $data->comments()->count() }}</td>
-                    <td>{{ $data->created_at }}（{{ $data->friendly_created_at }}）</td>
+                    <td><a href="{{ route('blog.show', $comment->article->slug) }}">{{ $comment->article->title }}</a></td>
+                    <td>{{ $comment->content }}</td>
                     <td>
-                        <a href="{{ route($resource.'.edit', $data->id) }}" class="btn btn-xs">编辑</a>
                         <a href="javascript:void(0)" class="btn btn-xs btn-danger"
-                             onclick="modal('{{ route($resource.'.destroy', $data->id) }}')">删除</a>
+                             onclick="modal('{{ route('account.myComments.destroy', $comment->id) }}')">删除评论</a>
                     </td>
                 </tr>
                 @endforeach
@@ -43,14 +31,14 @@
     </div>
 
     <div class="pull-right" style="">
-        {{ pagination($datas, 'p.slider-3') }}
+        {{ pagination($comments, 'p.slider-3') }}
     </div>
 
 <?php
 $modalData['modal'] = array(
     'id'      => 'myModal',
     'title'   => '系统提示',
-    'message' => '确认删除此'.$resourceName.'？',
+    'message' => '确认删除此评论？',
     'footer'  =>
         Form::open(array('id' => 'real-delete', 'method' => 'delete')).'
             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
@@ -59,6 +47,7 @@ $modalData['modal'] = array(
 );
 ?>
     @include('w.modal', $modalData)
+
 
 @stop
 

@@ -123,5 +123,31 @@ class AccountController extends BaseController
         }
     }
 
+    /**
+     * 页面：我的评论
+     * @return Response
+     */
+    public function getMyComments()
+    {
+        $comments = Comment::where('user_id', Auth::user()->id)->paginate(15);
+        return View::make('account.myComments')->with(compact('comments'));
+    }
+
+    /**
+     * 动作：删除我的评论
+     * @return Response
+     */
+    public function deleteMyComment($id)
+    {
+        // 仅允许对自己的评论进行删除操作
+        $comment = Comment::where('id', $id)->where('user_id', Auth::user()->id)->first();
+        if (is_null($comment))
+            return Redirect::back()->with('error', '没有找到对应的评论');
+        elseif ($comment->delete())
+            return Redirect::back()->with('success', '评论删除成功。');
+        else
+            return Redirect::back()->with('warning', '评论删除失败。');
+    }
+
 
 }

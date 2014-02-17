@@ -11,6 +11,12 @@ class Category extends BaseModel
     protected $table = 'article_categories';
 
     /**
+     * 软删除
+     * @var boolean
+     */
+    protected $softDelete = true;
+
+    /**
      * 模型对象关系：分类下的文章
      * @return object Illuminate\Database\Eloquent\Collection
      */

@@ -11,6 +11,12 @@ class Article extends BaseModel
     protected $table = 'articles';
 
     /**
+     * 软删除
+     * @var boolean
+     */
+    protected $softDelete = true;
+
+    /**
      * 模型对象关系：文章的分类
      * @return object Category
      */
