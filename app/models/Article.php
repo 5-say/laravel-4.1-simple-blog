@@ -1,4 +1,7 @@
 <?php
+
+use \Michelf\MarkdownExtra;
+
 /**
  * 文章
  */
@@ -41,6 +44,34 @@ class Article extends BaseModel
     public function comments()
     {
         return $this->hasMany('Comment', 'article_id');
+    }
+
+    /**
+     * 访问器：文章内容（HTML 格式）
+     * @return string
+     */
+    public function getContentHtmlAttribute()
+    {
+        switch ($this->content_format) {
+            case 'markdown':
+                return MarkdownExtra::defaultTransform($this->content);
+            case 'html':
+                return $this->content;
+        }
+    }
+
+    /**
+     * 访问器：文章内容（Markdown 格式）
+     * @return string
+     */
+    public function getContentMarkdownAttribute()
+    {
+        switch ($this->content_format) {
+            case 'markdown':
+                return $this->content;
+            case 'html':
+                return new HTML_To_Markdown($this->content);
+        }
     }
 
 

@@ -155,6 +155,39 @@ function pagination(Illuminate\Pagination\Paginator $paginator, $viewName = null
 }
 
 
+/**
+ * 闭合 HTML 标签 （此函数仍存在缺陷，无法处理不完整的标签，暂无更优方案，慎用）
+ * @param  string $html HTML 字符串
+ * @return string
+ */
+function close_tags($html)
+{
+    // 不需要补全的标签
+    $arr_single_tags = array('meta', 'img', 'br', 'link', 'area');
+    // 匹配开始标签
+    preg_match_all('#<([a-z1-6]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
+    $openedtags = $result[1];
+    // 匹配关闭标签
+    preg_match_all('#</([a-z]+)>#iU', $html, $result);
+    $closedtags = $result[1];
+    // 计算关闭开启标签数量，如果相同就返回html数据
+    if (count($closedtags) === count($openedtags)) return $html;
+    // 反向排序数组，将最后一个开启的标签放在最前面
+    $openedtags = array_reverse($openedtags);
+    // 遍历开启标签数组
+    foreach ($openedtags as $key => $value) {
+        // 跳过无需闭合的标签
+        if (in_array($value, $arr_single_tags)) continue;
+        // 开始补全
+        if (in_array($value, $closedtags)) {
+            unset($closedtags[array_search($value, $closedtags)]);
+        } else {
+            $html .= '</'.$value.'>';
+        }
+    }
+    return $html;
+}
+
 
 
 /*

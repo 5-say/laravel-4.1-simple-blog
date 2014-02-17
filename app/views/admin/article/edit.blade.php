@@ -2,6 +2,11 @@
 
 @section('title') @parent 编辑{{ $resourceName }} @stop
 
+@section('beforeStyle')
+    @parent
+    {{ style('bootstrap-markdown') }}
+@stop
+
 @section('style')
 .nav-tabs>li.active>a
 {
@@ -65,8 +70,8 @@
                 <div class="form-group">
                     <label for="content">内容</label>
                     {{ $errors->first('content', '<span style="color:#c7254e;margin:0 1em;">:message</span>') }}
-                    <textarea id="content" class="form-control"
-                        name="content" rows="10">{{ Input::old('content', $data->content) }}</textarea>
+                    <textarea id="content" class="form-control" data-provide="markdown"
+                        name="content" rows="10">{{ Input::old('content', $data->content_markdown) }}</textarea>
                 </div>
 
             </div>
@@ -124,3 +129,9 @@
     </form>
 
 @stop
+
+@section('end')
+    @parent
+    {{ script(array('markdown', 'to-markdown', 'bootstrap-markdown')) }}
+@stop
+

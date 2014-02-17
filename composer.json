@@ -6,7 +6,9 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"intervention/image": "dev-master",
-		"yzalis/identicon": "1.0.*@dev"
+		"yzalis/identicon": "1.0.*@dev",
+		"michelf/php-markdown": "1.4.0",
+		"nickcernis/html-to-markdown": "dev-master"
 	},
 	"require-dev": {
 		"barryvdh/laravel-debugbar": "1.*"

@@ -15,7 +15,7 @@
 
                 <div class="col-6 col-sm-6 col-lg-12 panel">
                     <h2>{{ $article->title }}</h2>
-                    <p>{{ $article->content }}</p>
+                    <p>{{ $article->content_html }}</p>
                     <a name="comments"></a>
                     <p>
                         <i class="glyphicon glyphicon-calendar"></i><span> {{ $article->created_at }}（{{ $article->friendly_created_at }}）</span>
