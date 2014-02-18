@@ -11,6 +11,7 @@
 ---
 
 - [项目进度](#project)
+- [安装方法](#install)
 - [开发者私人信息保密方法](#assume-unchanged)
 
 ---
@@ -39,6 +40,20 @@
 - 尚未完成
   - 列表搜索（管理员后台）
   - 列表排序（管理员后台）
+
+<a name="install"></a>
+### 安装方法
+
+    composer install
+
+采用 sqlite 数据库，composer 安装结束后即可使用（Sqlite 数据库文件已包含于项目中）。可无缝切换至 MySql 等 laravel 支持的数据库。
+
+默认管理员账号密码：
+
+    admin@demo.com
+    111111
+
+账号激活等功能需要进行邮件发送，请在 `/app/config/mail.php` 文件中做好邮件服务器的相关配置。
 
 <a name="assume-unchanged"></a>
 ### 开发者私人信息保密方法
