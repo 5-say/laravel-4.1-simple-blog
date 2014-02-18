@@ -18,7 +18,7 @@ class MySqlGrammar extends Grammar {
 	 *
 	 * @var array
 	 */
-	protected $modifiers = array('Unsigned', 'Nullable', 'Default', 'Increment', 'After', 'Comment');
+	protected $modifiers = array('Unsigned', 'Nullable', 'Default', 'Increment', 'After');
 
 	/**
 	 * The possible column serials
@@ -562,20 +562,5 @@ class MySqlGrammar extends Grammar {
 			return ' after '.$this->wrap($column->after);
 		}
 	}
-
-    /**
-     * Get the SQL for a "comment" column modifier.
-     *
-     * @param \Illuminate\Database\Schema\Blueprint  $blueprint
-     * @param \Illuminate\Support\Fluent             $column
-     * @return string|null
-     */
-    protected function modifyComment(Blueprint $blueprint, Fluent $column)
-    {
-        if ( ! is_null($column->comment))
-        {
-            return " comment '".strval(mysql_real_escape_string($column->comment))."'";
-        }
-    }
 
 }
