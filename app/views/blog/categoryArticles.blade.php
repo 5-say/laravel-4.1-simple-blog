@@ -15,7 +15,7 @@
                             <i class="glyphicon glyphicon-share" style="font-size:0.5em;margin-right:1em;"></i>
                         </a>
                     </h2>
-                    <p>{{ close_tags(Str::limit($article->content_markdown, 200)) }}</p>
+                    <p>{{ close_tags(Str::limit($article->content_html, 200)) }}</p>
                     <p>
                         <i class="glyphicon glyphicon-calendar"></i><span> {{ $article->created_at }}（{{ $article->friendly_created_at }}）</span>
                         <a target="_blank" href="{{ route('blog.show', $article->slug) }}#comments">

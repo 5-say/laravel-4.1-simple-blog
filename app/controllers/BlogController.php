@@ -8,7 +8,7 @@ class BlogController extends BaseController
      */
     public function getIndex()
     {
-        $articles   = Article::paginate(5);
+        $articles   = Article::orderBy('created_at', 'desc')->paginate(5);
         $categories = Category::orderBy('sort_order')->get();
         return View::make('blog.index')->with(compact('articles', 'categories'));
     }
@@ -19,7 +19,7 @@ class BlogController extends BaseController
      */
     public function getCategoryArticles($category_id)
     {
-        $articles   = Article::where('category_id', $category_id)->paginate(5);
+        $articles   = Article::where('category_id', $category_id)->orderBy('created_at', 'desc')->paginate(5);
         $categories = Category::orderBy('sort_order')->get();
         return View::make('blog.categoryArticles')->with(compact('articles', 'categories', 'category_id'));
     }

@@ -81,7 +81,7 @@ class Assists_database_Blog
         Eloquent::unguard();
         // 文章分类
         Category::truncate(); // 清空表
-        foreach (array('新分类一', '新分类二', '新分类三', '新分类四', '新分类五') as $key => $value) {
+        foreach (array('PHP-PSR 代码标准', '新分类二', '新分类三', '新分类四', '新分类五') as $key => $value) {
             Category::create(array(
                 'name'       => $value,
                 'sort_order' => $key+1,
@@ -89,9 +89,37 @@ class Assists_database_Blog
         }
         // 博客文章
         Article::truncate(); // 清空表
+        Article::create(array(
+            'category_id' => 1,
+            'user_id'     => 1,
+            'title'       => 'PSR-0 自动加载规范',
+            'slug'        => 'psr-0',
+            'content'     => File::get(__DIR__.'/PSR/PSR-0.md'),
+        ));
+        Article::create(array(
+            'category_id' => 1,
+            'user_id'     => 1,
+            'title'       => 'PSR-1 基础编码规范',
+            'slug'        => 'psr-1-basic-coding-standard',
+            'content'     => File::get(__DIR__.'/PSR/PSR-1-basic-coding-standard.md'),
+        ));
+        Article::create(array(
+            'category_id' => 1,
+            'user_id'     => 1,
+            'title'       => 'PSR-2 编码风格规范',
+            'slug'        => 'psr-2-coding-style-guide',
+            'content'     => File::get(__DIR__.'/PSR/PSR-2-coding-style-guide.md'),
+        ));
+        Article::create(array(
+            'category_id' => 1,
+            'user_id'     => 1,
+            'title'       => 'PSR-3 日志接口规范',
+            'slug'        => 'psr-3-logger-interface',
+            'content'     => File::get(__DIR__.'/PSR/PSR-3-logger-interface.md'),
+        ));
         for ($i = 1; $i < 60; $i++) {
             Article::create(array(
-                'category_id' => 1+$i%5,
+                'category_id' => $i%4+2,
                 'user_id'     => $i,
                 'title'       => '标题'.$i,
                 'slug'        => 'slug-biao-ti-'.$i,

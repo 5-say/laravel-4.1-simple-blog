@@ -15,6 +15,7 @@
 
                 <div class="col-6 col-sm-6 col-lg-12 panel">
                     <h2>{{ $article->title }}</h2>
+                    <hr />
                     <p>{{ $article->content_html }}</p>
                     <a name="comments"></a>
                     <p>
