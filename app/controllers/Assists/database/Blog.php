@@ -37,7 +37,7 @@ class Assists_database_Blog
         Schema::create('article_categories', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
-            $table->string('name', 20)->unique()->comment('分类名称');
+            $table->string('name', 20)   ->unique()  ->comment('分类名称');
             $table->integer('sort_order')->unsigned()->comment('排序');
             $table->timestamps();
             $table->softDeletes();
@@ -46,15 +46,16 @@ class Assists_database_Blog
         Schema::create('articles', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
-            $table->integer('category_id')->unsigned()->comment('文章分类ID');
-            $table->integer('user_id')->unsigned()->comment('作者ID');
-            $table->string('title', 100)->unique()->comment('标题');
-            $table->string('slug', 100)->unique()->comment('文章缩略名');
-            $table->text('content')->comment('内容');
-            $table->enum('content_format', array('markdown', 'html'))->default('markdown')->comment('内容格式'); // 为后期加入非 markdown 编辑器做准备
-            $table->string('meta_title', 100)->nullable()->comment('SEO 页面标题');
-            $table->string('meta_description')->nullable()->comment('SEO 页面描述');
-            $table->string('meta_keywords')->nullable()->comment('SEO 页面关键词');
+            $table->integer('category_id')    ->unsigned()         ->comment('文章分类ID');
+            $table->integer('user_id')        ->unsigned()         ->comment('作者ID');
+            $table->string('title', 100)      ->unique()           ->comment('标题');
+            $table->string('slug', 100)       ->unique()           ->comment('文章缩略名');
+            $table->text('content')                                ->comment('内容');
+            $table->enum('content_format', array('markdown', 'html'))
+                                              ->default('markdown')->comment('内容格式，为后期加入非 markdown 编辑器做准备');
+            $table->string('meta_title', 100) ->nullable()         ->comment('SEO 页面标题');
+            $table->string('meta_description')->nullable()         ->comment('SEO 页面描述');
+            $table->string('meta_keywords')   ->nullable()         ->comment('SEO 页面关键词');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -62,9 +63,9 @@ class Assists_database_Blog
         Schema::create('article_comments', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->comment('作者ID');
+            $table->integer('user_id')   ->unsigned()->comment('作者ID');
             $table->integer('article_id')->unsigned()->comment('归属文章ID');
-            $table->text('content')->comment('内容');
+            $table->text('content')                  ->comment('内容');
             // $table->timestamp('apply_delete_at')->nullable()->comment('用户申请删除评论的时间');
             $table->timestamps();
             $table->softDeletes();

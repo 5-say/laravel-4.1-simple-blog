@@ -28,18 +28,18 @@ $is_active = function ($name = '') use ($active) {
                 <li{{ $is_active('myComments') }}><a href="{{ route('account.myComments') }}">我的评论</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if(Auth::user()->is_admin)
-                <li><a href="{{ route('admin') }}">进入后台</a></li>
-                @endif
-                <li><a href="{{ route('home') }}">回到博客</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         [ {{ Auth::user()->email }} ]
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('logout') }}">退出</a></li>
+                        @if(Auth::user()->is_admin)
+                        <li><a href="{{ route('admin') }}">进入后台</a></li>
+                        @endif
+                        <li><a href="{{ route('home') }}">回到博客</a></li>
                         <li class="divider"></li>
+                        <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>
                 </li>
             </ul>

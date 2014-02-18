@@ -61,7 +61,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public function getFriendlySigninAtAttribute()
     {
         if (is_null($this->signin_at))
-            return '新账号未登录';
+            return '新账号尚未登录';
         else
             return friendly_date($this->signin_at);
     }

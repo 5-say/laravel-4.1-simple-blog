@@ -155,6 +155,14 @@ function pagination(Illuminate\Pagination\Paginator $paginator, $viewName = null
 }
 
 
+
+/*
+|--------------------------------------------------------------------------
+| 公共函数库
+|--------------------------------------------------------------------------
+|
+*/
+
 /**
  * 闭合 HTML 标签 （此函数仍存在缺陷，无法处理不完整的标签，暂无更优方案，慎用）
  * @param  string $html HTML 字符串
@@ -188,11 +196,30 @@ function close_tags($html)
     return $html;
 }
 
+function order_by($columnName = '', $default = null)
+{
+    $sortColumnName = Input::get('sort_up', Input::get('sort_down', false));
+    if (Input::get('sort_up')) {
+        $except = 'sort_up'; $orderType = 'sort_down';
+    } else {
+        $except = 'sort_down' ; $orderType = 'sort_up';
+    }
+    if ($sortColumnName == $columnName) {
+        $parameters = array_merge(Input::except($except), array($orderType => $columnName));
+        $icon       = Input::get('sort_up') ? 'chevron-up' : 'chevron-down' ;
+    } elseif ($sortColumnName === false && $default == 'up') {
+        $parameters = array_merge(Input::all(), array('sort_down' => $columnName));
+        $icon       = 'chevron-up';
+    } elseif ($sortColumnName === false && $default == 'down') {
+        $parameters = array_merge(Input::all(), array('sort_up' => $columnName));
+        $icon       = 'chevron-down';
+    } else {
+        $parameters = array_merge(Input::except($except), array('sort_up' => $columnName));
+        $icon       = 'random';
+    }
+    $a  = '<a href="';
+    $a .= action(Route::current()->getActionName(), $parameters);
+    $a .= '" class="glyphicon glyphicon-'.$icon.'"></a>';
+    return $a;
+}
 
-
-/*
-|--------------------------------------------------------------------------
-| 公共函数库
-|--------------------------------------------------------------------------
-|
-*/

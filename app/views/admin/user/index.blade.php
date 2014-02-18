@@ -15,6 +15,35 @@
         </div>
     </h3>
 
+    {{ Form::open(array('method' => 'get')) }}
+        <div class="input-group col-md-9" style="margin:0 auto 1em auto;">
+            <span class="input-group-btn" style="width:8em;">
+                {{
+                    Form::select(
+                        'status',
+                        array('all' => '所有', '1' => '管理员', '0' => '普通用户'),
+                        Input::get('status', 'all'),
+                        array('class' => 'form-control input-sm')
+                    )
+                }}
+            </span>
+            <span class="input-group-btn" style="width:6em;">
+                {{
+                    Form::select(
+                        'target',
+                        array('email' => '邮箱'),
+                        Input::get('target', 'email'),
+                        array('class' => 'form-control input-sm')
+                    )
+                }}
+            </span>
+            <input type="text" class="form-control input-sm" name="like" placeholder="请输入搜索条件" value="{{ Input::get('like') }}">
+            <span class="input-group-btn">
+                <button class="btn btn-sm btn-default" type="submit" style="width:5em;">搜索</button>
+            </span>
+        </div>
+    {{ Form::close() }}
+
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -48,7 +77,7 @@
     </div>
 
     <div class="pull-right" style="">
-        {{ pagination($datas, 'p.slider-3') }}
+        {{ pagination($datas->appends(Input::except('page')), 'p.slider-3') }}
     </div>
 
 <?php
@@ -77,3 +106,4 @@ $modalData['modal'] = array(
         }
     </script>
 @stop
+

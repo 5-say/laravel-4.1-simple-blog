@@ -46,6 +46,26 @@ class Admin_ArticleResource extends BaseResource
     );
 
     /**
+     * 资源列表页面
+     * GET         /resource
+     * @return Response
+     */
+    public function index()
+    {
+        // 获取搜索条件
+        switch (Input::get('target')) {
+            case 'title':
+                $title = Input::get('like');
+                break;
+        }
+        // 构造查询语句
+        $query = $this->model->orderBy('created_at', 'DESC');
+        isset($title) AND $query->where('title', 'like', "%{$title}%");
+        $datas = $query->paginate(15);
+        return View::make($this->resourceView.'.index')->with(compact('datas'));
+    }
+
+    /**
      * 资源创建页面
      * GET         /resource/create
      * @return Response

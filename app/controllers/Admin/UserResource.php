@@ -54,7 +54,25 @@ class Admin_UserResource extends BaseResource
      */
     public function index()
     {
-        $datas = $this->model->orderBy('created_at', 'DESC')->paginate(15);
+        // 获取搜索条件
+        switch (Input::get('status')) {
+            case '0':
+                $is_admin = 0;
+                break;
+            case '1':
+                $is_admin = 1;
+                break;
+        }
+        switch (Input::get('target')) {
+            case 'email':
+                $email = Input::get('like');
+                break;
+        }
+        // 构造查询语句
+        $query = $this->model->orderBy('created_at', 'DESC');
+        isset($is_admin) AND $query->where('is_admin', $is_admin);
+        isset($email)    AND $query->where('email', 'like', "%{$email}%");
+        $datas = $query->paginate(15);
         return View::make($this->resourceView.'.index')->with(compact('datas'));
     }
 

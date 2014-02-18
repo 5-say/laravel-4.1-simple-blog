@@ -15,20 +15,44 @@
         </div>
     </h3>
 
+    {{ Form::open(array('method' => 'get')) }}
+        <div class="input-group col-md-9" style="margin:0 auto 1em auto;">
+            <span class="input-group-btn" style="width:6em;">
+                {{
+                    Form::select(
+                        'target',
+                        array('title' => '标题'),
+                        Input::get('target', 'title'),
+                        array('class' => 'form-control input-sm')
+                    )
+                }}
+            </span>
+            <input type="text" class="form-control input-sm" name="like" placeholder="请输入搜索条件" value="{{ Input::get('like') }}">
+            <span class="input-group-btn">
+                <button class="btn btn-sm btn-default" type="submit" style="width:5em;">搜索</button>
+            </span>
+        </div>
+    {{ Form::close() }}
+
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>标题</th>
-                    <th>评论数</th>
-                    <th>创建时间</th>
+                    <th>标题 {{ order_by('title', 'up') }}</th>
+                    <th>评论数 {{ order_by('comments') }}</th>
+                    <th>创建时间 {{ order_by('created') }}</th>
                     <th style="width:7em;text-align:center;">操作</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($datas as $data)
                 <tr>
-                    <td>{{ $data->title }}</td>
+                    <td>
+                        <a href="{{ route('blog.show', $data->slug) }}" target="_blank">
+                            <i class="glyphicon glyphicon-share" style="font-size:0.5em;"></i>
+                        </a>
+                        {{ $data->title }}
+                    </td>
                     <td>{{ $data->comments()->count() }}</td>
                     <td>{{ $data->created_at }}（{{ $data->friendly_created_at }}）</td>
                     <td>
@@ -43,7 +67,7 @@
     </div>
 
     <div class="pull-right" style="">
-        {{ pagination($datas, 'p.slider-3') }}
+        {{ pagination($datas->appends(Input::except('page')), 'p.slider-3') }}
     </div>
 
 <?php

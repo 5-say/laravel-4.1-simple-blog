@@ -66,7 +66,7 @@ class BaseResource extends BaseController
      */
     public function index()
     {
-        $datas = $this->model->paginate(15);
+        $datas = $this->model->orderBy('created_at', 'DESC')->paginate(15);
         return View::make($this->resourceView.'.index')->with(compact('datas'));
     }
 

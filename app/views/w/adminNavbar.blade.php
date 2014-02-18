@@ -28,15 +28,15 @@ $is_active = function ($name = '') use ($active) {
                 <li{{ $is_active('articles') }}><a href="{{ route('articles.index') }}">文章管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ route('home') }}">回到博客</a></li>
-                <li><a href="{{ route('account') }}">用户中心</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         [ {{ Auth::user()->email }} ] <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('logout') }}">退出</a></li>
+                        <li><a href="{{ route('home') }}">回到博客</a></li>
+                        <li><a href="{{ route('account') }}">用户中心</a></li>
                         <li class="divider"></li>
+                        <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>
                 </li>
             </ul>
