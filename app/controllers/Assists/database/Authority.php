@@ -67,7 +67,7 @@ class Assists_database_Authority
     }
 
     /**
-     * 数据填充
+     * 基础数据填充
      * @return void
      */
     public function seed()
@@ -82,6 +82,16 @@ class Assists_database_Authority
             'password' => $password,
             'is_admin' => 1,
         ));
+    }
+
+    /**
+     * 测试数据填充
+     * @return void
+     */
+    public function seedDemo()
+    {
+        // 用户
+        $password = Hash::make('111111');
         for ($i = 1; $i < 60; $i++) {
             User::create(array(
             'email'    => 'a'.$i.'@a.com',

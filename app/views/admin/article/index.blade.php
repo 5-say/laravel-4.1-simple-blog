@@ -38,9 +38,9 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>标题 {{ order_by('title', 'up') }}</th>
-                    <th>评论数 {{ order_by('comments') }}</th>
-                    <th>创建时间 {{ order_by('created') }}</th>
+                    <th>标题 {{ order_by('title') }}</th>
+                    <th>评论数 {{ order_by('comments_count') }}</th>
+                    <th>创建时间 {{ order_by('created_at', 'desc') }}</th>
                     <th style="width:7em;text-align:center;">操作</th>
                 </tr>
             </thead>
@@ -53,7 +53,7 @@
                         </a>
                         {{ $data->title }}
                     </td>
-                    <td>{{ $data->comments()->count() }}</td>
+                    <td>{{ $data->comments_count }}</td>
                     <td>{{ $data->created_at }}（{{ $data->friendly_created_at }}）</td>
                     <td>
                         <a href="{{ route($resource.'.edit', $data->id) }}" class="btn btn-xs">编辑</a>

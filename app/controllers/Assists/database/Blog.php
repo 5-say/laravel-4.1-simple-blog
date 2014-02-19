@@ -46,16 +46,17 @@ class Assists_database_Blog
         Schema::create('articles', function (Blueprint $table) {
             $table->engine = 'MyISAM';
             $table->increments('id');
-            $table->integer('category_id')    ->unsigned()         ->comment('文章分类ID');
-            $table->integer('user_id')        ->unsigned()         ->comment('作者ID');
-            $table->string('title', 100)      ->unique()           ->comment('标题');
-            $table->string('slug', 100)       ->unique()           ->comment('文章缩略名');
-            $table->text('content')                                ->comment('内容');
+            $table->integer('category_id')        ->unsigned()         ->comment('文章分类ID');
+            $table->integer('user_id')            ->unsigned()         ->comment('作者ID');
+            $table->string('title', 100)          ->unique()           ->comment('标题');
+            $table->string('slug', 100)           ->unique()           ->comment('文章缩略名');
+            $table->text('content')                                    ->comment('内容');
             $table->enum('content_format', array('markdown', 'html'))
-                                              ->default('markdown')->comment('内容格式，为后期加入非 markdown 编辑器做准备');
-            $table->string('meta_title', 100) ->nullable()         ->comment('SEO 页面标题');
-            $table->string('meta_description')->nullable()         ->comment('SEO 页面描述');
-            $table->string('meta_keywords')   ->nullable()         ->comment('SEO 页面关键词');
+                                                  ->default('markdown')->comment('内容格式，为后期加入非 markdown 编辑器做准备');
+            $table->smallInteger('comments_count')->default(0)         ->comment('评论数');
+            $table->string('meta_title', 100)     ->nullable()         ->comment('SEO 页面标题');
+            $table->string('meta_description')    ->nullable()         ->comment('SEO 页面描述');
+            $table->string('meta_keywords')       ->nullable()         ->comment('SEO 页面关键词');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -73,13 +74,27 @@ class Assists_database_Blog
     }
 
     /**
-     * 数据填充
+     * 基础数据填充
      * @return void
      */
     public function seed()
     {
         // 强制解除 Eloquent::create() 批量赋值限制
         Eloquent::unguard();
+        // 文章分类
+        Category::truncate(); // 清空表
+        Category::create(array(
+            'name'       => '默认分类',
+            'sort_order' => 0,
+        ));
+    }
+
+    /**
+     * 测试数据填充
+     * @return void
+     */
+    public function seedDemo()
+    {
         // 文章分类
         Category::truncate(); // 清空表
         foreach (array('PHP-PSR 代码标准', '新分类二', '新分类三', '新分类四', '新分类五') as $key => $value) {
@@ -90,43 +105,44 @@ class Assists_database_Blog
         }
         // 博客文章
         Article::truncate(); // 清空表
-        Article::create(array(
-            'category_id' => 1,
-            'user_id'     => 1,
-            'title'       => 'PSR-0 自动加载规范',
-            'slug'        => 'psr-0',
-            'content'     => File::get(__DIR__.'/PSR/PSR-0.md'),
-        ));
-        Article::create(array(
-            'category_id' => 1,
-            'user_id'     => 1,
-            'title'       => 'PSR-1 基础编码规范',
-            'slug'        => 'psr-1-basic-coding-standard',
-            'content'     => File::get(__DIR__.'/PSR/PSR-1-basic-coding-standard.md'),
-        ));
-        Article::create(array(
-            'category_id' => 1,
-            'user_id'     => 1,
-            'title'       => 'PSR-2 编码风格规范',
-            'slug'        => 'psr-2-coding-style-guide',
-            'content'     => File::get(__DIR__.'/PSR/PSR-2-coding-style-guide.md'),
-        ));
-        Article::create(array(
-            'category_id' => 1,
-            'user_id'     => 1,
-            'title'       => 'PSR-3 日志接口规范',
-            'slug'        => 'psr-3-logger-interface',
-            'content'     => File::get(__DIR__.'/PSR/PSR-3-logger-interface.md'),
-        ));
         for ($i = 1; $i < 60; $i++) {
             Article::create(array(
-                'category_id' => $i%4+2,
+                'category_id' => 2+$i%4,
                 'user_id'     => $i,
                 'title'       => '标题'.$i,
                 'slug'        => 'slug-biao-ti-'.$i,
                 'content'     => $this->getArticleContent($i),
             ));
         }
+        sleep(1);
+        Article::create(array(
+            'category_id' => 2,
+            'user_id'     => 1,
+            'title'       => 'PSR-0 自动加载规范',
+            'slug'        => 'psr-0',
+            'content'     => File::get(__DIR__.'/PSR/PSR-0.md'),
+        ));
+        Article::create(array(
+            'category_id' => 2,
+            'user_id'     => 1,
+            'title'       => 'PSR-1 基础编码规范',
+            'slug'        => 'psr-1-basic-coding-standard',
+            'content'     => File::get(__DIR__.'/PSR/PSR-1-basic-coding-standard.md'),
+        ));
+        Article::create(array(
+            'category_id' => 2,
+            'user_id'     => 1,
+            'title'       => 'PSR-2 编码风格规范',
+            'slug'        => 'psr-2-coding-style-guide',
+            'content'     => File::get(__DIR__.'/PSR/PSR-2-coding-style-guide.md'),
+        ));
+        Article::create(array(
+            'category_id' => 2,
+            'user_id'     => 1,
+            'title'       => 'PSR-3 日志接口规范',
+            'slug'        => 'psr-3-logger-interface',
+            'content'     => File::get(__DIR__.'/PSR/PSR-3-logger-interface.md'),
+        ));
         // 文章评论
         Comment::truncate(); // 清空表
         for ($i = 1; $i < 30; $i++) {
@@ -135,6 +151,7 @@ class Assists_database_Blog
                 'article_id' => 1+$i%5,
                 'content'    => '评论内容'.$i,
             ));
+            Article::find(1+$i%5)->increment('comments_count');
         }
     }
 

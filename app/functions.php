@@ -196,6 +196,12 @@ function close_tags($html)
     return $html;
 }
 
+/**
+ * 用于资源列表的排序标签
+ * @param  string $columnName 列名
+ * @param  string $default    是否默认排序列，up 默认升序 down 默认降序
+ * @return string             a 标签排序图标
+ */
 function order_by($columnName = '', $default = null)
 {
     $sortColumnName = Input::get('sort_up', Input::get('sort_down', false));
@@ -207,10 +213,10 @@ function order_by($columnName = '', $default = null)
     if ($sortColumnName == $columnName) {
         $parameters = array_merge(Input::except($except), array($orderType => $columnName));
         $icon       = Input::get('sort_up') ? 'chevron-up' : 'chevron-down' ;
-    } elseif ($sortColumnName === false && $default == 'up') {
+    } elseif ($sortColumnName === false && $default == 'asc') {
         $parameters = array_merge(Input::all(), array('sort_down' => $columnName));
         $icon       = 'chevron-up';
-    } elseif ($sortColumnName === false && $default == 'down') {
+    } elseif ($sortColumnName === false && $default == 'desc') {
         $parameters = array_merge(Input::all(), array('sort_up' => $columnName));
         $icon       = 'chevron-down';
     } else {

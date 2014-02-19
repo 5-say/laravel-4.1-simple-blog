@@ -19,7 +19,7 @@ class core_Controller extends BaseController
     }
 
     /**
-     * 动作：迁移
+     * 动作：迁移并填充测试数据
      * @return Response
      */
     public function putRefresh()
@@ -27,58 +27,50 @@ class core_Controller extends BaseController
         $file  = Input::get('refresh');
         $class = App::make('Assists_database_'.$file);
         $class->refresh();
+        $class->seedDemo();
         return Redirect::back()
             ->withInput()
-            ->withErrors(array('succ' => $class->info.'，迁移和填充完成。'));
+            ->withErrors(array('succ' => $class->info.'，迁移和填充测试数据，完成。'));
     }
 
     /**
-     * 动作：填充
+     * 动作：迁移并填充基础数据
      * @return [type] [description]
      */
     public function putSeed()
     {
         $file  = Input::get('seed');
         $class = App::make('Assists_database_'.$file);
-        $class->seed();
+        $class->refresh();
         return Redirect::back()
             ->withInput()
-            ->withErrors(array('succ' => $class->info.'，填充完成。'));
+            ->withErrors(array('succ' => $class->info.'，迁移和填充基础数据，完成。'));
     }
 
     /**
-     * 动作：创建新模块
+     * 动作：快速安装应用程序
      * @return Response
      */
     public function postCreate()
     {
-        $module      = ucfirst(camel_case(Input::get('module')));
-        $destination = __DIR__.'/../../'.$module.'/'; // 目标位置
-        // 检测模块是否存在
-        $exists      = File::exists( $destination );
-        if ($exists)
-            return Redirect::back()
-                ->withInput()
-                ->withErrors(array('err' => $module.' 模块，已经存在。'));
-        // 全目录拷贝
-        File::copyDirectory(__DIR__.'/../originalModule/', $destination);
-        // 修改原始信息
-        $this->moduleChangeFile(array(
-            $destination.'core/config.php',
-            $destination.'core/routes.php',
-            $destination.'DatabaseMigration.php',
-            $destination.'DatabaseSeeder.php',
-            $destination.'User.php',
-            $destination.'originalModuleController.php'
-        ), 'originalModule', $module);
-        rename($destination.'originalModuleController.php', $destination.$module.'Controller.php');
-        // 添加进原始路由文件
-        $content = PHP_EOL.'// '.PHP_EOL."module('{$module}');";
-        File::append(app_path('routes.php'), $content);
-        // 返回测试页面连接
-        $url = URL::to($module);
+        $classArray = array();
+        foreach (File::files(__DIR__.'/../database') as $key => $value)
+            $classArray[] = App::make('Assists_database_'.str_replace('.php', '', basename($value)));
+        
+        switch (Input::get('type')) {
+            case 'base':
+                foreach ($classArray as $key => $value)
+                    $value->refresh();
+                break;
+            case 'all':
+                foreach ($classArray as $key => $value) {
+                    $value->refresh();
+                    $value->seedDemo();
+                }
+                break;
+        }
         return Redirect::back()
-            ->withErrors(array('succ' => $module.' 模块，创建成功。<a href="'.$url.'" target="_blank">点击浏览测试页面</a>'));
+            ->withErrors(array('succ' => '安装完成。'));
     }
     
     /**
@@ -88,15 +80,15 @@ class core_Controller extends BaseController
      * @param  string       $to    用于替换的字符串
      * @return void
      */
-    protected function moduleChangeFile($path, $frome, $to)
-    {
-        if(is_array($path)) {
-            foreach ($path as $value)
-                $this->moduleChangeFile($value, $frome, $to);
-        } else {
-            $file = File::get($path);
-            $file = str_replace($frome, $to, $file);
-            File::put($path, $file);
-        }
-    }
+    // protected function moduleChangeFile($path, $frome, $to)
+    // {
+    //     if(is_array($path)) {
+    //         foreach ($path as $value)
+    //             $this->moduleChangeFile($value, $frome, $to);
+    //     } else {
+    //         $file = File::get($path);
+    //         $file = str_replace($frome, $to, $file);
+    //         File::put($path, $file);
+    //     }
+    // }
 }

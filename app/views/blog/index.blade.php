@@ -23,7 +23,7 @@
                         </a>
                         <a href="{{ route('blog.show', $article->slug) }}#comments"
                             class="btn btn-default btn-xs" style="margin-top:-2px;"
-                            role="button">评论（{{ $article->comments->count() }}）</a>
+                            role="button">评论（{{ $article->comments_count }}）</a>
                     </p>
                 </div><!--/span-->
                 @endforeach

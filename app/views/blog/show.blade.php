@@ -8,9 +8,7 @@
 
     <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-xs-12 col-sm-9">
-            <p class="pull-right visible-xs" style="margin:-1.3em -1em 0 0;">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">== ==</button>
-            </p>
+        
             <div class="row">
 
                 <div class="col-6 col-sm-6 col-lg-12 panel">
@@ -24,7 +22,7 @@
                 </div><!--/span-->
 
                 <div class="col-6 col-sm-6 col-lg-12 panel">
-                    <h4>评论 - {{ $article->comments->count() }}</h4>
+                    <h4>评论 - {{ $article->comments_count }}</h4>
                     <ul class="media-list">
                         <?php $article->load('comments.user') ?>
                         @foreach($article->comments as $comment)

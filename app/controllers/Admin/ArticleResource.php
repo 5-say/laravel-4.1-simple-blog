@@ -52,6 +52,9 @@ class Admin_ArticleResource extends BaseResource
      */
     public function index()
     {
+        // 获取排序条件
+        $orderColumn = Input::get('sort_up', Input::get('sort_down', 'created_at'));
+        $direction   = Input::get('sort_up') ? 'asc' : 'desc' ;
         // 获取搜索条件
         switch (Input::get('target')) {
             case 'title':
@@ -59,7 +62,7 @@ class Admin_ArticleResource extends BaseResource
                 break;
         }
         // 构造查询语句
-        $query = $this->model->orderBy('created_at', 'DESC');
+        $query = $this->model->orderBy($orderColumn, $direction);
         isset($title) AND $query->where('title', 'like', "%{$title}%");
         $datas = $query->paginate(15);
         return View::make($this->resourceView.'.index')->with(compact('datas'));

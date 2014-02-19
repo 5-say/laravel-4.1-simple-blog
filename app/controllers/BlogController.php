@@ -58,6 +58,10 @@ class BlogController extends BaseController
         $comment->user_id    = Auth::user()->id;
         if ($comment->save()) {
             // 创建成功
+            // 更新评论数
+            $article->comments_count = $article->comments->count();
+            $article->save();
+            // 返回成功信息
             return Redirect::back()->with('success', '评论成功。');
         } else {
             // 创建失败
