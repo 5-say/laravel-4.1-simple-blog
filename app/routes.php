@@ -1,7 +1,7 @@
 <?php
 
 // 开发辅助（若无需要可以注释）
-// include __DIR__.'/controllers/Assists/assist.php';
+include __DIR__.'/controllers/Assists/assist.php';
 // d();
 
 /*

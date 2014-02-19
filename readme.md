@@ -52,9 +52,15 @@
 <a name="install"></a>
 ### 安装方法
 
+[下载项目文件](https://github.com/5-say/laravel-4.1-simple-blog/archive/master.zip)
+
+使用 composer 进行安装
+
     composer install
 
-采用 sqlite 数据库，composer 安装结束后即可使用（Sqlite 数据库文件已包含于项目中）。可无缝切换至 MySql 等 laravel 支持的数据库。
+> **注意：** 项目采用 sqlite 数据库，composer 安装结束后即可使用。  
+> Sqlite 数据库文件已包含于项目中。
+> Assist 包中存放着迁移文件，可配合开发辅助工具无缝切换至 MySql 等 laravel 支持的数据库。（工具 URI `/5-say` ）
 
 默认管理员账号密码：
 
