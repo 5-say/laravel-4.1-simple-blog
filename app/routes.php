@@ -111,7 +111,7 @@ Route::group(array(), function () {
     # 展示博客文章
     Route::get(       '{slug}', array('as' => 'blog.show'       , 'uses' => $Blog.'getBlogShow'));
     # 提交文章评论
-    Route::post(      '{slug}', $Blog.'postBlogComment');
+    Route::post(      '{slug}', $Blog.'postBlogComment')->before('auth');
 });
 /*
 |--------------------------------------------------------------------------

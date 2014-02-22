@@ -40,6 +40,7 @@
                         @endforeach
                     </ul>
                     @include('w.notification')
+                    @if(Auth::check())
                     <form class="form-horizontal" method="post" autocomplete="off">
                         <!-- CSRF Token -->
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -48,6 +49,15 @@
                         {{ $errors->first('content', '<span style="color:#c7254e;margin-top:1em;">:message</span>') }}
                         <button type="submit" class="btn btn-success pull-right" style="margin:1em 0;">发表评论</button>
                     </form>
+                    @else
+                    <div class="form-horizontal">
+                        <div class="form-control" style="height:5em">
+                            <a class="btn btn-primary" href="{{ route('signin') }}">登录</a>
+                            <a class="btn btn-success" href="{{ route('signup') }}">注册</a>
+                        </div>
+                        <button class="btn btn-defaut pull-right" style="margin:1em 0;">发表评论</button>
+                    </div>
+                    @endif
                 </div><!--/span-->
 
             </div><!--/row-->
