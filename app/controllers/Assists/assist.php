@@ -6,30 +6,6 @@
 |
 */
 
-/**
- * 无断点调试，结合 barryvdh/laravel-debugbar
- * @return void
- */
-function d()
-{
-    if (class_exists('Barryvdh\Debugbar\Facade')) {
-        Barryvdh\Debugbar\Facade::enable();
-        array_map(function ($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
-    } else {
-        array_map(function ($x) { var_dump($x); }, func_get_args());
-    }
-}
-// 如果必须要在非视图响应中使用
-function d_()
-{
-    if (class_exists('Barryvdh\Debugbar\Facade')) {
-        Barryvdh\Debugbar\Facade::enable();
-        echo '<span></span>';
-        array_map(function ($x) { Barryvdh\Debugbar\Facade::info($x); }, func_get_args());
-    } else {
-        array_map(function ($x) { var_dump($x); }, func_get_args());
-    }
-}
 
 /**
  * 保持原格式的参数文件修改（原参数值将会在下一行以注释的形式备份）
