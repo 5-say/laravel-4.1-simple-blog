@@ -1,7 +1,7 @@
 {
-	"name": "laravel/laravel",
-	"description": "The Laravel Framework.",
-	"keywords": ["framework", "laravel"],
+	"name": "five-say/laravel-4.1-simple-blog",
+	"description": "laravel-4.1-simple-blog.",
+	"keywords": ["blog", "laravel"],
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",

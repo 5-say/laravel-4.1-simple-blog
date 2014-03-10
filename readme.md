@@ -20,6 +20,7 @@
 - [项目进度](#project)
 - [安装方法](#install)
 - [项目截图](#screenshot)
+- [项目依赖](#require)
 - [开发者私人信息保密方法](#assume-unchanged)
 
 ---
@@ -76,6 +77,21 @@
 ![Alt text](/public/readmeAssets/mx3826D.png "Optional title")
 ![Alt text](/public/readmeAssets/mx3D2BE.png "Optional title")
 
+<a name="require"></a>
+### 项目依赖
+
+资源包|详细信息
+-|-
+**主要依赖** |
+laravel/framework|主框架
+intervention/image|图片处理
+yzalis/identicon|头像生成
+michelf/php-markdown|markdown 文档解析
+nickcernis/html-to-markdown|“html 文档”转“markdown 文档”
+**开发辅助** |
+barryvdh/laravel-debugbar|调试工具栏
+five-say/vendor-cleaner|vendor 目录清理
+
 <a name="assume-unchanged"></a>
 ### 开发者私人信息保密方法
 
@@ -86,4 +102,3 @@
     git update-index --assume-unchanged app/config/mail.php
     // 取消并恢复为普通文件
     git update-index --no-assume-unchanged app/config/mail.php
-
