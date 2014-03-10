@@ -72,9 +72,9 @@
 <a name="screenshot"></a>
 ### 项目截图
 
-![Alt text](/readmeAssets/mx3540D.png "Optional title")
-![Alt text](/readmeAssets/mx3826D.png "Optional title")
-![Alt text](/readmeAssets/mx3D2BE.png "Optional title")
+![Alt text](/public/readmeAssets/mx3540D.png "Optional title")
+![Alt text](/public/readmeAssets/mx3826D.png "Optional title")
+![Alt text](/public/readmeAssets/mx3D2BE.png "Optional title")
 
 <a name="assume-unchanged"></a>
 ### 开发者私人信息保密方法
