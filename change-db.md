@@ -6,6 +6,8 @@
 
 1. 修改数据库配置文件 `/app/config/database.php` 29 行。
 
+> .
+
     // 'default' => 'sqlite',
     'default' => 'mysql',
 
