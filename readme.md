@@ -19,6 +19,7 @@
 
 - [项目进度](#project)
 - [安装方法](#install)
+- [变更项目数据库的方法](/change-db.md)
 - [项目截图](#screenshot)
 - [项目依赖](#require)
 - [开发者私人信息保密方法](#assume-unchanged)
