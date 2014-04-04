@@ -18,7 +18,13 @@
             <tbody>
                 @foreach ($comments as $comment)
                 <tr>
-                    <td><a href="{{ route('blog.show', $comment->article->slug) }}">{{ $comment->article->title }}</a></td>
+                    <td>
+                        @if($comment->article)
+                        <a href="{{ route('blog.show', $comment->article->slug) }}">{{ $comment->article->title }}</a>
+                        @else
+                        此文章已被删除
+                        @endif
+                    </td>
                     <td>{{ $comment->content }}</td>
                     <td>
                         <a href="javascript:void(0)" class="btn btn-xs btn-danger"
