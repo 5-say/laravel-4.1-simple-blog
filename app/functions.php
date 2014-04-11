@@ -154,6 +154,16 @@ function pagination(Illuminate\Pagination\Paginator $paginator, $viewName = null
     return $paginator->links();
 }
 
+/**
+ * 反引用一个经过 e（htmlentities）和 addslashes 处理的字符串
+ * @param  string $string 待处理的字符串
+ * @return 转义后的字符串
+ */
+function strip($string)
+{
+    return stripslashes(HTML::decode($string));
+}
+
 
 
 /*

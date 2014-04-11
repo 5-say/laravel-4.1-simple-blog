@@ -47,6 +47,15 @@ class Article extends BaseModel
     }
 
     /**
+     * 访问器：文章内容（原始）
+     * @return string
+     */
+    public function getContentAttribute($value)
+    {
+        return strip($value);
+    }
+
+    /**
      * 访问器：文章内容（HTML 格式）
      * @return string
      */
