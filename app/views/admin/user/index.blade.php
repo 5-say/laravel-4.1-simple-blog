@@ -51,7 +51,7 @@
                     <th>身份 {{ order_by('is_admin') }}</th>
                     <th>邮箱 {{ order_by('email') }}</th>
                     <th>注册时间 {{ order_by('created_at', 'desc') }}</th>
-                    <th>最后登录时间 {{ order_by('siginin_at') }}</th>
+                    <th>最后登录时间 {{ order_by('signin_at') }}</th>
                     <th style="width:7em;text-align:center;">操作</th>
                 </tr>
             </thead>
