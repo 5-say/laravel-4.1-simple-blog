@@ -78,9 +78,10 @@ class Assists_database_Authority
         User::truncate(); // 清空表
         $password = Hash::make('111111');
         User::create(array(
-            'email'    => 'admin@demo.com',
-            'password' => $password,
-            'is_admin' => 1,
+            'email'        => 'admin@demo.com',
+            'password'     => $password,
+            'is_admin'     => 1,
+            'activated_at' => Carbon::now(),
         ));
     }
 
@@ -92,10 +93,12 @@ class Assists_database_Authority
     {
         // 用户
         $password = Hash::make('111111');
+        $now      = Carbon::now();
         for ($i = 1; $i < 60; $i++) {
             User::create(array(
-            'email'    => 'a'.$i.'@a.com',
-            'password' => $password,
+            'email'        => 'a'.$i.'@a.com',
+            'password'     => $password,
+            'activated_at' => $now,
             ));
         }
     }

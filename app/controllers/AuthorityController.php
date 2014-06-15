@@ -22,8 +22,17 @@ class AuthorityController extends BaseController
         // 是否记住登录状态
         $remember    = Input::get('remember-me', 0);
         // 验证登录
-        if (Auth::attempt($credentials, $remember)) {
-            // 登录成功，跳回之前被拦截的页面
+        if (Auth::validate($credentials)) {
+            // 验证成功，确认是否已经激活
+            $user = Auth::getLastAttempted();
+            if (is_null($user->activated_at)) {
+                // 未激活，跳回
+                return Redirect::back()
+                    ->withInput()
+                    ->withErrors(array('attempt' => '“邮箱”未激活，请打开您邮箱中的激活邮件，完成激活操作。'));
+            }
+            // 已激活，手动登录，跳回之前被拦截的页面
+            Auth::login($user, $remember);
             return Redirect::intended();
         } else {
             // 登录失败，跳回
