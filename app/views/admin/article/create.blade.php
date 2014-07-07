@@ -109,5 +109,5 @@
 
 @section('end')
     @parent
-    {{ script(array('markdown', 'bootstrap-markdown')) }}
+    {{ script('markdown', 'bootstrap-markdown') }}
 @stop

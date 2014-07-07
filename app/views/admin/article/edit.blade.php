@@ -132,6 +132,6 @@
 
 @section('end')
     @parent
-    {{ script(array('markdown', 'to-markdown', 'bootstrap-markdown')) }}
+    {{ script('markdown', 'to-markdown', 'bootstrap-markdown') }}
 @stop
 
