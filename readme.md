@@ -84,6 +84,10 @@
 - 主要依赖
   - laravel/framework
     - 主框架
+  - five-say/laravel-route-group
+    - 对象化分组路由辅助
+  - five-say/laravel-schema-extend
+    - 默认结构生成器拓展（支持 MySql 表注释、列注释）
   - intervention/image
     - 图片处理
   - yzalis/identicon
@@ -95,8 +99,6 @@
 - 开发辅助
   - barryvdh/laravel-debugbar
     - 调试工具栏
-  - five-say/vendor-cleaner
-    - vendor 目录清理
 
 <a name="assume-unchanged"></a>
 ### 开发者私人信息保密方法
