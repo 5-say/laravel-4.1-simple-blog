@@ -35,7 +35,8 @@ class Assists_database_Blog
     {
         // 文章分类
         Schema::create('article_categories', function (Blueprint $table) {
-            $table->engine = 'MyISAM';
+            $table->comment = '文章分类';
+            $table->engine  = 'MyISAM';
             $table->increments('id');
             $table->string('name', 20)   ->unique()  ->comment('分类名称');
             $table->integer('sort_order')->unsigned()->comment('排序');
@@ -44,7 +45,8 @@ class Assists_database_Blog
         });
         // 文章
         Schema::create('articles', function (Blueprint $table) {
-            $table->engine = 'MyISAM';
+            $table->comment = '文章';
+            $table->engine  = 'MyISAM';
             $table->increments('id');
             $table->integer('category_id')        ->unsigned()         ->comment('文章分类ID');
             $table->integer('user_id')            ->unsigned()         ->comment('作者ID');
@@ -62,7 +64,8 @@ class Assists_database_Blog
         });
         // 文章的评论
         Schema::create('article_comments', function (Blueprint $table) {
-            $table->engine = 'MyISAM';
+            $table->comment = '文章的评论';
+            $table->engine  = 'MyISAM';
             $table->increments('id');
             $table->integer('user_id')   ->unsigned()->comment('作者ID');
             $table->integer('article_id')->unsigned()->comment('归属文章ID');

@@ -36,7 +36,7 @@ $is_active = function ($name='') use ($active)
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('account') }}">用户中心</a></li>
+                        <li><a href="{{ route('account.index') }}">用户中心</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>
@@ -49,7 +49,7 @@ $is_active = function ($name='') use ($active)
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ route('admin') }}">进入后台</a></li>
-                        <li><a href="{{ route('account') }}">用户中心</a></li>
+                        <li><a href="{{ route('account.index') }}">用户中心</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>

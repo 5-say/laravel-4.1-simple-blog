@@ -109,8 +109,9 @@ return array(
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Workbench\WorkbenchServiceProvider',
 
-        'Barryvdh\Debugbar\ServiceProvider',
-        'Intervention\Image\ImageServiceProvider',
+        'Barryvdh\Debugbar\ServiceProvider',          // laravel 调试工具栏
+        'Intervention\Image\ImageServiceProvider',    // 图片处理
+        'FiveSay\LaravelRouteGroup\ServiceProvider',  // 对象化分组路由辅助
 
     ),
 
@@ -169,7 +170,8 @@ return array(
         'Request'         => 'Illuminate\Support\Facades\Request',
         'Response'        => 'Illuminate\Support\Facades\Response',
         'Route'           => 'Illuminate\Support\Facades\Route',
-        'Schema'          => 'Illuminate\Support\Facades\Schema',
+        // 'Schema'          => 'Illuminate\Support\Facades\Schema',
+        'Schema'          => 'FiveSay\LaravelSchemaExtend\Facade',  // 拓展默认结构生成器
         'Seeder'          => 'Illuminate\Database\Seeder',
         'Session'         => 'Illuminate\Support\Facades\Session',
         'SSH'             => 'Illuminate\Support\Facades\SSH',
@@ -178,9 +180,10 @@ return array(
         'Validator'       => 'Illuminate\Support\Facades\Validator',
         'View'            => 'Illuminate\Support\Facades\View',
 
-        'Carbon'          => 'Carbon\Carbon',
-        'Image'           => 'Intervention\Image\Facades\Image',
-        'Identicon'       => 'Identicon\Identicon',
+        'Carbon'          => 'Carbon\Carbon',                     // 时间处理
+        'RouteGroup'      => 'FiveSay\LaravelRouteGroup\Facade',  // 对象化分组路由辅助
+        'Image'           => 'Intervention\Image\Facades\Image',  // 图片处理
+        'Identicon'       => 'Identicon\Identicon',               // 头像生成
 
     ),
 

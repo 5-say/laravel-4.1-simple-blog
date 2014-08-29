@@ -35,7 +35,8 @@ class Assists_database_Authority
     {
         // 用户表
         Schema::create('users', function (Blueprint $table) {
-            $table->engine = 'MyISAM';
+            $table->comment = '用户表';
+            $table->engine  = 'MyISAM';
             $table->increments('id');
             // $table->string('name', 30)->unique()->comment('用户名');
             // $table->string('surname', 30)->default('')->comment('姓氏');
@@ -51,7 +52,8 @@ class Assists_database_Authority
         });
         // 账号激活
         Schema::create('activations', function (Blueprint $table) {
-            $table->engine = 'MyISAM';
+            $table->comment = '账号激活';
+            $table->engine  = 'MyISAM';
             $table->increments('id');
             $table->string('email', 60)    ->index()->comment('邮箱');
             $table->string('token', 40)    ->index()->comment('令牌');
@@ -59,7 +61,8 @@ class Assists_database_Authority
         });
         // 密码重置
         Schema::create('password_reminders', function (Blueprint $table) {
-            $table->engine = 'MyISAM';
+            $table->comment = '密码重置';
+            $table->engine  = 'MyISAM';
             $table->string('email', 60)    ->index()->comment('邮箱');
             $table->string('token', 40)    ->index()->comment('令牌');
             $table->timestamp('created_at')         ->comment('创建时间');

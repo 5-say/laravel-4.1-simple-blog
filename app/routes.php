@@ -9,112 +9,117 @@ include __DIR__.'/controllers/Assists/assist.php';
 | 基础权限
 |--------------------------------------------------------------------------
 */
-Route::group(array('prefix' => 'auth'), function () {
-    $Authority = 'AuthorityController@';
+RouteGroup::make('auth')->before('guest')->controller('AuthorityController')->go(function ($route) {
+
     # 退出
-    Route::get('logout', array('as' => 'logout', 'uses' => $Authority.'getLogout'));
-    Route::group(array('before' => 'guest'), function () use ($Authority) {
-        # 登录
-        Route::get(                   'signin', array('as' => 'signin'        , 'uses' => $Authority.'getSignin'));
-        Route::post(                  'signin', $Authority.'postSignin');
-        # 注册
-        Route::get(                   'signup', array('as' => 'signup'        , 'uses' => $Authority.'getSignup'));
-        Route::post(                  'signup', $Authority.'postSignup');
-        # 注册成功提示用户激活
-        Route::get(          'success/{email}', array('as' => 'signupSuccess' , 'uses' => $Authority.'getSignupSuccess'));
-        # 激活账号
-        Route::get('activate/{activationCode}', array('as' => 'activate'      , 'uses' => $Authority.'getActivate'));
-        # 忘记密码
-        Route::get(          'forgot-password', array('as' => 'forgotPassword', 'uses' => $Authority.'getForgotPassword'));
-        Route::post(         'forgot-password', $Authority.'postForgotPassword');
-        # 密码重置
-        Route::get(  'forgot-password/{token}', array('as' => 'reset'         , 'uses' => $Authority.'getReset'));
-        Route::post( 'forgot-password/{token}', $Authority.'postReset');
-    });
+    $route->get('logout')->as('logout')->uses('getLogout')->beforeClear();
+
+    # 登录
+    $route->get( 'signin'                   )->as('signin'        )->uses('getSignin'         );
+    $route->post('signin'                   )                      ->uses('postSignin'        );
+    # 注册
+    $route->get( 'signup'                   )->as('signup'        )->uses('getSignup'         );
+    $route->post('signup'                   )                      ->uses('postSignup'        );
+    # 注册成功提示用户激活
+    $route->get( 'success/{email}'          )->as('signupSuccess' )->uses('getSignupSuccess'  );
+    # 激活账号
+    $route->get( 'activate/{activationCode}')->as('activate'      )->uses('getActivate'       );
+    # 忘记密码
+    $route->get( 'forgot-password'          )->as('forgotPassword')->uses('getForgotPassword' );
+    $route->post('forgot-password'          )                      ->uses('postForgotPassword');
+    # 密码重置
+    $route->get( 'forgot-password/{token}'  )->as('reset'         )->uses('getReset'          );
+    $route->post('forgot-password/{token}'  )                      ->uses('postReset'         );
+
 });
+
 /*
 |--------------------------------------------------------------------------
 | 管理员后台
 |--------------------------------------------------------------------------
 */
 Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function () {
-    $Admin = 'AdminController@';
+
     # 后台首页
-    Route::get('/', array('as' => 'admin', 'uses' => $Admin.'getIndex'));
+    RouteGroup::make()->controller('AdminController')->go(function ($route) {
+        $route->get('/')->as('admin')->uses('getIndex');
+    });
+
     # 用户管理
-    Route::group(array('prefix' => 'users'), function () {
-        $resource   = 'users';
-        $controller = 'Admin_UserResource@';
-        Route::get(        '/', array('as' => $resource.'.index'  , 'uses' => $controller.'index'  ));
-        Route::get(   'create', array('as' => $resource.'.create' , 'uses' => $controller.'create' ));
-        Route::post(       '/', array('as' => $resource.'.store'  , 'uses' => $controller.'store'  ));
-        // Route::get(     '{id}', array('as' => $resource.'.show'   , 'uses' => $controller.'show'   ));
-        Route::get('{id}/edit', array('as' => $resource.'.edit'   , 'uses' => $controller.'edit'   ))->before('not.self');
-        Route::put(     '{id}', array('as' => $resource.'.update' , 'uses' => $controller.'update' ))->before('not.self');
-        Route::delete(  '{id}', array('as' => $resource.'.destroy', 'uses' => $controller.'destroy'))->before('not.self');
+    RouteGroup::make('users')->as('users')->controller('Admin_UserResource')->go(function ($route) {
+        $route->index( )
+              ->create()
+              ->store( )
+              ->edit(  )->before('not.self')
+              ->update()->before('not.self');
+        $route->delete('{id}')->as('destroy')->uses('destroy')->before('not.self');
     });
+
     # 文章分类管理
-    Route::group(array('prefix' => 'categories'), function () {
-        $resource   = 'categories';
-        $controller = 'Admin_CategoryResource@';
-        Route::get(        '/', array('as' => $resource.'.index'  , 'uses' => $controller.'index'  ));
-        Route::get(   'create', array('as' => $resource.'.create' , 'uses' => $controller.'create' ));
-        Route::post(       '/', array('as' => $resource.'.store'  , 'uses' => $controller.'store'  ));
-        // Route::get(     '{id}', array('as' => $resource.'.show'   , 'uses' => $controller.'show'   ));
-        Route::get('{id}/edit', array('as' => $resource.'.edit'   , 'uses' => $controller.'edit'   ));
-        Route::put(     '{id}', array('as' => $resource.'.update' , 'uses' => $controller.'update' ));
-        Route::delete(  '{id}', array('as' => $resource.'.destroy', 'uses' => $controller.'destroy'));
+    RouteGroup::make('categories')->as('categories')->controller('Admin_CategoryResource')->go(function ($route) {
+        $route->index( )
+              ->create()
+              ->store( )
+              ->edit(  )
+              ->update();
+        $route->delete('{id}')->as('destroy')->uses('destroy');
     });
+
     # 文章管理
-    Route::group(array('prefix' => 'articles'), function () {
-        $resource   = 'articles';
-        $controller = 'Admin_ArticleResource@';
-        Route::get(        '/', array('as' => $resource.'.index'  , 'uses' => $controller.'index'  ));
-        Route::get(   'create', array('as' => $resource.'.create' , 'uses' => $controller.'create' ));
-        Route::post(       '/', array('as' => $resource.'.store'  , 'uses' => $controller.'store'  ));
-        // Route::get(     '{id}', array('as' => $resource.'.show'   , 'uses' => $controller.'show'   ));
-        Route::get('{id}/edit', array('as' => $resource.'.edit'   , 'uses' => $controller.'edit'   ));
-        Route::put(     '{id}', array('as' => $resource.'.update' , 'uses' => $controller.'update' ));
-        Route::delete(  '{id}', array('as' => $resource.'.destroy', 'uses' => $controller.'destroy'));
+    RouteGroup::make('articles')->as('articles')->controller('Admin_ArticleResource')->go(function ($route) {
+        $route->index( )
+              ->create()
+              ->store( )
+              ->edit(  )
+              ->update();
+        $route->delete('{id}')->as('destroy')->uses('destroy');
     });
+
 });
+
+
 /*
 |--------------------------------------------------------------------------
 | 用户中心
 |--------------------------------------------------------------------------
 */
-Route::group(array('prefix' => 'account', 'before' => 'auth'), function () {
-    $Account = 'AccountController@';
+RouteGroup::make('account')->as('account')->before('auth')->controller('AccountController')->go(function ($route) {
+
     # 用户中心首页
-    Route::get(                  '/', array('as' => 'account'                   , 'uses' => $Account.'getIndex'));
+    $route->get(   '/'               )->as('index'             )->uses('getIndex'         );
     # 修改当前账号密码
-    Route::get(    'change-password', array('as' => 'account.changePassword'    , 'uses' => $Account.'getChangePassword'));
-    Route::put(    'change-password', $Account.'putChangePassword');
+    $route->get(   'change-password' )->as('changePassword'    )->uses('getChangePassword');
+    $route->put(   'change-password' )                          ->uses('putChangePassword');
     # 更改头像
-    Route::get(    'change-portrait', array('as' => 'account.changePortrait'    , 'uses' => $Account.'getChangePortrait'));
-    Route::put(    'change-portrait', $Account.'putChangePortrait');
+    $route->get(   'change-portrait' )->as('changePortrait'    )->uses('getChangePortrait');
+    $route->put(   'change-portrait' )                          ->uses('putChangePortrait');
     # 我的评论管理
-    Route::get(        'my-comments', array('as' => 'account.myComments'        , 'uses' => $Account.'getMyComments'));
-    Route::delete('my-comments/{id}', array('as' => 'account.myComments.destroy', 'uses' => $Account.'deleteMyComment'));
+    $route->get(   'my-comments'     )->as('myComments'        )->uses('getMyComments'    );
+    $route->delete('my-comments/{id}')->as('myComments.destroy')->uses('deleteMyComment'  );
+
 });
+
 /*
 |--------------------------------------------------------------------------
 | 博客
 |--------------------------------------------------------------------------
 */
-Route::group(array(), function () {
-    $Blog = 'BlogController@';
+RouteGroup::make()->controller('BlogController')->go(function ($route) {
+
     # 博客首页
-    Route::get(            '/', array('as' => 'home'            , 'uses' => $Blog.'getIndex'));
+    $route->get( '/'            )->as('home'            )->uses('getIndex'           );
     # 分类文章列表
-    Route::get('category/{id}', array('as' => 'categoryArticles', 'uses' => $Blog.'getCategoryArticles'));
+    $route->get( 'category/{id}')->as('categoryArticles')->uses('getCategoryArticles');
     # 展示博客文章
-    Route::get(       '{slug}', array('as' => 'blog.show'       , 'uses' => $Blog.'getBlogShow'));
+    $route->get( '{slug}'       )->as('blog.show'       )->uses('getBlogShow'        );
     # 提交文章评论
-    Route::post(      '{slug}', $Blog.'postBlogComment')->before('auth');
-});
+    $route->post('{slug}'       )                        ->uses('postBlogComment'    )->before('auth');
+
+})/*->ddAll()*/;
+
 /*
 |--------------------------------------------------------------------------
 | 特殊功能
 |--------------------------------------------------------------------------
 */
+
