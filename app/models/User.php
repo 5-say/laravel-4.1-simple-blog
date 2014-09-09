@@ -6,17 +6,16 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class User extends BaseModel implements UserInterface, RemindableInterface
 {
     /**
-     * 数据库表名称（不包含前缀）
-     * @var string
-     */
-    protected $table = 'users';
-
-    /**
      * 软删除
      * @var boolean
      */
     protected $softDelete = true;
 
+/*
+|--------------------------------------------------------------------------
+| Auth 支持
+|--------------------------------------------------------------------------
+*/
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -85,8 +84,13 @@ class User extends BaseModel implements UserInterface, RemindableInterface
         return $this->email;
     }
 
+/*
+|--------------------------------------------------------------------------
+| 访问器
+|--------------------------------------------------------------------------
+*/
     /**
-     * 访问器：友好的最后登录时间
+     * 友好的最后登录时间
      * @return string
      */
     public function getFriendlySigninAtAttribute()
@@ -98,7 +102,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     }
 
     /**
-     * 访问器：用户头像（大）
+     * 用户头像（大）
      * @return string 用户头像的 URI
      */
     public function getPortraitLargeAttribute()
@@ -110,7 +114,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     }
 
     /**
-     * 访问器：用户头像（中）
+     * 用户头像（中）
      * @return string 用户头像的 URI
      */
     public function getPortraitMediumAttribute()
@@ -122,7 +126,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     }
 
     /**
-     * 访问器：用户头像（小）
+     * 用户头像（小）
      * @return string 用户头像的 URI
      */
     public function getPortraitSmallAttribute()
@@ -133,8 +137,13 @@ class User extends BaseModel implements UserInterface, RemindableInterface
             return with(new Identicon)->getImageDataUri($this->email, 64);
     }
 
+/*
+|--------------------------------------------------------------------------
+| 调整器
+|--------------------------------------------------------------------------
+*/
     /**
-     * 调整器：密码
+     * 密码
      * @param  string $value 未处理的密码字符串
      * @return void
      */
@@ -143,5 +152,6 @@ class User extends BaseModel implements UserInterface, RemindableInterface
         // 若传入的字符串已经进行了 Hash 加密，则不重复处理
         $this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;
     }
+
 
 }

@@ -9,7 +9,36 @@ class BaseModel extends Eloquent
     protected $softDelete = false;
 
     /**
-     * 访问器：友好的创建时间
+     * 自动维护时间戳
+     * @var boolean
+     */
+    public $timestamps = true;
+
+    /**
+     * 其它需要使用日期调整器的字段
+     * @var array
+     */
+    protected $dates = array();
+
+    /**
+     * 集体赋值白名单（高优先级）
+     * @var array
+     */
+    protected $fillable = array();
+
+    /**
+     * 集体赋值黑名单
+     * @var array
+     */
+    protected $guarded = array();
+
+/*
+|--------------------------------------------------------------------------
+| 访问器
+|--------------------------------------------------------------------------
+*/
+    /**
+     * 友好的创建时间
      * @return string
      */
     public function getFriendlyCreatedAtAttribute()
@@ -18,7 +47,7 @@ class BaseModel extends Eloquent
     }
 
     /**
-     * 访问器：友好的更新时间
+     * 友好的更新时间
      * @return string
      */
     public function getFriendlyUpdatedAtAttribute()
@@ -27,12 +56,13 @@ class BaseModel extends Eloquent
     }
 
     /**
-     * 访问器：友好的删除时间
+     * 友好的删除时间
      * @return string
      */
     public function getFriendlyDeletedAtAttribute()
     {
         return friendly_date($this->deleted_at);
     }
+
 
 }

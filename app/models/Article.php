@@ -8,19 +8,19 @@ use \Michelf\MarkdownExtra;
 class Article extends BaseModel
 {
     /**
-     * 数据库表名称（不包含前缀）
-     * @var string
-     */
-    protected $table = 'articles';
-
-    /**
      * 软删除
      * @var boolean
      */
     protected $softDelete = true;
 
+/*
+|--------------------------------------------------------------------------
+| 模型对象关系
+|--------------------------------------------------------------------------
+*/
     /**
-     * 模型对象关系：文章的分类
+     * 文章的分类
+     * 一对多逆向
      * @return object Category
      */
     public function category()
@@ -29,7 +29,8 @@ class Article extends BaseModel
     }
 
     /**
-     * 模型对象关系：文章的作者
+     * 文章的作者
+     * 一对多逆向
      * @return object User
      */
     public function user()
@@ -38,7 +39,8 @@ class Article extends BaseModel
     }
 
     /**
-     * 模型对象关系：文章的评论
+     * 文章的评论
+     * 一对多
      * @return object Illuminate\Database\Eloquent\Collection
      */
     public function comments()
@@ -46,8 +48,13 @@ class Article extends BaseModel
         return $this->hasMany('Comment', 'article_id');
     }
 
+/*
+|--------------------------------------------------------------------------
+| 访问器
+|--------------------------------------------------------------------------
+*/
     /**
-     * 访问器：文章内容（原始）
+     * 文章内容（原始）
      * @return string
      */
     public function getContentAttribute($value)
@@ -56,7 +63,7 @@ class Article extends BaseModel
     }
 
     /**
-     * 访问器：文章内容（HTML 格式）
+     * 文章内容（HTML 格式）
      * @return string
      */
     public function getContentHtmlAttribute()
@@ -70,7 +77,7 @@ class Article extends BaseModel
     }
 
     /**
-     * 访问器：文章内容（Markdown 格式）
+     * 文章内容（Markdown 格式）
      * @return string
      */
     public function getContentMarkdownAttribute()

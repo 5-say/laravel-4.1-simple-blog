@@ -16,8 +16,14 @@ class Comment extends BaseModel
      */
     protected $softDelete = true;
 
+/*
+|--------------------------------------------------------------------------
+| 模型对象关系
+|--------------------------------------------------------------------------
+*/
     /**
-     * 模型对象关系：归属文章
+     * 归属文章
+     * 一对多逆向
      * @return object Article
      */
     public function article()
@@ -26,7 +32,8 @@ class Comment extends BaseModel
     }
 
     /**
-     * 模型对象关系：评论的作者
+     * 评论的作者
+     * 一对一逆向
      * @return object User
      */
     public function user()

@@ -16,8 +16,14 @@ class Category extends BaseModel
      */
     protected $softDelete = true;
 
+/*
+|--------------------------------------------------------------------------
+| 模型对象关系
+|--------------------------------------------------------------------------
+*/
     /**
-     * 模型对象关系：分类下的文章
+     * 分类下的文章
+     * 一对多
      * @return object Illuminate\Database\Eloquent\Collection
      */
     public function articles()
