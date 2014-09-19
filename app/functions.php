@@ -96,6 +96,50 @@ if (! function_exists('script')) {
 |
 */
 
+if (! function_exists('l')) {
+    /**
+     * 辅助调试函数
+     * @param  dynamic  mixed
+     * @return void
+     */
+    function l()
+    {
+        // 被调用记录
+        $backtrace = debug_backtrace();
+        $content   = $_SERVER['REQUEST_URI'].PHP_EOL;
+        $content  .= '  断点位置 => '.$backtrace[0]['file'].':'.$backtrace[0]['line'].PHP_EOL;
+        $content  .= '  调试内容 => '.var_export($backtrace[0]['args'], true).PHP_EOL;
+        // 写入日志
+        Log::debug($content);
+    }
+}
+
+if (! function_exists('log_sql')) {
+    /**
+     * 将 SQL 执行记录写入调试日志
+     * @return void
+     */
+    function log_sql()
+    {
+        $sqlList = DB::getQueryLog();
+        $sqlLog  = '';
+        foreach ($sqlList as $sql) {
+            foreach (explode('?', $sql['query']) as $key => $value) {
+                $sqlLog .= isset($sql['bindings'][$key])
+                    ? $value.$sql['bindings'][$key]
+                    : $value;
+            }
+            $sqlLog .= PHP_EOL.PHP_EOL;
+        }
+        // 被调用记录
+        $backtrace = debug_backtrace();
+        $content   = $_SERVER['REQUEST_URI'].PHP_EOL.PHP_EOL;
+        $content  .= '断点位置 => '.$backtrace[0]['file'].':'.$backtrace[0]['line'].PHP_EOL.PHP_EOL;
+        // 写入日志
+        Log::debug($content.$sqlLog);
+    }
+}
+
 if (! function_exists('define_array')) {
     /**
      * 批量定义常量
