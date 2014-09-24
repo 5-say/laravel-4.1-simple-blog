@@ -39,9 +39,10 @@ class CreateAuthorityTables extends Migration {
         Schema::create('activations', function ($table) {
 
             $table->increments('id');
-            $table->string('email'        )->comment('邮箱');
-            $table->string('token'        )->comment('令牌');
-            $table->timestamp('created_at')->comment('创建时间');
+            $table->string('email')->comment('邮箱');
+            $table->string('token')->comment('令牌');
+
+            $table->timestamps();
 
             $table->comment = '账号激活';
             $table->engine  = 'MyISAM';
@@ -52,9 +53,10 @@ class CreateAuthorityTables extends Migration {
         // 密码重置
         Schema::create('password_reminders', function ($table) {
 
-            $table->string('email'        )->comment('邮箱');
-            $table->string('token'        )->comment('令牌');
-            $table->timestamp('created_at')->comment('创建时间');
+            $table->string('email')->comment('邮箱');
+            $table->string('token')->comment('令牌');
+            
+            $table->timestamps();
 
             $table->comment = '密码重置';
             $table->engine  = 'MyISAM';
